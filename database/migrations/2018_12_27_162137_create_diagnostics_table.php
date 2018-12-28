@@ -16,11 +16,11 @@ class CreateDiagnosticsTable extends Migration
         Schema::create('diagnostics', function (Blueprint $table) {
             $table->increments('diagnostic_id');
             $table->timestamp('diagnostic_init_date');
-            $table->timestamp('diagnostic_close_date');
+            $table->timestamp('diagnostic_close_date')->nullable();
             $table->unsignedInteger('diagnostic_worker_id');
             $table->unsignedInteger('diagnostic_device_id');
 
-            $table->foreign('diagnostic_worker_id')->references('worker_id')->on('workers');
+            $table->foreign('diagnostic_worker_id')->references('id')->on('users');
             $table->foreign('diagnostic_device_id')->references('device_id')->on('devices');
         });
     }
