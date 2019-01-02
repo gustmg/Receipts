@@ -1,23 +1,13 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="navbar-fixed">
+	<nav>
+		<div class="nav-wrapper valign-wrapper">
+			<a class="left btn-floating btn-small transparent" style="margin-left: 24px;margin-right: 24px;box-shadow: none;"><i class="material-icons">menu</i></a>
+			<div class="col s12">
+		        <a href="#!" class="breadcrumb">Recepciones</a>
+			</div>
+		</div>
+	</nav>
 </div>
 @endsection
