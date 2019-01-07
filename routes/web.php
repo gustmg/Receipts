@@ -12,13 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	if(Auth::check()){return Redirect::to('home');}
+    return view('auth/login');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('clients', 'ClientController')->middleware('auth');
+Route::resource('receipts', 'ReceiptController')->middleware('auth');
