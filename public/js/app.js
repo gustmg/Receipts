@@ -1879,11 +1879,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  data: function data() {
+    return {
+      client_name: null,
+      client_phone: null,
+      client_email: null
+    };
+  },
+  methods: {
+    saveClient: function saveClient() {
+      axios.post('http://127.0.0.1:8000/clients', {
+        client_name: this.client_name,
+        client_phone: this.client_phone,
+        client_email: this.client_email
+      }).then(function (res) {
+        console.log(res);
+      }).catch(function (err) {
+        console.log(err);
+      }); // SHOW IN CONSOLE DATA INPUTS
+      // console.log(this.client_name);
+      // console.log(this.client_phone);
+      // console.log(this.client_email);
+    }
   }
 });
 
@@ -37520,164 +37541,219 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    {
+      staticClass: "modal newClientModal modal-fixed-footer",
+      attrs: { id: "newClientModal" }
+    },
+    [
+      _c("div", { staticClass: "modal-content" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "form",
+            {
+              staticClass: "col s12 no-padding",
+              attrs: { id: "newClientForm", method: "POST", action: "clients" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.saveClient($event)
+                }
+              }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "row",
+                  staticStyle: { "margin-bottom": "10px" }
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s12 m6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.client_name,
+                          expression: "client_name"
+                        }
+                      ],
+                      staticClass: "validate client_name",
+                      attrs: {
+                        id: "client_name",
+                        name: "client_name",
+                        type: "text",
+                        required: ""
+                      },
+                      domProps: { value: _vm.client_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.client_name = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        attrs: {
+                          for: "client_name",
+                          "data-error": "Verifique este campo",
+                          "data-success": "Campo validado"
+                        }
+                      },
+                      [_vm._v("Nombre*")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s12 m6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.client_phone,
+                          expression: "client_phone"
+                        }
+                      ],
+                      staticClass: "validate client_phone",
+                      attrs: {
+                        id: "client_phone",
+                        name: "client_phone",
+                        type: "tel"
+                      },
+                      domProps: { value: _vm.client_phone },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.client_phone = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        attrs: {
+                          for: "client_phone",
+                          "data-error": "Verifique este campo",
+                          "data-success": "Campo validado"
+                        }
+                      },
+                      [_vm._v("Teléfono")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s12 m12" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.client_email,
+                          expression: "client_email"
+                        }
+                      ],
+                      staticClass: "client_email validate",
+                      attrs: {
+                        id: "client_email",
+                        name: "client_email",
+                        type: "email"
+                      },
+                      domProps: { value: _vm.client_email },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.client_email = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      { attrs: { for: "client_accounting_account" } },
+                      [_vm._v("E-mail")]
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _vm._m(2)
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(3)
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col s12" }, [
+      _c("h5", [_vm._v("Nuevo cliente")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col s12 grey-text text-darken-2" }, [
+      _c("b", [_vm._v("Información general")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
-      "div",
+      "button",
       {
-        staticClass: "modal newClientModal modal-fixed-footer",
-        attrs: { id: "newClientModal" }
+        staticClass: "modal-action btn waves-effect submit_button",
+        attrs: { type: "submit", id: "submit_button" }
       },
-      [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "col s12" }, [
-            _c("h5", [_vm._v("Nuevo cliente")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "form",
-              {
-                staticClass: "col s12 no-padding",
-                attrs: {
-                  id: "newClientForm",
-                  method: "POST",
-                  action: "clients"
-                }
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass: "row",
-                    staticStyle: { "margin-bottom": "10px" }
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "col s12 grey-text text-darken-2" },
-                      [_c("b", [_vm._v("Información general")])]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "input-field col s12 m6" }, [
-                      _c("input", {
-                        staticClass: "validate client_name",
-                        attrs: {
-                          id: "client_name",
-                          name: "client_name",
-                          type: "text",
-                          onblur: "validateNewClientForm();",
-                          required: ""
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          attrs: {
-                            for: "client_name",
-                            "data-error": "Verifique este campo",
-                            "data-success": "Campo validado"
-                          }
-                        },
-                        [_vm._v("Nombre*")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "input-field col s12 m6" }, [
-                      _c("input", {
-                        staticClass: "validate client_phone",
-                        attrs: {
-                          id: "client_phone",
-                          name: "client_phone",
-                          type: "tel",
-                          onblur: "validateNewClientForm();"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          attrs: {
-                            for: "client_phone",
-                            "data-error": "Verifique este campo",
-                            "data-success": "Campo validado"
-                          }
-                        },
-                        [_vm._v("Teléfono")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "input-field col s12 m12" }, [
-                      _c("input", {
-                        staticClass: "client_email validate",
-                        attrs: {
-                          id: "client_email",
-                          name: "client_email",
-                          type: "email",
-                          onblur: "validateNewClientForm();"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        { attrs: { for: "client_accounting_account" } },
-                        [_vm._v("E-mail")]
-                      )
-                    ])
-                  ]
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "modal-footer" }, [
-          _c(
-            "a",
-            {
-              staticClass: "modal-action modal-close waves-effect btn-flat",
-              attrs: { href: "#!" }
-            },
-            [_c("b", [_vm._v("Cancelar")])]
-          ),
-          _vm._v(
-            "\n\t\t@if (Route::currentRouteName()=='clients.index')\n\t\t\t"
-          ),
-          _c(
-            "button",
-            {
-              staticClass: "modal-action btn waves-effect submit_button",
-              attrs: {
-                id: "submit_button",
-                onclick: "submitNewClient();",
-                disabled: ""
-              }
-            },
-            [_c("b", [_vm._v("Registrar")])]
-          ),
-          _vm._v("\n\t\t@else\n\t\t\t"),
-          _c(
-            "button",
-            {
-              staticClass: "modal-action btn waves-effect submit_button",
-              attrs: {
-                id: "submit_button",
-                onclick: "ajaxNewClient();",
-                disabled: ""
-              }
-            },
-            [_c("b", [_vm._v("Registrar")])]
-          ),
-          _vm._v("\n\t\t@endif\n\t")
-        ])
-      ]
+      [_c("b", [_vm._v("Registrar")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "a",
+        {
+          staticClass: "modal-action modal-close waves-effect btn-flat",
+          attrs: { href: "#!" }
+        },
+        [_c("b", [_vm._v("Cancelar")])]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "modal-action btn waves-effect submit_button",
+          attrs: { type: "submit", id: "submit_button" }
+        },
+        [_c("b", [_vm._v("Registrar")])]
+      )
+    ])
   }
 ]
 render._withStripped = true
