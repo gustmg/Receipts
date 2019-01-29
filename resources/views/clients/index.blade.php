@@ -10,15 +10,9 @@
 	</div>
 </div>
 </div>
-<div class="row">
-    @if(count($clients)==0)
-    	<h5 class="center grey-text">No hay clientes registrados.</h5>
-	@else
-		
-    @endif
-</div>
 <a style="position:fixed;bottom: 24px;right: 24px;" class="btn-floating btn-large waves-effect waves-light modal-trigger" href="#newClientModal">
 	<i class="material-icons">add</i>
 </a>
-@include('clients.newClientModal')
+<new-client-modal-component></new-client-modal-component>
+<clients-component :clients="{{$clients}}"></clients-component>
 @endsection

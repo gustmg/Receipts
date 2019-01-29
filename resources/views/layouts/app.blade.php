@@ -19,7 +19,7 @@
             <nav>
                 <div class="nav-wrapper valign-wrapper">
                     <a class="left btn-floating btn-small transparent sidenav-trigger" data-target="slide-out" style="margin-left: 24px;margin-right: 24px;box-shadow: none;display: inherit;"><i class="material-icons">menu</i></a>
-                    <span class="brand-logo center">TECTRO</span>
+                    <span class="brand-logo center">Tectro</span>
                 </div>
             </nav>
         </div>
@@ -38,6 +38,7 @@
         </main>
     </div>
     <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/materialize.min.js') }}"></script>
     <script type="text/javascript">
