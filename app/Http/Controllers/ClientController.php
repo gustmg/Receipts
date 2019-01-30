@@ -37,7 +37,22 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->ajax()){
+            $validatedData = $request->validate([
+                'client_name' => 'required|max:255',
+                'client_phone' => 'max:10'
+            ]);
+
+            $client=new Client;
+            $client->client_name=$request->client_name;
+            $client->client_phone=$request->client_phone;
+            $client->client_email=$request->client_email;
+            $client->save();
+
+            return response()->json([
+                "message" => "Cliente creado correctamente."
+            ],200);
+        }
     }
 
     /**

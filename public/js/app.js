@@ -1876,15 +1876,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
+    $(document).ready(function () {
+      $('#client_name').characterCounter();
+      $('#client_phone').characterCounter();
+    });
   },
   data: function data() {
     return {
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       client_name: null,
       client_phone: null,
       client_email: null
@@ -1892,18 +1894,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     saveClient: function saveClient() {
-      axios.post('http://127.0.0.1:8000/clients', {
+      axios.post('http://localhost:8000/clients', {
         client_name: this.client_name,
         client_phone: this.client_phone,
         client_email: this.client_email
       }).then(function (res) {
         console.log(res);
+        $('#newClientModal').modal('close');
       }).catch(function (err) {
         console.log(err);
-      }); // SHOW IN CONSOLE DATA INPUTS
-      // console.log(this.client_name);
-      // console.log(this.client_phone);
-      // console.log(this.client_email);
+      });
     }
   }
 });
@@ -37543,10 +37543,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      staticClass: "modal newClientModal modal-fixed-footer",
-      attrs: { id: "newClientModal" }
-    },
+    { staticClass: "modal newClientModal ", attrs: { id: "newClientModal" } },
     [
       _c("div", { staticClass: "modal-content" }, [
         _vm._m(0),
@@ -37556,15 +37553,14 @@ var render = function() {
             "form",
             {
               staticClass: "col s12 no-padding",
-              attrs: { id: "newClientForm", method: "POST", action: "clients" },
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.saveClient($event)
-                }
-              }
+              attrs: { id: "newClientForm", method: "POST", action: "clients" }
             },
             [
+              _c("input", {
+                attrs: { type: "hidden", name: "_token" },
+                domProps: { value: _vm.csrf }
+              }),
+              _vm._v(" "),
               _c(
                 "div",
                 {
@@ -37572,8 +37568,6 @@ var render = function() {
                   staticStyle: { "margin-bottom": "10px" }
                 },
                 [
-                  _vm._m(1),
-                  _vm._v(" "),
                   _c("div", { staticClass: "input-field col s12 m6" }, [
                     _c("input", {
                       directives: [
@@ -37584,11 +37578,12 @@ var render = function() {
                           expression: "client_name"
                         }
                       ],
-                      staticClass: "validate client_name",
+                      staticClass: "validate",
                       attrs: {
                         id: "client_name",
-                        name: "client_name",
                         type: "text",
+                        "data-length": "50",
+                        maxlength: "50",
                         required: ""
                       },
                       domProps: { value: _vm.client_name },
@@ -37625,11 +37620,11 @@ var render = function() {
                           expression: "client_phone"
                         }
                       ],
-                      staticClass: "validate client_phone",
                       attrs: {
                         id: "client_phone",
-                        name: "client_phone",
-                        type: "tel"
+                        type: "tel",
+                        "data-length": "10",
+                        maxlength: "10"
                       },
                       domProps: { value: _vm.client_phone },
                       on: {
@@ -37655,49 +37650,61 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "input-field col s12 m12" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.client_email,
-                          expression: "client_email"
-                        }
-                      ],
-                      staticClass: "client_email validate",
-                      attrs: {
-                        id: "client_email",
-                        name: "client_email",
-                        type: "email"
-                      },
-                      domProps: { value: _vm.client_email },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
+                  _c(
+                    "div",
+                    {
+                      staticClass: "input-field col s12 m12",
+                      attrs: { "data-length": "40" }
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.client_email,
+                            expression: "client_email"
                           }
-                          _vm.client_email = $event.target.value
+                        ],
+                        attrs: { id: "client_email", type: "email" },
+                        domProps: { value: _vm.client_email },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.client_email = $event.target.value
+                          }
                         }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      { attrs: { for: "client_accounting_account" } },
-                      [_vm._v("E-mail")]
-                    )
-                  ])
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        { attrs: { for: "client_accounting_account" } },
+                        [_vm._v("E-mail")]
+                      )
+                    ]
+                  )
                 ]
-              ),
-              _vm._v(" "),
-              _vm._m(2)
+              )
             ]
           )
         ])
       ]),
       _vm._v(" "),
-      _vm._m(3)
+      _c("div", { staticClass: "modal-footer" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "modal-action btn waves-effect submit_button",
+            attrs: { type: "submit", id: "submit_button" },
+            on: { click: _vm.saveClient }
+          },
+          [_c("b", [_vm._v("Registrar")])]
+        )
+      ])
     ]
   )
 }
@@ -37714,46 +37721,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s12 grey-text text-darken-2" }, [
-      _c("b", [_vm._v("Información general")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c(
-      "button",
+      "a",
       {
-        staticClass: "modal-action btn waves-effect submit_button",
-        attrs: { type: "submit", id: "submit_button" }
+        staticClass: "modal-action modal-close waves-effect btn-flat",
+        attrs: { href: "#!" }
       },
-      [_c("b", [_vm._v("Registrar")])]
+      [_c("b", [_vm._v("Cancelar")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "a",
-        {
-          staticClass: "modal-action modal-close waves-effect btn-flat",
-          attrs: { href: "#!" }
-        },
-        [_c("b", [_vm._v("Cancelar")])]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "modal-action btn waves-effect submit_button",
-          attrs: { type: "submit", id: "submit_button" }
-        },
-        [_c("b", [_vm._v("Registrar")])]
-      )
-    ])
   }
 ]
 render._withStripped = true
@@ -49275,14 +49250,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************************!*\
   !*** ./resources/js/components/NewClientModalComponent.vue ***!
   \*************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NewClientModalComponent_vue_vue_type_template_id_229d45c0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=template&id=229d45c0& */ "./resources/js/components/NewClientModalComponent.vue?vue&type=template&id=229d45c0&");
 /* harmony import */ var _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/NewClientModalComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -49312,7 +49288,7 @@ component.options.__file = "resources/js/components/NewClientModalComponent.vue"
 /*!**************************************************************************************!*\
   !*** ./resources/js/components/NewClientModalComponent.vue?vue&type=script&lang=js& ***!
   \**************************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
