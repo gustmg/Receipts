@@ -1,5 +1,15 @@
 <template>
 	<div class="row">
+		<div class="container">
+			<div class="row" style="margin-bottom: 0;">
+				<div class="card hoverable col s12 m12" style="float: none;">
+					<div class="input-field valign-wrapper" >
+						<i class="material-icons prefix">search</i>
+						<input v-model="search_client" placeholder="Buscar cliente" id="search_client" type="text" style="border-bottom: none!important;box-shadow: none!important;margin-bottom: 0;">
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="col s12 m3" v-show="clients.length > 0" v-for="client in clients">
 			<div class="card">
 		        <div class="card-content center-align">
@@ -32,8 +42,12 @@
 			}
 		},
 
+		data() {
+			search_client: ''
+		},
+
 	    mounted() {
 	        console.log('Clients component mounted');
-	    },
+	    }
 	}
 </script>
