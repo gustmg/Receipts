@@ -1806,10 +1806,21 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   data: function data() {
-    search_client: '';
+    return {
+      search_client: ''
+    };
   },
   mounted: function mounted() {
     console.log('Clients component mounted');
+  },
+  computed: {
+    filteredClients: function filteredClients() {
+      var _this = this;
+
+      return this.clients.filter(function (client) {
+        return client.client_name.match(_this.search_client);
+      });
+    }
   }
 });
 
@@ -37587,7 +37598,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _vm._l(_vm.clients, function(client) {
+      _vm._l(_vm.filteredClients, function(client) {
         return _c(
           "div",
           {

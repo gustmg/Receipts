@@ -10,7 +10,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col s12 m3" v-show="clients.length > 0" v-for="client in clients">
+		<div class="col s12 m3" v-show="clients.length > 0" v-for="client in filteredClients">
 			<div class="card">
 		        <div class="card-content center-align">
 					<span class="card-title"><i class="material-icons inline-icon-large">person</i><br><b>{{client.client_name}}</b></span>
@@ -43,11 +43,21 @@
 		},
 
 		data() {
-			search_client: ''
+			return {
+				search_client: '',
+			}
 		},
 
 	    mounted() {
 	        console.log('Clients component mounted');
+	    },
+
+	    computed: {
+	    	filteredClients: function() {
+	    		return this.clients.filter((client)=>{
+	    			return client.client_name.match(this.search_client);
+	    		});
+	    	}
 	    }
 	}
 </script>
