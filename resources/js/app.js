@@ -22,6 +22,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('new-client-modal-component', require('./components/NewClientModalComponent.vue').default);
+Vue.component('update-client-modal-component', require('./components/UpdateClientModalComponent.vue').default);
 Vue.component('clients-component', require('./components/ClientsComponent.vue').default);
 
 /**
