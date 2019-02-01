@@ -11,21 +11,21 @@
 					<input type="hidden" name="_token" :value="csrf">
 					<div class="row">
 						<div class="input-field col s12 m8">
-							<input v-model="client_name" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" type="text" data-length="50" maxlength="50" required>
+							<input v-model="clientName" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" type="text" data-length="50" maxlength="50" required>
 							<label for="client_name">
-								<i class="material-icons inline-icon-small">person</i> Nombre*
+								<i class="material-icons inline-icon-small">person</i> *Nombre
 							</label>
 							<span class="helper-text client_name_helper" data-success="Nombre validado."></span>
 				        </div>
 				        <div class="input-field col s12 m4">
-							<input v-model="client_phone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" type="tel" data-length="10" minlength="10" maxlength="10">
+							<input v-model="clientPhone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" type="tel" data-length="10" minlength="10" maxlength="10">
 							<label for="client_phone" data-error="Verifique este campo">
 								<i class="material-icons inline-icon-small">phone</i> Teléfono
 							</label>
 							<span class="helper-text client_phone_helper" data-success="Teléfono validado."></span>
 				        </div>
 				        <div class="input-field col s12 m6">
-							<input v-model="client_email" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" type="email" data-length="40" maxlength="40">
+							<input v-model="clientEmail" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" type="email" data-length="40" maxlength="40">
 							<label for="client_email" data-error="Verifique este campo">
 								<i class="material-icons inline-icon-small">email</i> E-mail
 							</label>
@@ -59,6 +59,12 @@
 </style>
 <script>
 	export default {
+		props: {
+			clientName: String,
+			clientPhone: String,
+			clientEmail: String
+		},
+
 	    mounted() {
 	        $(document).ready(function(){
 	        	$('#client_name,#client_phone,#client_email').characterCounter();
@@ -68,6 +74,9 @@
 	    data(){
 	    	return {
 	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+	    		client_name:null,
+	    		client_phone:null,
+	    		client_email:null,
 	    		validClientName: false,
 	    		invalidClientName: false,
 	    		validClientPhone: false,

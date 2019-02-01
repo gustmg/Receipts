@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<div class="col s12 m3" v-show="clients.length > 0" v-for="client in filteredClients">
-			<div v-on:click="updateClient" class="card hoverable hoverable-card selectable">
+			<div v-on:click="updateClient(client)" class="card hoverable hoverable-card selectable">
 		        <div class="card-content center-align">
 					<span class="card-title"><i class="material-icons inline-icon-large">person</i><br><b>{{client.client_name}}</b></span>
 					<p><i class="material-icons inline-icon-small">phone</i>&nbsp;&nbsp;{{client.client_phone}}</p>
@@ -25,6 +25,7 @@
 		<div v-if="filteredClients.length == 0">
 			<h5 class="center grey-text">Búsqueda sin resultados.</h5>
 		</div>
+		<update-client-modal-component :clientName="clientName" :clientPhone="clientPhone" :clientEmail="clientEmail"></update-client-modal-component>
 	</div>
 </template>
 <style type="text/css">
@@ -57,6 +58,9 @@
 		data() {
 			return {
 				search_client: '',
+				clientName: '',
+				clientPhone: '',
+				clientEmail: ''
 			}
 		},
 
@@ -65,7 +69,10 @@
 	    },
 
 	    methods: {
-	    	updateClient: function(){
+	    	updateClient: function(client){
+	    		this.clientName=client.client_name;
+	    		this.clientPhone=client.client_phone;
+	    		this.clientEmail=client.client_email;
 	    		$('#updateClientModal').modal('open');
 	    	}
 	    },

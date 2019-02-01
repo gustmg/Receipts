@@ -5,6 +5,5 @@
 	<i class="material-icons">add</i>
 </a>
 <new-client-modal-component></new-client-modal-component>
-<update-client-modal-component></update-client-modal-component>
 <clients-component :clients="{{$clients}}"></clients-component>
 @endsection

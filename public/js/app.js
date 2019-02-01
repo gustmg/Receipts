@@ -1811,6 +1811,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     clients: {
@@ -1819,14 +1820,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      search_client: ''
+      search_client: '',
+      clientName: '',
+      clientPhone: '',
+      clientEmail: ''
     };
   },
   mounted: function mounted() {
     console.log('Clients component mounted');
   },
   methods: {
-    updateClient: function updateClient() {
+    updateClient: function updateClient(client) {
+      this.clientName = client.client_name;
+      this.clientPhone = client.client_phone;
+      this.clientEmail = client.client_email;
       $('#updateClientModal').modal('open');
     }
   },
@@ -2086,6 +2093,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    clientName: String,
+    clientPhone: String,
+    clientEmail: String
+  },
   mounted: function mounted() {
     $(document).ready(function () {
       $('#client_name,#client_phone,#client_email').characterCounter();
@@ -2094,6 +2106,9 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      client_name: null,
+      client_phone: null,
+      client_email: null,
       validClientName: false,
       invalidClientName: false,
       validClientPhone: false,
@@ -37816,7 +37831,11 @@ var render = function() {
               "div",
               {
                 staticClass: "card hoverable hoverable-card selectable",
-                on: { click: _vm.updateClient }
+                on: {
+                  click: function($event) {
+                    _vm.updateClient(client)
+                  }
+                }
               },
               [
                 _c("div", { staticClass: "card-content center-align" }, [
@@ -37879,7 +37898,15 @@ var render = function() {
               _vm._v("Búsqueda sin resultados.")
             ])
           ])
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c("update-client-modal-component", {
+        attrs: {
+          clientName: _vm.clientName,
+          clientPhone: _vm.clientPhone,
+          clientEmail: _vm.clientEmail
+        }
+      })
     ],
     2
   )
@@ -38235,8 +38262,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.client_name,
-                        expression: "client_name"
+                        value: _vm.clientName,
+                        expression: "clientName"
                       }
                     ],
                     class: {
@@ -38249,14 +38276,14 @@ var render = function() {
                       maxlength: "50",
                       required: ""
                     },
-                    domProps: { value: _vm.client_name },
+                    domProps: { value: _vm.clientName },
                     on: {
                       blur: _vm.validateClientName,
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.client_name = $event.target.value
+                        _vm.clientName = $event.target.value
                       }
                     }
                   }),
@@ -38275,8 +38302,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.client_phone,
-                        expression: "client_phone"
+                        value: _vm.clientPhone,
+                        expression: "clientPhone"
                       }
                     ],
                     class: {
@@ -38289,14 +38316,14 @@ var render = function() {
                       minlength: "10",
                       maxlength: "10"
                     },
-                    domProps: { value: _vm.client_phone },
+                    domProps: { value: _vm.clientPhone },
                     on: {
                       blur: _vm.validateClientPhone,
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.client_phone = $event.target.value
+                        _vm.clientPhone = $event.target.value
                       }
                     }
                   }),
@@ -38315,8 +38342,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.client_email,
-                        expression: "client_email"
+                        value: _vm.clientEmail,
+                        expression: "clientEmail"
                       }
                     ],
                     class: {
@@ -38328,14 +38355,14 @@ var render = function() {
                       "data-length": "40",
                       maxlength: "40"
                     },
-                    domProps: { value: _vm.client_email },
+                    domProps: { value: _vm.clientEmail },
                     on: {
                       blur: _vm.validateClientEmail,
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.client_email = $event.target.value
+                        _vm.clientEmail = $event.target.value
                       }
                     }
                   }),
@@ -38388,7 +38415,7 @@ var staticRenderFns = [
       _c("i", { staticClass: "material-icons inline-icon-small" }, [
         _vm._v("person")
       ]),
-      _vm._v(" Nombre*\n\t\t\t\t\t\t")
+      _vm._v(" *Nombre\n\t\t\t\t\t\t")
     ])
   },
   function() {
