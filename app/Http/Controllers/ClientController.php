@@ -40,7 +40,6 @@ class ClientController extends Controller
         if($request->ajax()){
             $validatedData = $request->validate([
                 'client_name' => 'required|max:255',
-                'client_phone' => 'max:10'
             ]);
 
             $client=new Client;

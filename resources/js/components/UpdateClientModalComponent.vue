@@ -1,32 +1,28 @@
 <template>
-	<div id="updateClientModal" class="modal updateClientModal ">
+	<div id="updateClientModal" class="modal updateClientModal">
 		<div class="modal-content">
-			<div class="row">
-				<div class="col s12">
-					<h5>Editar cliente</h5>
-				</div>
-			</div>
+			<h5>Editar cliente</h5>
 			<div class="row">
 				<form id="updateClientForm" class="col s12 no-padding" method="POST" action="clients">
 					<input type="hidden" name="_token" :value="csrf">
 					<div class="row">
 						<div class="input-field col s12 m8">
-							<input v-model="clientName" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" type="text" data-length="50" maxlength="50" required>
-							<label for="client_name">
+							<input v-model="clientName" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" id="update_client_name" type="text" data-length="50" maxlength="50" required>
+							<label for="update_client_name" class="label_update_client_name">
 								<i class="material-icons inline-icon-small">person</i> *Nombre
 							</label>
 							<span class="helper-text client_name_helper" data-success="Nombre validado."></span>
 				        </div>
 				        <div class="input-field col s12 m4">
-							<input v-model="clientPhone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" type="tel" data-length="10" minlength="10" maxlength="10">
-							<label for="client_phone" data-error="Verifique este campo">
+							<input v-model="clientPhone" v-on:show="verifyActiveLabel(clientPhone)" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" id="update_client_phone" type="tel" data-length="10" minlength="10" maxlength="10">
+							<label for="update_client_phone" class="label_update_client_phone">
 								<i class="material-icons inline-icon-small">phone</i> Teléfono
 							</label>
 							<span class="helper-text client_phone_helper" data-success="Teléfono validado."></span>
 				        </div>
 				        <div class="input-field col s12 m6">
-							<input v-model="clientEmail" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" type="email" data-length="40" maxlength="40">
-							<label for="client_email" data-error="Verifique este campo">
+							<input v-model="clientEmail" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" id="update_client_email" type="email" data-length="40" maxlength="40">
+							<label for="update_client_email" class="label_update_client_email">
 								<i class="material-icons inline-icon-small">email</i> E-mail
 							</label>
 							<span class="helper-text client_email_helper" data-success="Correo validado."></span>
@@ -36,14 +32,19 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></a>
+			<a href="#" class="left delete-button"><i class="material-icons black-text">delete</i></a>
+			<button class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
 			<button v-on:click="saveClient" type="submit" class="modal-action btn waves-effect submit_button" >
-				<b>Registrar</b>
+				<b>Guardar</b>
 			</button>
 		</div>
 	</div>
 </template>
 <style type="text/css">
+	.delete-button{
+		margin-left: 10px;
+		margin-top: 10px;
+	}
 	.inline-icon-large {
 	   vertical-align: bottom;
 	   font-size: 48px !important;
@@ -79,6 +80,7 @@
 	    		client_email:null,
 	    		validClientName: false,
 	    		invalidClientName: false,
+	    		activeClientName: false,
 	    		validClientPhone: false,
 	    		invalidClientPhone: false,
 	    		validClientEmail: false,
@@ -140,6 +142,10 @@
     				this.validClientEmail = true;
 	    			this.invalidClientEmail = false;
     			}
+    		},
+
+    		verifyActiveLabel: function(e) {
+    			console.log('Visto');
     		}
 	    }
 	}

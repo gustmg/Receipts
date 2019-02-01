@@ -1,5 +1,5 @@
 <template>
-	<div id="newClientModal" class="modal newClientModal ">
+	<div id="newClientModal" class="modal newClientModal">
 		<div class="modal-content">
 			<div class="row">
 				<div class="col s12">
@@ -19,14 +19,14 @@
 				        </div>
 				        <div class="input-field col s12 m4">
 							<input v-model="client_phone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" id="client_phone" type="tel" data-length="10" minlength="10" maxlength="10">
-							<label for="client_phone" data-error="Verifique este campo">
+							<label for="client_phone">
 								<i class="material-icons inline-icon-small">phone</i> Teléfono
 							</label>
 							<span class="helper-text client_phone_helper" data-success="Teléfono validado."></span>
 				        </div>
 				        <div class="input-field col s12 m6">
 							<input v-model="client_email" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" id="client_email" type="email" data-length="40" maxlength="40">
-							<label for="client_email" data-error="Verifique este campo">
+							<label for="client_email">
 								<i class="material-icons inline-icon-small">email</i> E-mail
 							</label>
 							<span class="helper-text client_email_helper" data-success="Correo validado."></span>
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></a>
+			<button v-on:click="resetNewClientInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
 			<button v-on:click="saveClient" type="submit" class="modal-action btn waves-effect submit_button" >
 				<b>Registrar</b>
 			</button>
@@ -60,7 +60,7 @@
 <script>
 	export default {
 	    mounted() {
-	        console.log('Component mounted.');
+	        console.log('New client modal mounted.');
 	        $(document).ready(function(){
 	        	$('#client_name,#client_phone,#client_email').characterCounter();
 	        });
@@ -112,7 +112,11 @@
     		validateClientPhone: function(e) {
     			const phone_regexp = /^[0-9]*$/gm;
 
-    			if(!phone_regexp.test(this.client_phone) || this.client_phone.length < 10){
+    			if(this.client_phone ==null || this.client_phone.length == 0){
+    				this.validClientPhone = false;
+	    			this.invalidClientPhone = false;
+    			}
+    			else if(!phone_regexp.test(this.client_phone) || this.client_phone.length < 10){
     				this.validClientPhone = false;
 	    			this.invalidClientPhone = true;
     				$('.client_phone_helper').attr('data-error', 'Número telefónico no válido.');
@@ -126,7 +130,11 @@
     		validateClientEmail: function(e) {
     			const mail_regexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    			if(!mail_regexp.test(this.client_email)){
+    			if(this.client_email ==null || this.client_email.length == 0){
+    				this.validClientEmail = false;
+	    			this.invalidClientEmail = false;
+    			}
+    			else if(!mail_regexp.test(this.client_email)){
     				this.validClientEmail = false;
 	    			this.invalidClientEmail = true;
     				$('.client_email_helper').attr('data-error', 'Correo electrónico no válido.');
@@ -135,6 +143,18 @@
     				this.validClientEmail = true;
 	    			this.invalidClientEmail = false;
     			}
+    		},
+
+    		resetNewClientInputs: function (e) {
+    			this.client_name=null;
+    			this.client_phone=null;
+    			this.client_email=null;
+    			this.validClientName= false;
+    			this.invalidClientName=false;
+    			this.validClientPhone=false;
+    			this.invalidClientPhone=false;
+    			this.validClientEmail=false;
+    			this.invalidClientEmail=false;
     		}
 	    }
 	}
