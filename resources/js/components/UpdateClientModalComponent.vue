@@ -26,12 +26,13 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="left delete-button"><i class="material-icons black-text">delete</i></a>
+			<a href="#" class="left delete-button" v-on:click="openDeleteClientModal"><i class="material-icons black-text">delete</i></a>
 			<button v-on:click="resetUpdateClientInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
 			<button v-on:click="updateClient" type="submit" class="modal-action btn waves-effect submit_button" >
 				<b>Guardar</b>
 			</button>
 		</div>
+		<delete-client-modal-component :client-id="clientId.toString()"></delete-client-modal-component>
 	</div>
 </template>
 <style type="text/css">
@@ -97,7 +98,7 @@
         },
 
 
-	    methods:{
+	    methods: {
 	    	emitClientName(newInputValue) {
 	            this.$emit('client-name', newInputValue);
 	        },
@@ -138,9 +139,13 @@
     		},
 
     		validateClientPhone: function(e) {
-    			const phone_regexp = /^[0-9]*$/gm;
+    			const PHONE_REGEXP = /^[0-9]*$/gm;
 
-    			if(!phone_regexp.test(this.updateClientPhone) || this.updateClientPhone.length < 10){
+    			if(this.updateClientPhone ==null || this.updateClientPhone.length == 0){
+    				this.validClientPhone = false;
+	    			this.invalidClientPhone = false;
+    			}
+    			else if(!PHONE_REGEXP.test(this.updateClientPhone) || this.updateClientPhone.length < 10){
     				this.validClientPhone = false;
 	    			this.invalidClientPhone = true;
     				$('.client_phone_helper').attr('data-error', 'Número telefónico no válido.');
@@ -152,9 +157,13 @@
     		},
 
     		validateClientEmail: function(e) {
-    			const mail_regexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    			const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    			if(!mail_regexp.test(this.updateClientEmail)){
+    			if(this.updateClientEmail ==null || this.updateClientEmail.length == 0){
+    				this.validClientEmail = false;
+	    			this.invalidClientEmail = false;
+    			}
+    			else if(!MAIL_REGEXP.test(this.updateClientEmail)){
     				this.validClientEmail = false;
 	    			this.invalidClientEmail = true;
     				$('.client_email_helper').attr('data-error', 'Correo electrónico no válido.');
@@ -165,13 +174,20 @@
     			}
     		},
 
-    		resetUpdateClientInputs: function (e) {
+    		resetUpdateClientInputs: function(e) {
     			this.validClientName= false;
     			this.invalidClientName=false;
     			this.validClientPhone=false;
     			this.invalidClientPhone=false;
     			this.validClientEmail=false;
     			this.invalidClientEmail=false;
+    		},
+
+    		openDeleteClientModal: function(e) {
+    			$('#deleteClientModal').modal({
+    				dismissible: false
+    			});
+    			$('#deleteClientModal').modal('open');
     		}
 	    },
 	}
