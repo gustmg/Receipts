@@ -1832,6 +1832,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       search_client: '',
+      clientId: '',
       clientName: '',
       clientPhone: '',
       clientEmail: ''
@@ -1842,10 +1843,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     updateClient: function updateClient(client) {
+      this.clientId = client.client_id;
       this.clientName = client.client_name;
       this.clientPhone = client.client_phone;
       this.clientEmail = client.client_email;
+      $('#update_client_name,#update_client_phone,#update_client_email').characterCounter();
       $('#updateClientModal').modal({
+        dismissible: false,
         onOpenStart: function onOpenStart() {
           $('.label_update_client_name').addClass('active');
 
@@ -1857,16 +1861,7 @@ __webpack_require__.r(__webpack_exports__);
             $('.label_update_client_email').addClass('active');
           }
         },
-        onCloseEnd: function onCloseEnd() {
-          $('.label_update_client_name').removeClass('active');
-          $('.label_update_client_phone').removeClass('active');
-          $('.label_update_client_email').removeClass('active');
-          $('#update_client_name').removeClass('valid');
-          $('#update_client_name').removeClass('invalid');
-          $('#update_client_phone').removeClass('valid');
-          $('#update_client_phone').removeClass('invalid');
-          $('#update_client_').removeClass('valid');
-          $('#update_client_').removeClass('invalid');
+        onCloseEnd: function onCloseEnd() {//TO-DO: Rmeove al validations and clear the form
         }
       });
       $('#updateClientModal').modal('open');
@@ -1940,6 +1935,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     newClient: function newClient() {
+      $('#client_name,#client_phone,#client_email').characterCounter();
       $('#newClientModal').modal({
         dismissible: false
       });
@@ -2012,25 +2008,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('New client modal mounted.');
-    $(document).ready(function () {
-      $('#client_name,#client_phone,#client_email').characterCounter();
-    });
   },
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      client_name: null,
-      client_phone: null,
-      client_email: null,
+      newClientName: null,
+      newClientPhone: null,
+      newClientEmail: null,
       validClientName: false,
       invalidClientName: false,
       validClientPhone: false,
@@ -2039,12 +2026,19 @@ __webpack_require__.r(__webpack_exports__);
       invalidClientEmail: false
     };
   },
+  computed: {
+    validateForm: function validateForm(e) {
+      if (!this.validClientName || this.invalidClientPhone || this.invalidClientEmail) {
+        return true;
+      }
+    }
+  },
   methods: {
     saveClient: function saveClient() {
       axios.post('http://localhost:8000/clients', {
-        client_name: this.client_name,
-        client_phone: this.client_phone,
-        client_email: this.client_email
+        client_name: this.newClientName,
+        client_phone: this.newClientPhone,
+        client_email: this.newClientEmail
       }).then(function (res) {
         console.log(res);
         $('#newClientModal').modal('close');
@@ -2053,7 +2047,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     validateClientName: function validateClientName(e) {
-      if (!this.client_name) {
+      if (!this.newClientName) {
         this.validClientName = false;
         this.invalidClientName = true;
         $('.client_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
@@ -2063,12 +2057,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     validateClientPhone: function validateClientPhone(e) {
-      var phone_regexp = /^[0-9]*$/gm;
+      var PHONE_REGEXP = /^[0-9]*$/gm;
 
-      if (this.client_phone == null || this.client_phone.length == 0) {
+      if (this.newClientPhone == null || this.newClientPhone.length == 0) {
         this.validClientPhone = false;
         this.invalidClientPhone = false;
-      } else if (!phone_regexp.test(this.client_phone) || this.client_phone.length < 10) {
+      } else if (!PHONE_REGEXP.test(this.newClientPhone) || this.newClientPhone.length < 10) {
         this.validClientPhone = false;
         this.invalidClientPhone = true;
         $('.client_phone_helper').attr('data-error', 'Número telefónico no válido.');
@@ -2078,12 +2072,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     validateClientEmail: function validateClientEmail(e) {
-      var mail_regexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      var MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-      if (this.client_email == null || this.client_email.length == 0) {
+      if (this.newClientEmail == null || this.newClientEmail.length == 0) {
         this.validClientEmail = false;
         this.invalidClientEmail = false;
-      } else if (!mail_regexp.test(this.client_email)) {
+      } else if (!MAIL_REGEXP.test(this.newClientEmail)) {
         this.validClientEmail = false;
         this.invalidClientEmail = true;
         $('.client_email_helper').attr('data-error', 'Correo electrónico no válido.');
@@ -2093,9 +2087,9 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     resetNewClientInputs: function resetNewClientInputs(e) {
-      this.client_name = null;
-      this.client_phone = null;
-      this.client_email = null;
+      this.newClientName = null;
+      this.newClientPhone = null;
+      this.newClientEmail = null;
       this.validClientName = false;
       this.invalidClientName = false;
       this.validClientPhone = false;
@@ -2174,26 +2168,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    clientId: String,
     clientName: String,
     clientPhone: String,
     clientEmail: String
   },
   mounted: function mounted() {
-    $(document).ready(function () {
-      $('#client_name,#client_phone,#client_email').characterCounter();
-    });
+    console.log('Update Client Modal Component Mounted');
   },
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      client_name: null,
-      client_phone: null,
-      client_email: null,
+      updateClientName: '',
+      updateClientPhone: '',
+      updateClientEmail: '',
       validClientName: false,
       invalidClientName: false,
       activeClientName: false,
@@ -2203,21 +2193,41 @@ __webpack_require__.r(__webpack_exports__);
       invalidClientEmail: false
     };
   },
+  watch: {
+    clientName: function clientName(newVal) {
+      this.updateClientName = newVal;
+    },
+    clientPhone: function clientPhone(newVal) {
+      this.updateClientPhone = newVal;
+    },
+    clientEmail: function clientEmail(newVal) {
+      this.updateClientEmail = newVal;
+    }
+  },
   methods: {
-    saveClient: function saveClient() {
-      axios.post('http://localhost:8000/clients', {
-        client_name: this.client_name,
-        client_phone: this.client_phone,
-        client_email: this.client_email
+    emitClientName: function emitClientName(newInputValue) {
+      this.$emit('client-name', newInputValue);
+    },
+    emitClientPhone: function emitClientPhone(newInputValue) {
+      this.$emit('client-phone', newInputValue);
+    },
+    emitClientEmail: function emitClientEmail(newInputValue) {
+      this.$emit('client-email', newInputValue);
+    },
+    updateClient: function updateClient() {
+      axios.put('http://localhost:8000/clients/' + this.clientId, {
+        client_name: this.updateClientName,
+        client_phone: this.updateClientPhone,
+        client_email: this.updateClientEmail
       }).then(function (res) {
         console.log(res);
         $('#updateClientModal').modal('close');
       }).catch(function (err) {
-        console.log(err);
+        console.log(err.response);
       });
     },
     validateClientName: function validateClientName(e) {
-      if (!this.client_name) {
+      if (!this.updateClientName) {
         this.validClientName = false;
         this.invalidClientName = true;
         $('.client_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
@@ -2229,7 +2239,7 @@ __webpack_require__.r(__webpack_exports__);
     validateClientPhone: function validateClientPhone(e) {
       var phone_regexp = /^[0-9]*$/gm;
 
-      if (!phone_regexp.test(this.client_phone) || this.client_phone.length < 10) {
+      if (!phone_regexp.test(this.updateClientPhone) || this.updateClientPhone.length < 10) {
         this.validClientPhone = false;
         this.invalidClientPhone = true;
         $('.client_phone_helper').attr('data-error', 'Número telefónico no válido.');
@@ -2241,7 +2251,7 @@ __webpack_require__.r(__webpack_exports__);
     validateClientEmail: function validateClientEmail(e) {
       var mail_regexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-      if (!mail_regexp.test(this.client_email)) {
+      if (!mail_regexp.test(this.updateClientEmail)) {
         this.validClientEmail = false;
         this.invalidClientEmail = true;
         $('.client_email_helper').attr('data-error', 'Correo electrónico no válido.');
@@ -2250,8 +2260,13 @@ __webpack_require__.r(__webpack_exports__);
         this.invalidClientEmail = false;
       }
     },
-    verifyActiveLabel: function verifyActiveLabel(e) {
-      console.log('Visto');
+    resetUpdateClientInputs: function resetUpdateClientInputs(e) {
+      this.validClientName = false;
+      this.invalidClientName = false;
+      this.validClientPhone = false;
+      this.invalidClientPhone = false;
+      this.validClientEmail = false;
+      this.invalidClientEmail = false;
     }
   }
 });
@@ -6548,7 +6563,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n", ""]);
+exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n.no-vertical-margin{\n\tmargin-top: 0;\n\tmargin-bottom: 0;\n}\n\n", ""]);
 
 // exports
 
@@ -6567,7 +6582,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.delete-button{\n\tmargin-left: 10px;\n\tmargin-top: 10px;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n", ""]);
+exports.push([module.i, "\n.delete-button{\n\tmargin-left: 10px;\n\tmargin-top: 10px;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.no-vertical-margin{\n\tmargin-top: 0;\n\tmargin-bottom: 0;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n", ""]);
 
 // exports
 
@@ -38019,9 +38034,10 @@ var render = function() {
       _vm._v(" "),
       _c("update-client-modal-component", {
         attrs: {
-          clientName: _vm.clientName,
-          clientPhone: _vm.clientPhone,
-          clientEmail: _vm.clientEmail
+          "client-id": _vm.clientId.toString(),
+          "client-name": _vm.clientName,
+          "client-phone": _vm.clientPhone,
+          "client-email": _vm.clientEmail
         }
       })
     ],
@@ -38134,7 +38150,7 @@ var render = function() {
     { staticClass: "modal newClientModal", attrs: { id: "newClientModal" } },
     [
       _c("div", { staticClass: "modal-content" }, [
-        _vm._m(0),
+        _c("h5", [_vm._v("Nuevo cliente")]),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c(
@@ -38150,127 +38166,148 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "input-field col s12 m8" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.client_name,
-                        expression: "client_name"
-                      }
-                    ],
-                    class: {
-                      valid: _vm.validClientName,
-                      invalid: _vm.invalidClientName
-                    },
-                    attrs: {
-                      id: "client_name",
-                      type: "text",
-                      "data-length": "50",
-                      maxlength: "50",
-                      required: ""
-                    },
-                    domProps: { value: _vm.client_name },
-                    on: {
-                      blur: _vm.validateClientName,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m12 no-vertical-margin" },
+                  [
+                    _c("i", { staticClass: "material-icons prefix" }, [
+                      _vm._v("person")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newClientName,
+                          expression: "newClientName"
                         }
-                        _vm.client_name = $event.target.value
+                      ],
+                      class: {
+                        valid: _vm.validClientName,
+                        invalid: _vm.invalidClientName
+                      },
+                      attrs: {
+                        id: "client_name",
+                        type: "text",
+                        "data-length": "50",
+                        maxlength: "50",
+                        placeholder: "Nombre *",
+                        required: ""
+                      },
+                      domProps: { value: _vm.newClientName },
+                      on: {
+                        blur: _vm.validateClientName,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.newClientName = $event.target.value
+                        }
                       }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("span", {
-                    staticClass: "helper-text client_name_helper",
-                    attrs: { "data-success": "Nombre validado." }
-                  })
-                ]),
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text client_name_helper",
+                      attrs: { "data-success": "Nombre validado." }
+                    })
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "input-field col s12 m4" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.client_phone,
-                        expression: "client_phone"
-                      }
-                    ],
-                    class: {
-                      valid: _vm.validClientPhone,
-                      invalid: _vm.invalidClientPhone
-                    },
-                    attrs: {
-                      id: "client_phone",
-                      type: "tel",
-                      "data-length": "10",
-                      minlength: "10",
-                      maxlength: "10"
-                    },
-                    domProps: { value: _vm.client_phone },
-                    on: {
-                      blur: _vm.validateClientPhone,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m6 no-vertical-margin" },
+                  [
+                    _c("i", { staticClass: "material-icons prefix" }, [
+                      _vm._v("phone")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newClientPhone,
+                          expression: "newClientPhone"
                         }
-                        _vm.client_phone = $event.target.value
+                      ],
+                      class: {
+                        valid: _vm.validClientPhone,
+                        invalid: _vm.invalidClientPhone
+                      },
+                      attrs: {
+                        id: "client_phone",
+                        type: "tel",
+                        "data-length": "10",
+                        minlength: "10",
+                        maxlength: "10",
+                        placeholder: "Teléfono"
+                      },
+                      domProps: { value: _vm.newClientPhone },
+                      on: {
+                        blur: _vm.validateClientPhone,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.newClientPhone = $event.target.value
+                        }
                       }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("span", {
-                    staticClass: "helper-text client_phone_helper",
-                    attrs: { "data-success": "Teléfono validado." }
-                  })
-                ]),
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text client_phone_helper",
+                      attrs: { "data-success": "Teléfono validado." }
+                    })
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "input-field col s12 m6" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.client_email,
-                        expression: "client_email"
-                      }
-                    ],
-                    class: {
-                      valid: _vm.validClientEmail,
-                      invalid: _vm.invalidClientEmail
-                    },
-                    attrs: {
-                      id: "client_email",
-                      type: "email",
-                      "data-length": "40",
-                      maxlength: "40"
-                    },
-                    domProps: { value: _vm.client_email },
-                    on: {
-                      blur: _vm.validateClientEmail,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m8 no-vertical-margin" },
+                  [
+                    _c("i", { staticClass: "material-icons prefix" }, [
+                      _vm._v("email")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newClientEmail,
+                          expression: "newClientEmail"
                         }
-                        _vm.client_email = $event.target.value
+                      ],
+                      class: {
+                        valid: _vm.validClientEmail,
+                        invalid: _vm.invalidClientEmail
+                      },
+                      attrs: {
+                        id: "client_email",
+                        type: "email",
+                        "data-length": "40",
+                        maxlength: "40",
+                        placeholder: "E-mail"
+                      },
+                      domProps: { value: _vm.newClientEmail },
+                      on: {
+                        blur: _vm.validateClientEmail,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.newClientEmail = $event.target.value
+                        }
                       }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("span", {
-                    staticClass: "helper-text client_email_helper",
-                    attrs: { "data-success": "Correo validado." }
-                  })
-                ])
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text client_email_helper",
+                      attrs: { "data-success": "Correo validado." }
+                    })
+                  ]
+                )
               ])
             ]
           )
@@ -38291,6 +38328,7 @@ var render = function() {
           "button",
           {
             staticClass: "modal-action btn waves-effect submit_button",
+            class: { disabled: _vm.validateForm },
             attrs: { type: "submit" },
             on: { click: _vm.saveClient }
           },
@@ -38300,51 +38338,7 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col s12" }, [
-        _c("h5", [_vm._v("Nuevo cliente")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "client_name" } }, [
-      _c("i", { staticClass: "material-icons inline-icon-small" }, [
-        _vm._v("person")
-      ]),
-      _vm._v(" Nombre*\n\t\t\t\t\t\t")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "client_phone" } }, [
-      _c("i", { staticClass: "material-icons inline-icon-small" }, [
-        _vm._v("phone")
-      ]),
-      _vm._v(" Teléfono\n\t\t\t\t\t\t")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "client_email" } }, [
-      _c("i", { staticClass: "material-icons inline-icon-small" }, [
-        _vm._v("email")
-      ]),
-      _vm._v(" E-mail\n\t\t\t\t\t\t")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38394,130 +38388,151 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "input-field col s12 m8" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.clientName,
-                        expression: "clientName"
-                      }
-                    ],
-                    class: {
-                      valid: _vm.validClientName,
-                      invalid: _vm.invalidClientName
-                    },
-                    attrs: {
-                      id: "update_client_name",
-                      type: "text",
-                      "data-length": "50",
-                      maxlength: "50",
-                      required: ""
-                    },
-                    domProps: { value: _vm.clientName },
-                    on: {
-                      blur: _vm.validateClientName,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m12 no-vertical-margin" },
+                  [
+                    _c("i", { staticClass: "material-icons prefix" }, [
+                      _vm._v("person")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateClientName,
+                          expression: "updateClientName"
                         }
-                        _vm.clientName = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("span", {
-                    staticClass: "helper-text client_name_helper",
-                    attrs: { "data-success": "Nombre validado." }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-field col s12 m4" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.clientPhone,
-                        expression: "clientPhone"
-                      }
-                    ],
-                    class: {
-                      valid: _vm.validClientPhone,
-                      invalid: _vm.invalidClientPhone
-                    },
-                    attrs: {
-                      id: "update_client_phone",
-                      type: "tel",
-                      "data-length": "10",
-                      minlength: "10",
-                      maxlength: "10"
-                    },
-                    domProps: { value: _vm.clientPhone },
-                    on: {
-                      show: function($event) {
-                        _vm.verifyActiveLabel(_vm.clientPhone)
+                      ],
+                      class: {
+                        valid: _vm.validClientName,
+                        invalid: _vm.invalidClientName
                       },
-                      blur: _vm.validateClientPhone,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.clientPhone = $event.target.value
+                      attrs: {
+                        id: "update_client_name",
+                        type: "text",
+                        "data-length": "50",
+                        maxlength: "50",
+                        placeholder: "Nombre *",
+                        required: ""
+                      },
+                      domProps: { value: _vm.updateClientName },
+                      on: {
+                        input: [
+                          function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.updateClientName = $event.target.value
+                          },
+                          _vm.emitClientName
+                        ],
+                        blur: _vm.validateClientName
                       }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("span", {
-                    staticClass: "helper-text client_phone_helper",
-                    attrs: { "data-success": "Teléfono validado." }
-                  })
-                ]),
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text client_name_helper",
+                      attrs: { "data-success": "Nombre validado." }
+                    })
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "input-field col s12 m6" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.clientEmail,
-                        expression: "clientEmail"
-                      }
-                    ],
-                    class: {
-                      valid: _vm.validClientEmail,
-                      invalid: _vm.invalidClientEmail
-                    },
-                    attrs: {
-                      id: "update_client_email",
-                      type: "email",
-                      "data-length": "40",
-                      maxlength: "40"
-                    },
-                    domProps: { value: _vm.clientEmail },
-                    on: {
-                      blur: _vm.validateClientEmail,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m6 no-vertical-margin" },
+                  [
+                    _c("i", { staticClass: "material-icons prefix" }, [
+                      _vm._v("phone")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateClientPhone,
+                          expression: "updateClientPhone"
                         }
-                        _vm.clientEmail = $event.target.value
+                      ],
+                      class: {
+                        valid: _vm.validClientPhone,
+                        invalid: _vm.invalidClientPhone
+                      },
+                      attrs: {
+                        id: "update_client_phone",
+                        type: "tel",
+                        "data-length": "10",
+                        minlength: "10",
+                        maxlength: "10",
+                        placeholder: "Teléfono"
+                      },
+                      domProps: { value: _vm.updateClientPhone },
+                      on: {
+                        blur: _vm.validateClientPhone,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.updateClientPhone = $event.target.value
+                        }
                       }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("span", {
-                    staticClass: "helper-text client_email_helper",
-                    attrs: { "data-success": "Correo validado." }
-                  })
-                ])
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text client_phone_helper",
+                      attrs: { "data-success": "Teléfono validado." }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m8 no-vertical-margin" },
+                  [
+                    _c("i", { staticClass: "material-icons prefix" }, [
+                      _vm._v("email")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateClientEmail,
+                          expression: "updateClientEmail"
+                        }
+                      ],
+                      class: {
+                        valid: _vm.validClientEmail,
+                        invalid: _vm.invalidClientEmail
+                      },
+                      attrs: {
+                        id: "update_client_email",
+                        type: "email",
+                        "data-length": "40",
+                        maxlength: "40",
+                        placeholder: "E-mail"
+                      },
+                      domProps: { value: _vm.updateClientEmail },
+                      on: {
+                        blur: _vm.validateClientEmail,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.updateClientEmail = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text client_email_helper",
+                      attrs: { "data-success": "Correo validado." }
+                    })
+                  ]
+                )
               ])
             ]
           )
@@ -38525,16 +38540,23 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "modal-footer" }, [
-        _vm._m(3),
+        _vm._m(0),
         _vm._v(" "),
-        _vm._m(4),
+        _c(
+          "button",
+          {
+            staticClass: "modal-action modal-close waves-effect btn-flat",
+            on: { click: _vm.resetUpdateClientInputs }
+          },
+          [_c("b", [_vm._v("Cancelar")])]
+        ),
         _vm._v(" "),
         _c(
           "button",
           {
             staticClass: "modal-action btn waves-effect submit_button",
             attrs: { type: "submit" },
-            on: { click: _vm.saveClient }
+            on: { click: _vm.updateClient }
           },
           [_c("b", [_vm._v("Guardar")])]
         )
@@ -38548,60 +38570,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "label",
-      {
-        staticClass: "label_update_client_name",
-        attrs: { for: "update_client_name" }
-      },
-      [
-        _c("i", { staticClass: "material-icons inline-icon-small" }, [
-          _vm._v("person")
-        ]),
-        _vm._v(" *Nombre\n\t\t\t\t\t\t")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "label_update_client_phone",
-        attrs: { for: "update_client_phone" }
-      },
-      [
-        _c("i", { staticClass: "material-icons inline-icon-small" }, [
-          _vm._v("phone")
-        ]),
-        _vm._v(" Teléfono\n\t\t\t\t\t\t")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "label",
-      {
-        staticClass: "label_update_client_email",
-        attrs: { for: "update_client_email" }
-      },
-      [
-        _c("i", { staticClass: "material-icons inline-icon-small" }, [
-          _vm._v("email")
-        ]),
-        _vm._v(" E-mail\n\t\t\t\t\t\t")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
       "a",
       { staticClass: "left delete-button", attrs: { href: "#" } },
       [
@@ -38609,16 +38577,6 @@ var staticRenderFns = [
           _vm._v("delete")
         ])
       ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "modal-action modal-close waves-effect btn-flat" },
-      [_c("b", [_vm._v("Cancelar")])]
     )
   }
 ]
@@ -50143,15 +50101,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************************!*\
   !*** ./resources/js/components/NewClientButtonComponent.vue ***!
   \**************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NewClientButtonComponent_vue_vue_type_template_id_11e4ec4b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewClientButtonComponent.vue?vue&type=template&id=11e4ec4b& */ "./resources/js/components/NewClientButtonComponent.vue?vue&type=template&id=11e4ec4b&");
 /* harmony import */ var _NewClientButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewClientButtonComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/NewClientButtonComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _NewClientButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _NewClientButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -50181,7 +50138,7 @@ component.options.__file = "resources/js/components/NewClientButtonComponent.vue
 /*!***************************************************************************************!*\
   !*** ./resources/js/components/NewClientButtonComponent.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50213,15 +50170,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************************!*\
   !*** ./resources/js/components/NewClientModalComponent.vue ***!
   \*************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NewClientModalComponent_vue_vue_type_template_id_229d45c0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=template&id=229d45c0& */ "./resources/js/components/NewClientModalComponent.vue?vue&type=template&id=229d45c0&");
 /* harmony import */ var _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/NewClientModalComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _NewClientModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/NewClientModalComponent.vue?vue&type=style&index=0&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _NewClientModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/NewClientModalComponent.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -50253,7 +50209,7 @@ component.options.__file = "resources/js/components/NewClientModalComponent.vue"
 /*!**************************************************************************************!*\
   !*** ./resources/js/components/NewClientModalComponent.vue?vue&type=script&lang=js& ***!
   \**************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

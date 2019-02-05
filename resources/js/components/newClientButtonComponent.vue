@@ -12,6 +12,7 @@
 
 	    methods: {
 	    	newClient: function() {
+	    		$('#client_name,#client_phone,#client_email').characterCounter();
 	    		$('#newClientModal').modal({
 	    			dismissible: false
 	    		});

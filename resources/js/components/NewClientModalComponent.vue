@@ -1,34 +1,24 @@
 <template>
 	<div id="newClientModal" class="modal newClientModal">
 		<div class="modal-content">
-			<div class="row">
-				<div class="col s12">
-					<h5>Nuevo cliente</h5>
-				</div>
-			</div>
+			<h5>Nuevo cliente</h5>
 			<div class="row">
 				<form id="newClientForm" class="col s12 no-padding" method="POST" action="clients">
 					<input type="hidden" name="_token" :value="csrf">
 					<div class="row">
-						<div class="input-field col s12 m8">
-							<input v-model="client_name" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" id="client_name" type="text" data-length="50" maxlength="50" required>
-							<label for="client_name">
-								<i class="material-icons inline-icon-small">person</i> Nombre*
-							</label>
+						<div class="input-field col s12 m12 no-vertical-margin">
+							<i class="material-icons prefix">person</i>
+							<input v-model="newClientName" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" id="client_name" type="text" data-length="50" maxlength="50" placeholder="Nombre *" required>
 							<span class="helper-text client_name_helper" data-success="Nombre validado."></span>
 				        </div>
-				        <div class="input-field col s12 m4">
-							<input v-model="client_phone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" id="client_phone" type="tel" data-length="10" minlength="10" maxlength="10">
-							<label for="client_phone">
-								<i class="material-icons inline-icon-small">phone</i> Teléfono
-							</label>
+				        <div class="input-field col s12 m6 no-vertical-margin">
+				        	<i class="material-icons prefix">phone</i>
+							<input v-model="newClientPhone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" id="client_phone" type="tel" data-length="10" minlength="10" maxlength="10" placeholder="Teléfono">
 							<span class="helper-text client_phone_helper" data-success="Teléfono validado."></span>
 				        </div>
-				        <div class="input-field col s12 m6">
-							<input v-model="client_email" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" id="client_email" type="email" data-length="40" maxlength="40">
-							<label for="client_email">
-								<i class="material-icons inline-icon-small">email</i> E-mail
-							</label>
+				        <div class="input-field col s12 m8 no-vertical-margin">
+				        	<i class="material-icons prefix">email</i>
+							<input v-model="newClientEmail" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" id="client_email" type="email" data-length="40" maxlength="40" placeholder="E-mail">
 							<span class="helper-text client_email_helper" data-success="Correo validado."></span>
 				        </div>
 			        </div>
@@ -37,7 +27,7 @@
 		</div>
 		<div class="modal-footer">
 			<button v-on:click="resetNewClientInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
-			<button v-on:click="saveClient" type="submit" class="modal-action btn waves-effect submit_button" >
+			<button v-on:click="saveClient" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
 				<b>Registrar</b>
 			</button>
 		</div>
@@ -52,26 +42,27 @@
 	   vertical-align: bottom;
 	   font-size: 20px !important;
 	}
-	
 	.helper-text{
 		min-height: 0 !important;
 	}
+	.no-vertical-margin{
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
 </style>
 <script>
 	export default {
 	    mounted() {
 	        console.log('New client modal mounted.');
-	        $(document).ready(function(){
-	        	$('#client_name,#client_phone,#client_email').characterCounter();
-	        });
 	    },
 
 	    data(){
 	    	return {
 	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-	    		client_name: null,
-	    		client_phone: null,
-	    		client_email: null,
+	    		newClientName: null,
+	    		newClientPhone: null,
+	    		newClientEmail: null,
 	    		validClientName: false,
 	    		invalidClientName: false,
 	    		validClientPhone: false,
@@ -81,12 +72,20 @@
 	    	}
 	    },
 
+	    computed: {
+	    	validateForm: function(e) {
+	    		if(!this.validClientName || this.invalidClientPhone || this.invalidClientEmail){
+	    			return true;
+	    		}
+	    	}
+	    },
+
 	    methods:{
 	    	saveClient: function(){
 	    		axios.post('http://localhost:8000/clients',{
-	    			client_name: this.client_name,
-	    			client_phone: this.client_phone,
-	    			client_email: this.client_email
+	    			client_name: this.newClientName,
+	    			client_phone: this.newClientPhone,
+	    			client_email: this.newClientEmail
 	    		})
 	    		.then(function(res){
 	    			console.log(res);
@@ -98,7 +97,7 @@
 	    	},
 
 	    	validateClientName: function(e) {
-	    		if(!this.client_name){
+	    		if(!this.newClientName){
 	    			this.validClientName = false;
 	    			this.invalidClientName = true;
 	    			$('.client_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
@@ -110,13 +109,13 @@
     		},
 
     		validateClientPhone: function(e) {
-    			const phone_regexp = /^[0-9]*$/gm;
+    			const PHONE_REGEXP = /^[0-9]*$/gm;
 
-    			if(this.client_phone ==null || this.client_phone.length == 0){
+    			if(this.newClientPhone ==null || this.newClientPhone.length == 0){
     				this.validClientPhone = false;
 	    			this.invalidClientPhone = false;
     			}
-    			else if(!phone_regexp.test(this.client_phone) || this.client_phone.length < 10){
+    			else if(!PHONE_REGEXP.test(this.newClientPhone) || this.newClientPhone.length < 10){
     				this.validClientPhone = false;
 	    			this.invalidClientPhone = true;
     				$('.client_phone_helper').attr('data-error', 'Número telefónico no válido.');
@@ -128,13 +127,13 @@
     		},
 
     		validateClientEmail: function(e) {
-    			const mail_regexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    			const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    			if(this.client_email ==null || this.client_email.length == 0){
+    			if(this.newClientEmail ==null || this.newClientEmail.length == 0){
     				this.validClientEmail = false;
 	    			this.invalidClientEmail = false;
     			}
-    			else if(!mail_regexp.test(this.client_email)){
+    			else if(!MAIL_REGEXP.test(this.newClientEmail)){
     				this.validClientEmail = false;
 	    			this.invalidClientEmail = true;
     				$('.client_email_helper').attr('data-error', 'Correo electrónico no válido.');
@@ -146,9 +145,9 @@
     		},
 
     		resetNewClientInputs: function (e) {
-    			this.client_name=null;
-    			this.client_phone=null;
-    			this.client_email=null;
+    			this.newClientName=null;
+    			this.newClientPhone=null;
+    			this.newClientEmail=null;
     			this.validClientName= false;
     			this.invalidClientName=false;
     			this.validClientPhone=false;

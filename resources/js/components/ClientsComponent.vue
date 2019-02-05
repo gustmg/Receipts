@@ -36,7 +36,7 @@
 		</div>
 		<new-client-button-component></new-client-button-component>
 		<new-client-modal-component></new-client-modal-component>
-		<update-client-modal-component :clientName="clientName" :clientPhone="clientPhone" :clientEmail="clientEmail"></update-client-modal-component>
+		<update-client-modal-component :client-id="clientId.toString()" :client-name="clientName" :client-phone="clientPhone" :client-email="clientEmail"></update-client-modal-component>
 	</div>
 </template>
 <style type="text/css">
@@ -69,6 +69,7 @@
 		data() {
 			return {
 				search_client: '',
+				clientId: '',
 				clientName: '',
 				clientPhone: '',
 				clientEmail: ''
@@ -81,10 +82,13 @@
 
 	    methods: {
 	    	updateClient: function(client) {
+	    		this.clientId=client.client_id;
 	    		this.clientName=client.client_name;
 	    		this.clientPhone=client.client_phone;
 	    		this.clientEmail=client.client_email;
+	    		$('#update_client_name,#update_client_phone,#update_client_email').characterCounter();
 	    		$('#updateClientModal').modal({
+	    			dismissible: false,
 	    			onOpenStart: function() {
 	    				$('.label_update_client_name').addClass('active');
 	    				if(client.client_phone != null){
@@ -95,15 +99,7 @@
 	    				}
 	    			},
 	    			onCloseEnd: function() {
-	    				$('.label_update_client_name').removeClass('active');
-	    				$('.label_update_client_phone').removeClass('active');
-	    				$('.label_update_client_email').removeClass('active');
-	    				$('#update_client_name').removeClass('valid');
-	    				$('#update_client_name').removeClass('invalid');
-	    				$('#update_client_phone').removeClass('valid');
-	    				$('#update_client_phone').removeClass('invalid');
-	    				$('#update_client_').removeClass('valid');
-	    				$('#update_client_').removeClass('invalid');
+	    				//TO-DO: Rmeove al validations and clear the form
 	    			}
 	    		});
 	    		$('#updateClientModal').modal('open');
