@@ -26,7 +26,7 @@
         <ul id="slide-out" class="sidenav">
             <li><a href="#!"><i class="material-icons">home</i>Inicio</a></li>
             <li><a href="{{route('receipts.index')}}"><i class="material-icons">assignment</i>Recepciones</a></li>
-            <li><a href="{{route('clients.index')}}"><i class="material-icons">person</i>Clientes</a></li>
+            <li><a href="/clients"><i class="material-icons">person</i>Clientes</a></li>
             <div class="divider"></div>
             <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="material-icons">exit_to_app</i>Cerrar sesión</a></li>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -20,12 +20,14 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('new-client-button-component', require('./components/NewClientButtonComponent.vue').default);
-Vue.component('new-client-modal-component', require('./components/NewClientModalComponent.vue').default);
-Vue.component('update-client-modal-component', require('./components/UpdateClientModalComponent.vue').default);
-Vue.component('delete-client-modal-component', require('./components/DeleteClientModalComponent.vue').default);
-Vue.component('clients-component', require('./components/ClientsComponent.vue').default);
+// Vue.component('example-component', require('./components/clients/ExampleComponent.vue').default);
+Vue.component('client-search-bar-component', require('./components/clients/ClientSearchBarComponent.vue').default);
+Vue.component('clients-list-component', require('./components/clients/ClientsListComponent.vue').default);
+Vue.component('new-client-button-component', require('./components/clients/NewClientButtonComponent.vue').default);
+Vue.component('new-client-modal-component', require('./components/clients/NewClientModalComponent.vue').default);
+Vue.component('update-client-modal-component', require('./components/clients/UpdateClientModalComponent.vue').default);
+Vue.component('delete-client-modal-component', require('./components/clients/DeleteClientModalComponent.vue').default);
+Vue.component('clients-component', require('./components/clients/ClientsComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
