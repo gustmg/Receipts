@@ -39,7 +39,8 @@ class ClientController extends Controller
             $client->save();
 
             return response()->json([
-                "message" => "Cliente creado correctamente."
+                "message" => "Cliente creado correctamente.",
+                "client_id" => $client->client_id
             ],200);
         }
     }

@@ -31,12 +31,14 @@
 			deleteClient: function(e) {
 				axios.delete('http://localhost:8000/clients/'+this.clientId)
 				.then(function(res){
-					console.log(res);
-					$('#updateClientModal, #deleteClientModal').modal('close');
+					// console.log(res);
 				})
 				.catch(function(err){
 					console.log(err.response);
 				});
+				this.$parent.$parent.clients.splice(this.$parent.$parent.clientIndex,1);
+				this.$parent.$parent.$parent.forceRerender();
+				$('#updateClientModal, #deleteClientModal').modal('close');
 			}
 		}
 	}

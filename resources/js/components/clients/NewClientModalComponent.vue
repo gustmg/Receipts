@@ -82,18 +82,26 @@
 
 	    methods:{
 	    	saveClient: function(){
+	    		var newClient = {
+		    		client_id: '',
+		    		client_name: this.newClientName,
+		    		client_phone: this.newClientPhone,
+		    		client_email: this.newClientEmail
+		    	};
+
 	    		axios.post('http://localhost:8000/clients',{
 	    			client_name: this.newClientName,
 	    			client_phone: this.newClientPhone,
 	    			client_email: this.newClientEmail
 	    		})
-	    		.then(function(res){
-	    			console.log(res);
-	    			$('#newClientModal').modal('close');
-	    		})
+	    		.then((res)=>{newClient.client_id = res.data.client_id})
 	    		.catch(function(err){
 	    			console.log(err);
 	    		});
+
+	    		this.$parent.clients.push(newClient);
+	    		this.$parent.forceRerender();
+	    		$('#newClientModal').modal('close');
 	    	},
 
 	    	validateClientName: function(e) {

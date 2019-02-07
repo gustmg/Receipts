@@ -119,11 +119,15 @@
 	    		})
 	    		.then(function(res){
 	    			console.log(res);
-	    			$('#updateClientModal').modal('close');
 	    		})
 	    		.catch(function(err){
 	    			console.log(err.response);
 	    		});
+	    		this.$parent.clients[this.$parent.clientIndex].client_name=this.updateClientName;
+	    		this.$parent.clients[this.$parent.clientIndex].client_phone=this.updateClientPhone;
+	    		this.$parent.clients[this.$parent.clientIndex].client_email=this.updateClientEmail;
+	    		this.$parent.$parent.forceRerender();
+	    		$('#updateClientModal').modal('close');
 	    	},
 
 	    	validateClientName: function(e) {

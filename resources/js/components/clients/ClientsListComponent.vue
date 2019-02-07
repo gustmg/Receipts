@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
-		<div class="col s12 m3" v-show="clients.length > 0" v-for="client in filteredClients">
-			<div v-on:click="updateClient(client)" class="card hoverable hoverable-card selectable">
+		<div class="col s12 m3" v-show="clients.length > 0" v-for="(client, index) in filteredClients">
+			<div v-on:click="updateClient(client, index)" class="card hoverable hoverable-card selectable">
 		        <div class="card-content center-align">
 					<span class="card-title">
 						<i class="material-icons inline-icon-large">person</i><br>
@@ -51,13 +51,7 @@
 <script>
 	export default {
 		mounted(){
-			axios.get('http://localhost:8000/clients')
-			.then(function(res){
-				console.log(res.length);
-			})
-			.catch(function(err){
-				console.log(err);
-			});
+			
 		},
 
 		props:{
@@ -68,6 +62,7 @@
 
 		data() {
 			return {
+				clientIndex: null,
 				clientId: '',
 				clientName: '',
 				clientPhone: '',
@@ -76,7 +71,8 @@
 		},
 
 		methods: {
-			updateClient: function(client) {
+			updateClient: function(client, index) {
+				this.clientIndex = index;
 				this.clientId=client.client_id;
 				this.clientName=client.client_name;
 				this.clientPhone=client.client_phone;

@@ -1884,13 +1884,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    axios.get('http://localhost:8000/clients').then(function (res) {
-      console.log(res.length);
-    }).catch(function (err) {
-      console.log(err);
-    });
-  },
+  mounted: function mounted() {},
   props: {
     clients: {
       type: Array
@@ -1898,6 +1892,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      clientIndex: null,
       clientId: '',
       clientName: '',
       clientPhone: '',
@@ -1905,7 +1900,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    updateClient: function updateClient(client) {
+    updateClient: function updateClient(client, index) {
+      this.clientIndex = index;
       this.clientId = client.client_id;
       this.clientName = client.client_name;
       this.clientPhone = client.client_phone;
@@ -1980,12 +1976,13 @@ __webpack_require__.r(__webpack_exports__);
       $('#deleteClientModal').modal('close');
     },
     deleteClient: function deleteClient(e) {
-      axios.delete('http://localhost:8000/clients/' + this.clientId).then(function (res) {
-        console.log(res);
-        $('#updateClientModal, #deleteClientModal').modal('close');
+      axios.delete('http://localhost:8000/clients/' + this.clientId).then(function (res) {// console.log(res);
       }).catch(function (err) {
         console.log(err.response);
       });
+      this.$parent.$parent.clients.splice(this.$parent.$parent.clientIndex, 1);
+      this.$parent.$parent.$parent.forceRerender();
+      $('#updateClientModal, #deleteClientModal').modal('close');
     }
   }
 });
@@ -2113,16 +2110,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     saveClient: function saveClient() {
+      var newClient = {
+        client_id: '',
+        client_name: this.newClientName,
+        client_phone: this.newClientPhone,
+        client_email: this.newClientEmail
+      };
       axios.post('http://localhost:8000/clients', {
         client_name: this.newClientName,
         client_phone: this.newClientPhone,
         client_email: this.newClientEmail
       }).then(function (res) {
-        console.log(res);
-        $('#newClientModal').modal('close');
+        newClient.client_id = res.data.client_id;
       }).catch(function (err) {
         console.log(err);
       });
+      this.$parent.clients.push(newClient);
+      this.$parent.forceRerender();
+      $('#newClientModal').modal('close');
     },
     validateClientName: function validateClientName(e) {
       if (!this.newClientName) {
@@ -2300,10 +2305,14 @@ __webpack_require__.r(__webpack_exports__);
         client_email: this.updateClientEmail
       }).then(function (res) {
         console.log(res);
-        $('#updateClientModal').modal('close');
       }).catch(function (err) {
         console.log(err.response);
       });
+      this.$parent.clients[this.$parent.clientIndex].client_name = this.updateClientName;
+      this.$parent.clients[this.$parent.clientIndex].client_phone = this.updateClientPhone;
+      this.$parent.clients[this.$parent.clientIndex].client_email = this.updateClientEmail;
+      this.$parent.$parent.forceRerender();
+      $('#updateClientModal').modal('close');
     },
     validateClientName: function validateClientName(e) {
       if (!this.updateClientName) {
@@ -38061,7 +38070,7 @@ var render = function() {
     "div",
     { staticClass: "row" },
     [
-      _vm._l(_vm.filteredClients, function(client) {
+      _vm._l(_vm.filteredClients, function(client, index) {
         return _c(
           "div",
           {
@@ -38082,7 +38091,7 @@ var render = function() {
                 staticClass: "card hoverable hoverable-card selectable",
                 on: {
                   click: function($event) {
-                    _vm.updateClient(client)
+                    _vm.updateClient(client, index)
                   }
                 }
               },
@@ -50474,14 +50483,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************************************!*\
   !*** ./resources/js/components/clients/NewClientModalComponent.vue ***!
   \*********************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NewClientModalComponent_vue_vue_type_template_id_62be2499___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=template&id=62be2499& */ "./resources/js/components/clients/NewClientModalComponent.vue?vue&type=template&id=62be2499&");
 /* harmony import */ var _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/clients/NewClientModalComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _NewClientModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/clients/NewClientModalComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _NewClientModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _NewClientModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewClientModalComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/clients/NewClientModalComponent.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -50513,7 +50523,7 @@ component.options.__file = "resources/js/components/clients/NewClientModalCompon
 /*!**********************************************************************************************!*\
   !*** ./resources/js/components/clients/NewClientModalComponent.vue?vue&type=script&lang=js& ***!
   \**********************************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
