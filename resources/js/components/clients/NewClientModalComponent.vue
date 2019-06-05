@@ -49,7 +49,6 @@
 		margin-top: 0;
 		margin-bottom: 0;
 	}
-
 </style>
 <script>
 	export default {
@@ -80,7 +79,7 @@
 	    	}
 	    },
 
-	    methods:{
+	    methods: {
 	    	saveClient: function(){
 	    		var newClient = {
 		    		client_id: '',

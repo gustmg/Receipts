@@ -21,3 +21,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('clients', 'ClientController')->middleware('auth');
 Route::resource('receipts', 'ReceiptController')->middleware('auth');
+Route::resource('services', 'ServiceController')->middleware('auth');

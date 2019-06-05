@@ -29,6 +29,9 @@ Vue.component('update-client-modal-component', require('./components/clients/Upd
 Vue.component('delete-client-modal-component', require('./components/clients/DeleteClientModalComponent.vue').default);
 Vue.component('clients-component', require('./components/clients/ClientsComponent.vue').default);
 
+Vue.component('services-component', require('./components/services/ServicesComponent.vue').default);
+Vue.component('new-service-button-component', require('./components/services/NewServiceButtonComponent.vue').default);
+Vue.component('new-service-modal-component', require('./components/services/NewServiceModalComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
