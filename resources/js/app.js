@@ -21,17 +21,21 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Vue.component('example-component', require('./components/clients/ExampleComponent.vue').default);
+Vue.component('clients-component', require('./components/clients/ClientsComponent.vue').default);
 Vue.component('client-search-bar-component', require('./components/clients/ClientSearchBarComponent.vue').default);
 Vue.component('clients-list-component', require('./components/clients/ClientsListComponent.vue').default);
 Vue.component('new-client-button-component', require('./components/clients/NewClientButtonComponent.vue').default);
 Vue.component('new-client-modal-component', require('./components/clients/NewClientModalComponent.vue').default);
 Vue.component('update-client-modal-component', require('./components/clients/UpdateClientModalComponent.vue').default);
 Vue.component('delete-client-modal-component', require('./components/clients/DeleteClientModalComponent.vue').default);
-Vue.component('clients-component', require('./components/clients/ClientsComponent.vue').default);
 
 Vue.component('services-component', require('./components/services/ServicesComponent.vue').default);
+Vue.component('service-search-bar-component', require('./components/services/ServiceSearchBarComponent.vue').default);
+Vue.component('services-list-component', require('./components/services/ServicesListComponent.vue').default);
 Vue.component('new-service-button-component', require('./components/services/NewServiceButtonComponent.vue').default);
 Vue.component('new-service-modal-component', require('./components/services/NewServiceModalComponent.vue').default);
+Vue.component('update-service-modal-component', require('./components/services/UpdateServiceModalComponent.vue').default);
+Vue.component('delete-service-modal-component', require('./components/services/DeleteServiceModalComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

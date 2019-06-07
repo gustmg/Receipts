@@ -1,5 +1,7 @@
 <template>
     <div class="row">
+        <service-search-bar-component :search-value.sync="searchService"></service-search-bar-component>
+        <services-list-component :services="services" :key="componentKey"></services-list-component>
         <new-service-button-component></new-service-button-component>
         <new-service-modal-component></new-service-modal-component>
     </div>

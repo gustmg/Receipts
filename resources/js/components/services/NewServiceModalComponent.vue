@@ -13,7 +13,7 @@
                         </div>
                         <div class="input-field col s12 m12 no-vertical-margin">
                             <i class="material-icons prefix">subject</i>
-                            <input v-model="newServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" id="service_description" type="text" data-length="50" minlength="8" maxlength="50" placeholder="Descripción del servicio">
+                            <input v-model="newServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" id="service_description" type="text" data-length="50" maxlength="50" placeholder="Descripción del servicio" required>
                             <span class="helper-text service_description_helper" data-success="Descripción del servicio validada."></span>
                         </div>
                     </div>
@@ -57,22 +57,74 @@
                 newServiceName: null,
                 newServiceDescription: null,
                 validServiceName: false,
-                validServiceDescription: false,
                 invalidServiceName: false,
-                invalidServiceDescription: false,
+                validServiceDescription: false,
+                invalidServiceDescription: false
             }
         },
 
         computed: {
             validateForm: function (e) {
-                if(!this.validServiceName || this.invalidServiceDescription){
+                if(!this.validServiceName){
                     return true;
                 }
             }
         },
 
         methods: {
-            
+            saveService: function(){
+                var newService = {
+                    service_id: '',
+                    service_name: this.newServiceName,
+                    service_description: this.newServiceDescription
+                };
+
+                axios.post('http://localhost:8000/services',{
+                    service_name: this.newServiceName,
+                    service_description: this.newServiceDescription
+                })
+                .then((res)=>{newService.service_id = res.data.service_id})
+                .catch(function(err){
+                    console.log(err);
+                });
+
+                this.$parent.services.push(newService);
+                this.$parent.forceRerender();
+                $('#newServiceModal').modal('close');
+            },
+
+            validateServiceName: function(e) {
+                if(!this.newServiceName){
+                    this.validServiceName = false;
+                    this.invalidServiceName = true;
+                    $('.service_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
+                }
+                else{
+                    this.validServiceName = true;
+                    this.invalidServiceName = false;
+                }
+            },
+
+            validateServiceDescription: function(e) {
+                if(!this.newServiceDescription){
+                    this.validServiceDescription = false;
+                    this.invalidServiceDescription = true;
+                    $('.service_description_helper').attr('data-error', 'Este campo no puede quedar vacío.');
+                }
+                else{
+                    this.validServiceDescription = true;
+                    this.invalidServiceDescription = false;
+                }
+            },
+
+            resetNewServiceInputs: function (e) {
+                this.newServiceName= null;
+                this.newServiceDescription= null;
+                this.validServiceName= false;
+                this.invalidServiceName= false;
+                this.validServiceDescription= false;
+                this.invalidServiceDescription= false;
+            }
         }
     }
 </script>
