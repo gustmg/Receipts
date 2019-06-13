@@ -36,6 +36,13 @@ Vue.component('new-service-button-component', require('./components/services/New
 Vue.component('new-service-modal-component', require('./components/services/NewServiceModalComponent.vue').default);
 Vue.component('update-service-modal-component', require('./components/services/UpdateServiceModalComponent.vue').default);
 Vue.component('delete-service-modal-component', require('./components/services/DeleteServiceModalComponent.vue').default);
+
+Vue.component('receipts-component', require('./components/receipts/ReceiptsComponent.vue').default);
+Vue.component('receipt-search-bar-component', require('./components/receipts/ReceiptSearchBarComponent.vue').default);
+Vue.component('receipts-list-component', require('./components/receipts/ReceiptsListComponent.vue').default);
+Vue.component('new-receipt-button-component', require('./components/receipts/NewReceiptButtonComponent.vue').default);
+Vue.component('new-receipt-modal-component', require('./components/receipts/NewReceiptModalComponent.vue').default);
+Vue.component('update-receipt-modal-component', require('./components/receipts/UpdateReceiptModalComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

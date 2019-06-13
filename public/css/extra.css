@@ -22,3 +22,8 @@ html, body{
 	padding: none;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: black;
+	opacity: 0.32; /* Firefox */
+  }
+

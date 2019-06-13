@@ -1,19 +1,19 @@
 <template>
     <div id="newServiceModal" class="modal newServiceModal">
         <div class="modal-content">
-            <h5>Nuevo servicio</h5>
+            <h5>Nuevo servicio</h5><br>
             <div class="row">
                 <form id="newServiceForm" class="col s12 no-padding" method="POST" action="services">
                     <input type="hidden" name="_token" :value="csrf">
                     <div class="row">
                         <div class="input-field col s12 m12 no-vertical-margin">
-                            <i class="material-icons prefix">settings</i>
-                            <input v-model="newServiceName" v-on:blur="validateServiceName" v-bind:class="{'valid': validServiceName, 'invalid': invalidServiceName}" id="service_name" type="text" data-length="50" maxlength="50" placeholder="Servicio*" required>
-                            <span class="helper-text service_name_helper" data-success="Servicio validado."></span>
+                            <input placeholder="" id="service_name" type="text" v-model="newServiceName" v-on:blur="validateServiceName" v-bind:class="{'valid': validServiceName, 'invalid': invalidServiceName}" data-length="50" maxlength="50" required>
+                            <label for="service_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Servicio *</label>
+                            <span class="helper-text service_name_helper" data-success="Servicio validado."></span><br>
                         </div>
                         <div class="input-field col s12 m12 no-vertical-margin">
-                            <i class="material-icons prefix">subject</i>
-                            <input v-model="newServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" id="service_description" type="text" data-length="50" maxlength="50" placeholder="Descripción del servicio" required>
+                            <input placeholder="" id="service_description" type="text" v-model="newServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" data-length="50" maxlength="50" required>
+                            <label for="service_description" class="valign-wrapper"><i class="material-icons">settings</i>&nbsp;&nbsp;Descripción *</label>
                             <span class="helper-text service_description_helper" data-success="Descripción del servicio validada."></span>
                         </div>
                     </div>

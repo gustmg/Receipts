@@ -1,19 +1,19 @@
 <template>
 	<div id="updateServiceModal" class="modal updateServiceModal">
 		<div class="modal-content">
-			<h5>Editar servicio</h5>
+			<h5>Editar servicio</h5><br>
 			<div class="row">
 				<form id="updateServiceForm" class="col s12 no-padding" method="POST" action="services">
 					<input type="hidden" name="_token" :value="csrf">
 					<div class="row">
 						<div class="input-field col s12 m12 no-vertical-margin">
-							<i class="material-icons prefix">layers</i>
-							<input v-model="updateServiceName" @input="emitServiceName" v-on:blur="validateServiceName" v-bind:class="{'valid': validServiceName, 'invalid': invalidServiceName}" id="update_service_name" type="text" data-length="50" maxlength="50" placeholder="Nombre *" required>
+							<input placeholder="" v-model="updateServiceName" @input="emitServiceName" v-on:blur="validateServiceName" v-bind:class="{'valid': validServiceName, 'invalid': invalidServiceName}" id="update_service_name" type="text" data-length="50" maxlength="50" required>
+							<label for="update_service_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Servicio *</label>
 							<span class="helper-text service_name_helper" data-success="Nombre validado."></span>
 				        </div>
 				        <div class="input-field col s12 m6 no-vertical-margin">
-				        	<i class="material-icons prefix">settings</i>
-							<input v-model="updateServiceDescription" @input="emitServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" id="update_service_description" type="text" data-length="10" maxlength="10" placeholder="Descripción" required>
+							<input placeholder="" v-model="updateServiceDescription" @input="emitServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" id="update_service_description" type="text" data-length="50" maxlength="50" required>
+							<label for="update_service_description" class="valign-wrapper"><i class="material-icons">settings</i>&nbsp;&nbsp;Descripción *</label>
 							<span class="helper-text service_description_helper" data-success="Descripción del servicio validada."></span>
 				        </div>
 			        </div>

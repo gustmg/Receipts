@@ -2372,6 +2372,620 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    console.log('New receipt button component mounted');
+  },
+  methods: {
+    newReceipt: function newReceipt() {
+      $('#receipt_name,#receipt_phone,#receipt_email').characterCounter();
+      $('#newReceiptModal').modal({
+        dismissible: false
+      });
+      $('#newReceiptModal').modal('open');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    console.log('New receipt modal mounted.');
+  },
+  data: function data() {
+    return {
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      newReceiptName: null,
+      newReceiptPhone: null,
+      newReceiptEmail: null,
+      validReceiptName: false,
+      invalidReceiptName: false,
+      validReceiptPhone: false,
+      invalidReceiptPhone: false,
+      validReceiptEmail: false,
+      invalidReceiptEmail: false
+    };
+  },
+  computed: {
+    validateForm: function validateForm(e) {
+      if (!this.validReceiptName || this.invalidReceiptPhone || this.invalidReceiptEmail) {
+        return true;
+      }
+    }
+  },
+  methods: {
+    saveReceipt: function saveReceipt() {
+      var newReceipt = {
+        receipt_id: '',
+        receipt_name: this.newReceiptName,
+        receipt_phone: this.newReceiptPhone,
+        receipt_email: this.newReceiptEmail
+      };
+      axios.post('http://localhost:8000/receipts', {
+        receipt_name: this.newReceiptName,
+        receipt_phone: this.newReceiptPhone,
+        receipt_email: this.newReceiptEmail
+      }).then(function (res) {
+        newReceipt.receipt_id = res.data.receipt_id;
+      }).catch(function (err) {
+        console.log(err);
+      });
+      this.$parent.receipts.push(newReceipt);
+      this.$parent.forceRerender();
+      $('#newReceiptModal').modal('close');
+    },
+    validateReceiptName: function validateReceiptName(e) {
+      if (!this.newReceiptName) {
+        this.validReceiptName = false;
+        this.invalidReceiptName = true;
+        $('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
+      } else {
+        this.validReceiptName = true;
+        this.invalidReceiptName = false;
+      }
+    },
+    validateReceiptPhone: function validateReceiptPhone(e) {
+      var PHONE_REGEXP = /^[0-9]*$/gm;
+
+      if (this.newReceiptPhone == null || this.newReceiptPhone.length == 0) {
+        this.validReceiptPhone = false;
+        this.invalidReceiptPhone = false;
+      } else if (!PHONE_REGEXP.test(this.newReceiptPhone) || this.newReceiptPhone.length < 10) {
+        this.validReceiptPhone = false;
+        this.invalidReceiptPhone = true;
+        $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
+      } else {
+        this.validReceiptPhone = true;
+        this.invalidReceiptPhone = false;
+      }
+    },
+    validateReceiptEmail: function validateReceiptEmail(e) {
+      var MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      if (this.newReceiptEmail == null || this.newReceiptEmail.length == 0) {
+        this.validReceiptEmail = false;
+        this.invalidReceiptEmail = false;
+      } else if (!MAIL_REGEXP.test(this.newReceiptEmail)) {
+        this.validReceiptEmail = false;
+        this.invalidReceiptEmail = true;
+        $('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
+      } else {
+        this.validReceiptEmail = true;
+        this.invalidReceiptEmail = false;
+      }
+    },
+    resetNewReceiptInputs: function resetNewReceiptInputs(e) {
+      this.newReceiptName = null;
+      this.newReceiptPhone = null;
+      this.newReceiptEmail = null;
+      this.validReceiptName = false;
+      this.invalidReceiptName = false;
+      this.validReceiptPhone = false;
+      this.invalidReceiptPhone = false;
+      this.validReceiptEmail = false;
+      this.invalidReceiptEmail = false;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['search']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    receipts: {
+      type: Array
+    },
+    searchValue: String
+  },
+  data: function data() {
+    return {
+      searchReceipt: '',
+      componentKey: 0
+    };
+  },
+  mounted: function mounted() {
+    console.log('Receipts component mounted');
+  },
+  methods: {
+    forceRerender: function forceRerender() {
+      this.componentKey += 1;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {},
+  props: {
+    receipts: {
+      type: Array
+    }
+  },
+  data: function data() {
+    return {
+      receiptIndex: null,
+      receiptId: '',
+      receiptName: '',
+      receiptPhone: '',
+      receiptEmail: ''
+    };
+  },
+  methods: {
+    updateReceipt: function updateReceipt(receipt, index) {
+      this.receiptIndex = index;
+      this.receiptId = receipt.receipt_id;
+      this.receiptName = receipt.receipt_name;
+      this.receiptPhone = receipt.receipt_phone;
+      this.receiptEmail = receipt.receipt_email;
+      $('#update_receipt_name,#update_receipt_phone,#update_receipt_email').characterCounter();
+      $('#updateReceiptModal').modal({
+        dismissible: false,
+        onOpenStart: function onOpenStart() {
+          $('.label_update_receipt_name').addClass('active');
+
+          if (receipt.receipt_phone != null) {
+            $('.label_update_receipt_phone').addClass('active');
+          }
+
+          if (receipt.receipt_email != null) {
+            $('.label_update_receipt_email').addClass('active');
+          }
+        },
+        onCloseEnd: function onCloseEnd() {//TO-DO: Rmeove al validations and clear the form
+        }
+      });
+      $('#updateReceiptModal').modal('open');
+    }
+  },
+  computed: {
+    filteredReceipts: function filteredReceipts() {
+      var _this = this;
+
+      return this.receipts.filter(function (receipt) {
+        return receipt.receipt_name.toLowerCase().indexOf(_this.$parent.searchReceipt.toLowerCase()) >= 0; // || receipt.receipt_phone.indexOf(this.searchReceipt) >= 0
+        // || receipt.receipt_email.indexOf(this.searchReceipt) >= 0;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    receiptId: String,
+    receiptName: String,
+    receiptPhone: String,
+    receiptEmail: String
+  },
+  mounted: function mounted() {
+    console.log('Update Receipt Modal Component Mounted');
+  },
+  data: function data() {
+    return {
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      updateReceiptName: '',
+      updateReceiptPhone: '',
+      updateReceiptEmail: '',
+      validReceiptName: false,
+      invalidReceiptName: false,
+      activeReceiptName: false,
+      validReceiptPhone: false,
+      invalidReceiptPhone: false,
+      validReceiptEmail: false,
+      invalidReceiptEmail: false
+    };
+  },
+  watch: {
+    receiptName: function receiptName(newVal) {
+      this.updateReceiptName = newVal;
+    },
+    receiptPhone: function receiptPhone(newVal) {
+      this.updateReceiptPhone = newVal;
+    },
+    receiptEmail: function receiptEmail(newVal) {
+      this.updateReceiptEmail = newVal;
+    }
+  },
+  methods: {
+    emitReceiptName: function emitReceiptName(newInputValue) {
+      this.$emit('receipt-name', newInputValue);
+    },
+    emitReceiptPhone: function emitReceiptPhone(newInputValue) {
+      this.$emit('receipt-phone', newInputValue);
+    },
+    emitReceiptEmail: function emitReceiptEmail(newInputValue) {
+      this.$emit('receipt-email', newInputValue);
+    },
+    updateReceipt: function updateReceipt() {
+      axios.put('http://localhost:8000/receipts/' + this.receiptId, {
+        receipt_name: this.updateReceiptName,
+        receipt_phone: this.updateReceiptPhone,
+        receipt_email: this.updateReceiptEmail
+      }).then(function (res) {
+        console.log(res);
+      }).catch(function (err) {
+        console.log(err.response);
+      });
+      this.$parent.receipts[this.$parent.receiptIndex].receipt_name = this.updateReceiptName;
+      this.$parent.receipts[this.$parent.receiptIndex].receipt_phone = this.updateReceiptPhone;
+      this.$parent.receipts[this.$parent.receiptIndex].receipt_email = this.updateReceiptEmail;
+      this.$parent.$parent.forceRerender();
+      $('#updateReceiptModal').modal('close');
+    },
+    validateReceiptName: function validateReceiptName(e) {
+      if (!this.updateReceiptName) {
+        this.validReceiptName = false;
+        this.invalidReceiptName = true;
+        $('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
+      } else {
+        this.validReceiptName = true;
+        this.invalidReceiptName = false;
+      }
+    },
+    validateReceiptPhone: function validateReceiptPhone(e) {
+      var PHONE_REGEXP = /^[0-9]*$/gm;
+
+      if (this.updateReceiptPhone == null || this.updateReceiptPhone.length == 0) {
+        this.validReceiptPhone = false;
+        this.invalidReceiptPhone = false;
+      } else if (!PHONE_REGEXP.test(this.updateReceiptPhone) || this.updateReceiptPhone.length < 10) {
+        this.validReceiptPhone = false;
+        this.invalidReceiptPhone = true;
+        $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
+      } else {
+        this.validReceiptPhone = true;
+        this.invalidReceiptPhone = false;
+      }
+    },
+    validateReceiptEmail: function validateReceiptEmail(e) {
+      var MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      if (this.updateReceiptEmail == null || this.updateReceiptEmail.length == 0) {
+        this.validReceiptEmail = false;
+        this.invalidReceiptEmail = false;
+      } else if (!MAIL_REGEXP.test(this.updateReceiptEmail)) {
+        this.validReceiptEmail = false;
+        this.invalidReceiptEmail = true;
+        $('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
+      } else {
+        this.validReceiptEmail = true;
+        this.invalidReceiptEmail = false;
+      }
+    },
+    resetUpdateReceiptInputs: function resetUpdateReceiptInputs(e) {
+      this.validReceiptName = false;
+      this.invalidReceiptName = false;
+      this.validReceiptPhone = false;
+      this.invalidReceiptPhone = false;
+      this.validReceiptEmail = false;
+      this.invalidReceiptEmail = false;
+    },
+    openDeleteReceiptModal: function openDeleteReceiptModal(e) {
+      $('#deleteReceiptModal').modal({
+        dismissible: false
+      });
+      $('#deleteReceiptModal').modal('open');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/services/DeleteServiceModalComponent.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/services/DeleteServiceModalComponent.vue?vue&type=script&lang=js& ***!
@@ -7207,6 +7821,63 @@ exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/clients/UpdateClientModalComponent.vue?vue&type=style&index=0&lang=css& ***!
   \****************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.delete-button{\n\tmargin-left: 10px;\n\tmargin-top: 10px;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.no-vertical-margin{\n\tmargin-top: 0;\n\tmargin-bottom: 0;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n.no-vertical-margin{\n\tmargin-top: 0;\n\tmargin-bottom: 0;\n}\n.modal-content{\n\tpadding-bottom: 0 !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -37954,6 +38625,96 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptsListComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/services/NewServiceModalComponent.vue?vue&type=style&index=0&lang=css&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/services/NewServiceModalComponent.vue?vue&type=style&index=0&lang=css& ***!
@@ -39001,6 +39762,7 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-content" }, [
         _c("h5", [_vm._v("Nuevo cliente")]),
+        _c("br"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c(
@@ -39020,10 +39782,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m12 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("person")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39038,11 +39796,11 @@ var render = function() {
                         invalid: _vm.invalidClientName
                       },
                       attrs: {
+                        placeholder: "",
                         id: "client_name",
                         type: "text",
                         "data-length": "50",
                         maxlength: "50",
-                        placeholder: "Nombre *",
                         required: ""
                       },
                       domProps: { value: _vm.newClientName },
@@ -39057,21 +39815,20 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text client_name_helper",
                       attrs: { "data-success": "Nombre validado." }
-                    })
+                    }),
+                    _c("br")
                   ]
                 ),
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "input-field col s12 m6 no-vertical-margin" },
+                  { staticClass: "input-field col s12 m4 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("phone")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39086,12 +39843,12 @@ var render = function() {
                         invalid: _vm.invalidClientPhone
                       },
                       attrs: {
+                        placeholder: "",
                         id: "client_phone",
                         type: "tel",
                         "data-length": "10",
                         minlength: "10",
-                        maxlength: "10",
-                        placeholder: "Teléfono"
+                        maxlength: "10"
                       },
                       domProps: { value: _vm.newClientPhone },
                       on: {
@@ -39105,6 +39862,8 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text client_phone_helper",
                       attrs: { "data-success": "Teléfono validado." }
@@ -39116,10 +39875,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m8 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("email")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39134,11 +39889,11 @@ var render = function() {
                         invalid: _vm.invalidClientEmail
                       },
                       attrs: {
+                        placeholder: "",
                         id: "client_email",
                         type: "email",
                         "data-length": "40",
-                        maxlength: "40",
-                        placeholder: "E-mail"
+                        maxlength: "40"
                       },
                       domProps: { value: _vm.newClientEmail },
                       on: {
@@ -39151,6 +39906,8 @@ var render = function() {
                         }
                       }
                     }),
+                    _vm._v(" "),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text client_email_helper",
@@ -39188,7 +39945,47 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "client_name" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("person")]),
+        _vm._v("  Nombre *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "client_phone" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("phone")]),
+        _vm._v("  Teléfono")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "client_email" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("email")]),
+        _vm._v("  Correo electrónico")
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -39219,6 +40016,7 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-content" }, [
         _c("h5", [_vm._v("Editar cliente")]),
+        _c("br"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c(
@@ -39242,10 +40040,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m12 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("person")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39260,11 +40054,11 @@ var render = function() {
                         invalid: _vm.invalidClientName
                       },
                       attrs: {
+                        placeholder: "",
                         id: "update_client_name",
                         type: "text",
                         "data-length": "50",
                         maxlength: "50",
-                        placeholder: "Nombre *",
                         required: ""
                       },
                       domProps: { value: _vm.updateClientName },
@@ -39282,21 +40076,20 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text client_name_helper",
                       attrs: { "data-success": "Nombre validado." }
-                    })
+                    }),
+                    _c("br")
                   ]
                 ),
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "input-field col s12 m6 no-vertical-margin" },
+                  { staticClass: "input-field col s12 m4 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("phone")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39311,12 +40104,12 @@ var render = function() {
                         invalid: _vm.invalidClientPhone
                       },
                       attrs: {
+                        placeholder: "",
                         id: "update_client_phone",
                         type: "tel",
                         "data-length": "10",
                         minlength: "10",
-                        maxlength: "10",
-                        placeholder: "Teléfono"
+                        maxlength: "10"
                       },
                       domProps: { value: _vm.updateClientPhone },
                       on: {
@@ -39330,6 +40123,8 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text client_phone_helper",
                       attrs: { "data-success": "Teléfono validado." }
@@ -39341,10 +40136,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m8 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("email")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39359,11 +40150,11 @@ var render = function() {
                         invalid: _vm.invalidClientEmail
                       },
                       attrs: {
+                        placeholder: "",
                         id: "update_client_email",
                         type: "email",
                         "data-length": "40",
-                        maxlength: "40",
-                        placeholder: "E-mail"
+                        maxlength: "40"
                       },
                       domProps: { value: _vm.updateClientEmail },
                       on: {
@@ -39376,6 +40167,8 @@ var render = function() {
                         }
                       }
                     }),
+                    _vm._v(" "),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text client_email_helper",
@@ -39431,7 +40224,798 @@ var render = function() {
     1
   )
 }
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_client_name" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("person")]),
+        _vm._v("  Nombre *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_client_phone" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("phone")]),
+        _vm._v("  Teléfono")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_client_email" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("email")]),
+        _vm._v("  Correo electrónico")
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "button",
+    {
+      staticClass: "btn-floating btn-large waves-effect waves-light",
+      staticStyle: { position: "fixed", bottom: "24px", right: "24px" },
+      on: { click: _vm.newReceipt }
+    },
+    [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
+  )
+}
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21& ***!
+  \************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "modal newReceiptModal", attrs: { id: "newReceiptModal" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "modal-footer" }, [
+        _c(
+          "button",
+          {
+            staticClass: "modal-action modal-close waves-effect btn-flat",
+            on: { click: _vm.resetNewReceiptInputs }
+          },
+          [_c("b", [_vm._v("Cancelar")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "modal-action btn waves-effect submit_button",
+            class: { disabled: _vm.validateForm },
+            attrs: { type: "submit" },
+            on: { click: _vm.saveReceipt }
+          },
+          [_c("b", [_vm._v("Registrar")])]
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-content" }, [
+      _c("h5", [_vm._v("Nueva recepción")]),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "row",
+          staticStyle: { "margin-bottom": "0 !important" }
+        },
+        [
+          _c("div", { staticClass: "col m5" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col m12" }, [
+                _c("span", [_c("b", [_vm._v("DATOS DE RECEPCIÓN")])])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m5" }, [
+                _c("span", [_c("b", [_vm._v("Folio")])])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m7" }, [
+                _c("span", [_vm._v("0001")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m5" }, [
+                _c("span", [_c("b", [_vm._v("Fecha")])])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m7" }, [
+                _c("span", [_vm._v("Junio 13, 2019")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m5" }, [
+                _c("span", [_c("b", [_vm._v("Creada por")])])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m7" }, [
+                _c("span", [_vm._v("Gustavo")])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col m7" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col m12" }, [
+                _c("span", [_c("b", [_vm._v("DATOS DEL CLIENTE")])])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m12" }, [
+                _c("div", { staticClass: "switch" }, [
+                  _c("label", [
+                    _c("b", [_vm._v("¿Cliente nuevo?")]),
+                    _vm._v(" "),
+                    _c("input", { attrs: { type: "checkbox" } }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "lever" })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    { staticClass: "btn waves-effect waves-light" },
+                    [_vm._v("Buscar cliente")]
+                  )
+                ]),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col m12" }, [
+                _c("form", { staticClass: "row" }, [
+                  _c("div", { staticClass: "input-field col s4" }, [
+                    _c("input", {
+                      attrs: { placeholder: "", id: "client_id", type: "text" }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "client_id" } }, [
+                      _vm._v("No. de cliente")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s8" }, [
+                    _c("input", {
+                      attrs: {
+                        placeholder: "",
+                        id: "client_name",
+                        type: "text"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "client_name" } }, [
+                      _vm._v("Nombre")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s8" }, [
+                    _c("input", {
+                      attrs: {
+                        placeholder: "",
+                        id: "client_email",
+                        type: "email"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "client_email" } }, [
+                      _vm._v("E-mail")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-field col s4" }, [
+                    _c("input", {
+                      attrs: {
+                        placeholder: "",
+                        id: "client_phone",
+                        type: "tel"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "client_phone" } }, [
+                      _vm._v("Teléfono")
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row", staticStyle: { "margin-bottom": "0" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "card hoverable col s12 m12",
+          staticStyle: { float: "none" }
+        },
+        [
+          _c("div", { staticClass: "input-field valign-wrapper" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("search")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              staticStyle: {
+                "border-bottom": "none!important",
+                "box-shadow": "none!important",
+                "margin-bottom": "0"
+              },
+              attrs: { placeholder: "Buscar recepción", type: "text" },
+              domProps: { value: _vm.search },
+              on: {
+                input: function($event) {
+                  _vm.$emit("update:searchValue", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _c("receipt-search-bar-component", {
+        attrs: { "search-value": _vm.searchReceipt },
+        on: {
+          "update:searchValue": function($event) {
+            _vm.searchReceipt = $event
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("receipts-list-component", {
+        key: _vm.componentKey,
+        attrs: { receipts: _vm.receipts }
+      }),
+      _vm._v(" "),
+      _c("new-receipt-button-component"),
+      _vm._v(" "),
+      _c("new-receipt-modal-component")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=template&id=5439eb9b&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=template&id=5439eb9b& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _vm._l(_vm.filteredReceipts, function(receipt, index) {
+        return _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.receipts.length > 0,
+                expression: "receipts.length > 0"
+              }
+            ],
+            staticClass: "col s12 m3"
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "card hoverable hoverable-card selectable",
+                on: {
+                  click: function($event) {
+                    _vm.updateReceipt(receipt, index)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "card-content center-align" }, [
+                  _c("span", { staticClass: "card-title" }, [
+                    _c(
+                      "i",
+                      { staticClass: "material-icons inline-icon-large" },
+                      [_vm._v("person")]
+                    ),
+                    _c("br"),
+                    _vm._v(" "),
+                    receipt.receipt_name
+                      ? _c("b", [_vm._v(_vm._s(receipt.receipt_name))])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _c(
+                      "i",
+                      { staticClass: "material-icons inline-icon-small" },
+                      [_vm._v("phone")]
+                    ),
+                    _vm._v(" "),
+                    receipt.receipt_phone
+                      ? _c("span", [_vm._v(_vm._s(receipt.receipt_phone))])
+                      : _c("span", { staticClass: "grey-text" }, [
+                          _vm._v("Teléfono no registrado")
+                        ])
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _c(
+                      "i",
+                      { staticClass: "material-icons inline-icon-small" },
+                      [_vm._v("email")]
+                    ),
+                    _vm._v(" "),
+                    receipt.receipt_email
+                      ? _c("span", [_vm._v(_vm._s(receipt.receipt_email))])
+                      : _c("span", { staticClass: "grey-text" }, [
+                          _vm._v("Email no registrado")
+                        ])
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "h5",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value:
+                  _vm.filteredReceipts.length == 0 &&
+                  this.$parent.searchReceipt != "",
+                expression:
+                  "filteredReceipts.length == 0 && this.$parent.searchReceipt != '' "
+              }
+            ],
+            staticClass: "center grey-text"
+          },
+          [_vm._v("\n\t\t\tBúsqueda sin resultados.\n\t\t")]
+        ),
+        _vm._v(" "),
+        _c(
+          "h5",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value:
+                  _vm.receipts.length == 0 && this.$parent.searchReceipt == "",
+                expression:
+                  "receipts.length == 0 && this.$parent.searchReceipt == ''"
+              }
+            ],
+            staticClass: "center grey-text"
+          },
+          [_vm._v("No hay receiptes registrados.")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("update-receipt-modal-component", {
+        attrs: {
+          "receipt-id": _vm.receiptId.toString(),
+          "receipt-name": _vm.receiptName,
+          "receipt-phone": _vm.receiptPhone,
+          "receipt-email": _vm.receiptEmail
+        }
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal updateReceiptModal",
+      attrs: { id: "updateReceiptModal" }
+    },
+    [
+      _c("div", { staticClass: "modal-content" }, [
+        _c("h5", [_vm._v("Editar receipte")]),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "form",
+            {
+              staticClass: "col s12 no-padding",
+              attrs: {
+                id: "updateReceiptForm",
+                method: "POST",
+                action: "receipts"
+              }
+            },
+            [
+              _c("input", {
+                attrs: { type: "hidden", name: "_token" },
+                domProps: { value: _vm.csrf }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m12 no-vertical-margin" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateReceiptName,
+                          expression: "updateReceiptName"
+                        }
+                      ],
+                      class: {
+                        valid: _vm.validReceiptName,
+                        invalid: _vm.invalidReceiptName
+                      },
+                      attrs: {
+                        placeholder: "",
+                        id: "update_receipt_name",
+                        type: "text",
+                        "data-length": "50",
+                        maxlength: "50",
+                        required: ""
+                      },
+                      domProps: { value: _vm.updateReceiptName },
+                      on: {
+                        input: [
+                          function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.updateReceiptName = $event.target.value
+                          },
+                          _vm.emitReceiptName
+                        ],
+                        blur: _vm.validateReceiptName
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text receipt_name_helper",
+                      attrs: { "data-success": "Nombre validado." }
+                    }),
+                    _c("br")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m4 no-vertical-margin" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateReceiptPhone,
+                          expression: "updateReceiptPhone"
+                        }
+                      ],
+                      class: {
+                        valid: _vm.validReceiptPhone,
+                        invalid: _vm.invalidReceiptPhone
+                      },
+                      attrs: {
+                        placeholder: "",
+                        id: "update_receipt_phone",
+                        type: "tel",
+                        "data-length": "10",
+                        minlength: "10",
+                        maxlength: "10"
+                      },
+                      domProps: { value: _vm.updateReceiptPhone },
+                      on: {
+                        blur: _vm.validateReceiptPhone,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.updateReceiptPhone = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text receipt_phone_helper",
+                      attrs: { "data-success": "Teléfono validado." }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "input-field col s12 m8 no-vertical-margin" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateReceiptEmail,
+                          expression: "updateReceiptEmail"
+                        }
+                      ],
+                      class: {
+                        valid: _vm.validReceiptEmail,
+                        invalid: _vm.invalidReceiptEmail
+                      },
+                      attrs: {
+                        placeholder: "",
+                        id: "update_receipt_email",
+                        type: "email",
+                        "data-length": "40",
+                        maxlength: "40"
+                      },
+                      domProps: { value: _vm.updateReceiptEmail },
+                      on: {
+                        blur: _vm.validateReceiptEmail,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.updateReceiptEmail = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text receipt_email_helper",
+                      attrs: { "data-success": "Correo validado." }
+                    })
+                  ]
+                )
+              ])
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "modal-footer" }, [
+        _c(
+          "a",
+          {
+            staticClass: "left delete-button",
+            attrs: { href: "#" },
+            on: { click: _vm.openDeleteReceiptModal }
+          },
+          [
+            _c("i", { staticClass: "material-icons black-text" }, [
+              _vm._v("delete")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "modal-action modal-close waves-effect btn-flat",
+            on: { click: _vm.resetUpdateReceiptInputs }
+          },
+          [_c("b", [_vm._v("Cancelar")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "modal-action btn waves-effect submit_button",
+            attrs: { type: "submit" },
+            on: { click: _vm.updateReceipt }
+          },
+          [_c("b", [_vm._v("Guardar")])]
+        )
+      ]),
+      _vm._v(" "),
+      _c("delete-receipt-modal-component", {
+        attrs: { "receipt-id": _vm.receiptId.toString() }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_receipt_name" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("person")]),
+        _vm._v("  Nombre *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_receipt_phone" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("phone")]),
+        _vm._v("  Teléfono")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_receipt_email" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("email")]),
+        _vm._v("  Correo electrónico")
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -39557,6 +41141,7 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-content" }, [
         _c("h5", [_vm._v("Nuevo servicio")]),
+        _c("br"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c(
@@ -39580,10 +41165,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m12 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("settings")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39598,11 +41179,11 @@ var render = function() {
                         invalid: _vm.invalidServiceName
                       },
                       attrs: {
+                        placeholder: "",
                         id: "service_name",
                         type: "text",
                         "data-length": "50",
                         maxlength: "50",
-                        placeholder: "Servicio*",
                         required: ""
                       },
                       domProps: { value: _vm.newServiceName },
@@ -39617,10 +41198,13 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text service_name_helper",
                       attrs: { "data-success": "Servicio validado." }
-                    })
+                    }),
+                    _c("br")
                   ]
                 ),
                 _vm._v(" "),
@@ -39628,10 +41212,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m12 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("subject")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -39646,11 +41226,11 @@ var render = function() {
                         invalid: _vm.invalidServiceDescription
                       },
                       attrs: {
+                        placeholder: "",
                         id: "service_description",
                         type: "text",
                         "data-length": "50",
                         maxlength: "50",
-                        placeholder: "Descripción del servicio",
                         required: ""
                       },
                       domProps: { value: _vm.newServiceDescription },
@@ -39664,6 +41244,8 @@ var render = function() {
                         }
                       }
                     }),
+                    _vm._v(" "),
+                    _vm._m(1),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text service_description_helper",
@@ -39703,7 +41285,34 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "service_name" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
+        _vm._v("  Servicio *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "service_description" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("settings")]),
+        _vm._v("  Descripción *")
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -39975,6 +41584,7 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-content" }, [
         _c("h5", [_vm._v("Editar servicio")]),
+        _c("br"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _c(
@@ -39998,10 +41608,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m12 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("layers")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -40016,11 +41622,11 @@ var render = function() {
                         invalid: _vm.invalidServiceName
                       },
                       attrs: {
+                        placeholder: "",
                         id: "update_service_name",
                         type: "text",
                         "data-length": "50",
                         maxlength: "50",
-                        placeholder: "Nombre *",
                         required: ""
                       },
                       domProps: { value: _vm.updateServiceName },
@@ -40038,6 +41644,8 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text service_name_helper",
                       attrs: { "data-success": "Nombre validado." }
@@ -40049,10 +41657,6 @@ var render = function() {
                   "div",
                   { staticClass: "input-field col s12 m6 no-vertical-margin" },
                   [
-                    _c("i", { staticClass: "material-icons prefix" }, [
-                      _vm._v("settings")
-                    ]),
-                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -40067,11 +41671,11 @@ var render = function() {
                         invalid: _vm.invalidServiceDescription
                       },
                       attrs: {
+                        placeholder: "",
                         id: "update_service_description",
                         type: "text",
-                        "data-length": "10",
-                        maxlength: "10",
-                        placeholder: "Descripción",
+                        "data-length": "50",
+                        maxlength: "50",
                         required: ""
                       },
                       domProps: { value: _vm.updateServiceDescription },
@@ -40088,6 +41692,8 @@ var render = function() {
                         blur: _vm.validateServiceDescription
                       }
                     }),
+                    _vm._v(" "),
+                    _vm._m(1),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text service_description_helper",
@@ -40145,7 +41751,37 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_service_name" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
+        _vm._v("  Servicio *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "valign-wrapper",
+        attrs: { for: "update_service_description" }
+      },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("settings")]),
+        _vm._v("  Descripción *")
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -51447,6 +53083,12 @@ Vue.component('new-service-button-component', __webpack_require__(/*! ./componen
 Vue.component('new-service-modal-component', __webpack_require__(/*! ./components/services/NewServiceModalComponent.vue */ "./resources/js/components/services/NewServiceModalComponent.vue").default);
 Vue.component('update-service-modal-component', __webpack_require__(/*! ./components/services/UpdateServiceModalComponent.vue */ "./resources/js/components/services/UpdateServiceModalComponent.vue").default);
 Vue.component('delete-service-modal-component', __webpack_require__(/*! ./components/services/DeleteServiceModalComponent.vue */ "./resources/js/components/services/DeleteServiceModalComponent.vue").default);
+Vue.component('receipts-component', __webpack_require__(/*! ./components/receipts/ReceiptsComponent.vue */ "./resources/js/components/receipts/ReceiptsComponent.vue").default);
+Vue.component('receipt-search-bar-component', __webpack_require__(/*! ./components/receipts/ReceiptSearchBarComponent.vue */ "./resources/js/components/receipts/ReceiptSearchBarComponent.vue").default);
+Vue.component('receipts-list-component', __webpack_require__(/*! ./components/receipts/ReceiptsListComponent.vue */ "./resources/js/components/receipts/ReceiptsListComponent.vue").default);
+Vue.component('new-receipt-button-component', __webpack_require__(/*! ./components/receipts/NewReceiptButtonComponent.vue */ "./resources/js/components/receipts/NewReceiptButtonComponent.vue").default);
+Vue.component('new-receipt-modal-component', __webpack_require__(/*! ./components/receipts/NewReceiptModalComponent.vue */ "./resources/js/components/receipts/NewReceiptModalComponent.vue").default);
+Vue.component('update-receipt-modal-component', __webpack_require__(/*! ./components/receipts/UpdateReceiptModalComponent.vue */ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -52049,6 +53691,474 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateClientModalComponent_vue_vue_type_template_id_0bc15276___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateClientModalComponent_vue_vue_type_template_id_0bc15276___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/NewReceiptButtonComponent.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/receipts/NewReceiptButtonComponent.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NewReceiptButtonComponent_vue_vue_type_template_id_6dc2832c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c& */ "./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c&");
+/* harmony import */ var _NewReceiptButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewReceiptButtonComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _NewReceiptButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NewReceiptButtonComponent_vue_vue_type_template_id_6dc2832c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NewReceiptButtonComponent_vue_vue_type_template_id_6dc2832c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/receipts/NewReceiptButtonComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewReceiptButtonComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptButtonComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptButtonComponent_vue_vue_type_template_id_6dc2832c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptButtonComponent.vue?vue&type=template&id=6dc2832c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptButtonComponent_vue_vue_type_template_id_6dc2832c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptButtonComponent_vue_vue_type_template_id_6dc2832c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/NewReceiptModalComponent.vue":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/receipts/NewReceiptModalComponent.vue ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NewReceiptModalComponent_vue_vue_type_template_id_5ff54b21___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21& */ "./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21&");
+/* harmony import */ var _NewReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewReceiptModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _NewReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _NewReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NewReceiptModalComponent_vue_vue_type_template_id_5ff54b21___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NewReceiptModalComponent_vue_vue_type_template_id_5ff54b21___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/receipts/NewReceiptModalComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewReceiptModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21& ***!
+  \******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_template_id_5ff54b21___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/NewReceiptModalComponent.vue?vue&type=template&id=5ff54b21&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_template_id_5ff54b21___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewReceiptModalComponent_vue_vue_type_template_id_5ff54b21___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptSearchBarComponent.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptSearchBarComponent.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReceiptSearchBarComponent_vue_vue_type_template_id_f2efb63e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e& */ "./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e&");
+/* harmony import */ var _ReceiptSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReceiptSearchBarComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ReceiptSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReceiptSearchBarComponent_vue_vue_type_template_id_f2efb63e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReceiptSearchBarComponent_vue_vue_type_template_id_f2efb63e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/receipts/ReceiptSearchBarComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptSearchBarComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptSearchBarComponent_vue_vue_type_template_id_f2efb63e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptSearchBarComponent.vue?vue&type=template&id=f2efb63e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptSearchBarComponent_vue_vue_type_template_id_f2efb63e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptSearchBarComponent_vue_vue_type_template_id_f2efb63e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptsComponent.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptsComponent.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReceiptsComponent.vue?vue&type=template&id=0dd2dd99& */ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99&");
+/* harmony import */ var _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReceiptsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/receipts/ReceiptsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptsComponent.vue?vue&type=template&id=0dd2dd99& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptsListComponent.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptsListComponent.vue ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReceiptsListComponent_vue_vue_type_template_id_5439eb9b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReceiptsListComponent.vue?vue&type=template&id=5439eb9b& */ "./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=template&id=5439eb9b&");
+/* harmony import */ var _ReceiptsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReceiptsListComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _ReceiptsListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ReceiptsListComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _ReceiptsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReceiptsListComponent_vue_vue_type_template_id_5439eb9b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReceiptsListComponent_vue_vue_type_template_id_5439eb9b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/receipts/ReceiptsListComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptsListComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptsListComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=template&id=5439eb9b&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=template&id=5439eb9b& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_template_id_5439eb9b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptsListComponent.vue?vue&type=template&id=5439eb9b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/ReceiptsListComponent.vue?vue&type=template&id=5439eb9b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_template_id_5439eb9b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptsListComponent_vue_vue_type_template_id_5439eb9b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/receipts/UpdateReceiptModalComponent.vue ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94& */ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94&");
+/* harmony import */ var _UpdateReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UpdateReceiptModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _UpdateReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _UpdateReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/receipts/UpdateReceiptModalComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateReceiptModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \***********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94& ***!
+  \*********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/receipts/UpdateReceiptModalComponent.vue?vue&type=template&id=57d42b94&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

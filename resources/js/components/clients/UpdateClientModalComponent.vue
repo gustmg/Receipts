@@ -1,24 +1,24 @@
 <template>
 	<div id="updateClientModal" class="modal updateClientModal">
 		<div class="modal-content">
-			<h5>Editar cliente</h5>
+			<h5>Editar cliente</h5><br>
 			<div class="row">
 				<form id="updateClientForm" class="col s12 no-padding" method="POST" action="clients">
 					<input type="hidden" name="_token" :value="csrf">
 					<div class="row">
 						<div class="input-field col s12 m12 no-vertical-margin">
-							<i class="material-icons prefix">person</i>
-							<input v-model="updateClientName" @input="emitClientName" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" id="update_client_name" type="text" data-length="50" maxlength="50" placeholder="Nombre *" required>
-							<span class="helper-text client_name_helper" data-success="Nombre validado."></span>
+							<input placeholder="" id="update_client_name" type="text" @input="emitClientName" v-model="updateClientName" v-on:blur="validateClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" data-length="50" maxlength="50" required>
+							<label for="update_client_name" class="valign-wrapper"><i class="material-icons">person</i>&nbsp;&nbsp;Nombre *</label>
+							<span class="helper-text client_name_helper" data-success="Nombre validado."></span><br>
 				        </div>
-				        <div class="input-field col s12 m6 no-vertical-margin">
-				        	<i class="material-icons prefix">phone</i>
-							<input v-model="updateClientPhone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" id="update_client_phone" type="tel" data-length="10" minlength="10" maxlength="10" placeholder="Teléfono">
+				        <div class="input-field col s12 m4 no-vertical-margin">
+							<input placeholder="" id="update_client_phone" type="tel" v-model="updateClientPhone" v-on:blur="validateClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" data-length="10" minlength="10" maxlength="10">
+							<label for="update_client_phone" class="valign-wrapper"><i class="material-icons">phone</i>&nbsp;&nbsp;Teléfono</label>
 							<span class="helper-text client_phone_helper" data-success="Teléfono validado."></span>
 				        </div>
 				        <div class="input-field col s12 m8 no-vertical-margin">
-				        	<i class="material-icons prefix">email</i>
-							<input v-model="updateClientEmail" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" id="update_client_email" type="email" data-length="40" maxlength="40" placeholder="E-mail">
+							<input placeholder="" id="update_client_email" type="email" v-model="updateClientEmail" v-on:blur="validateClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" data-length="40" maxlength="40">
+							<label for="update_client_email" class="valign-wrapper"><i class="material-icons">email</i>&nbsp;&nbsp;Correo electrónico</label>
 							<span class="helper-text client_email_helper" data-success="Correo validado."></span>
 				        </div>
 			        </div>
