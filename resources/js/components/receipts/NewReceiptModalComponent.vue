@@ -8,22 +8,22 @@
 						<div class="col m12">
 							<span><b>DATOS DE RECEPCIÓN</b></span>
 						</div>
-						<div class="col m5">
+						<div class="col s5">
 							<span><b>Folio</b></span>
 						</div>
-						<div class="col m7">
+						<div class="col s7">
 							<span>0001</span>
 						</div>
-						<div class="col m5">
+						<div class="col s5">
 							<span><b>Fecha</b></span>
 						</div>
-						<div class="col m7">
+						<div class="col s7">
 							<span>Junio 13, 2019</span>
 						</div>
-						<div class="col m5">
+						<div class="col s5">
 							<span><b>Creada por</b></span>
 						</div>
-						<div class="col m7">
+						<div class="col s7">
 							<span>Gustavo</span>
 						</div>
 					</div>
@@ -65,6 +65,38 @@
 						</div>
 					</div>
 				</div>
+				<div class="col m12">
+					<span><b>EQUIPOS</b></span>
+					<div class="row">
+						<new-device-button-component></new-device-button-component>
+						<div class="col s12 m4">
+							<div class="card">
+								<div class="card-content">
+									<span class="card-title"><b>HP 14-ck001LA</b></span>
+									<span><b>SN:</b> 1234</span><br>
+									<span><b>Descripción:</b> Formateo con respaldo, teclado no responde con algunas teclas y se apaga despues de encenderlo</span><br>
+									<span><b>Accesorios:</b></span>
+									<ul class="collection">
+										<li class="collection-item">Batería</li>
+										<li class="collection-item">Cargador</li>
+									</ul>
+									<span><b>Proceso:</b></span><br>
+									<div class="progress">
+										<div class="determinate" style="width: 70%"></div>
+									</div>
+									<h5 class="center-align">70%</h5>
+									<div class="full-width center-align">
+										<span>Diagnóstico post-reparación</span>
+									</div>
+								</div>
+								<div class="card-action">
+									<a href="#">This is a link</a>
+									<a href="#">This is a link</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="modal-footer">
@@ -93,6 +125,9 @@
 	}
 	.modal-content{
 		padding-bottom: 0 !important;
+	}
+	.newReceiptModal{
+		width:75% !important;
 	}
 </style>
 <script>

@@ -1,0 +1,167 @@
+<template>
+	<div id="newDeviceModal" class="modal newDeviceModal">
+		<div class="modal-content">
+			<h5>Nuevo equipo</h5><br>
+			<div class="row">
+				<form id="newDeviceForm" class="col s12 no-padding" method="POST" action="devices">
+					<input type="hidden" name="_token" :value="csrf">
+					<div class="row">
+						<div class="input-field col s12 m8 no-vertical-margin">
+							<input placeholder="" id="device_name" type="text" v-model="newDeviceName" v-on:blur="validateDeviceName" v-bind:class="{'valid': validDeviceName, 'invalid': invalidDeviceName}" data-length="50" maxlength="50" required>
+							<label for="device_name" class="valign-wrapper"><i class="material-icons">computer</i>&nbsp;&nbsp;Nombre del equipo*</label>
+							<span class="helper-text device_name_helper" data-success="Nombre validado."></span><br>
+				        </div>
+				        <div class="input-field col s12 m4 no-vertical-margin">
+				        	<input placeholder="" id="device_serial_number" type="tel" v-model="newDeviceSerialNumber" v-on:blur="validateDeviceSerialNumber" v-bind:class="{'valid': validDeviceSerialNumber, 'invalid': invalidDeviceSerialNumber}" data-length="4" minlength="4" maxlength="4">
+							<label for="device_serial_number" class="valign-wrapper"><i class="material-icons">local_offer</i>&nbsp;&nbsp;Número de serie</label>
+							<span class="helper-text device_serial_number_helper" data-success="Número de serie validado."></span>
+				        </div>
+				        <div class="input-field col s12 no-vertical-margin">
+							<input placeholder="" id="device_trouble_description" type="email" v-model="newDeviceTroubleDescription" v-on:blur="validateDeviceTroubleDescription" v-bind:class="{'valid': validDeviceTroubleDescription, 'invalid': invalidDeviceTroubleDescription}" data-length="40" maxlength="40">
+							<label for="device_trouble_description" class="valign-wrapper"><i class="material-icons">description</i>&nbsp;&nbsp;Descripción del problema</label>
+							<span class="helper-text device_trouble_description_helper" data-success="Descripción de problema validado."></span>
+				        </div>
+			        </div>
+				</form>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button v-on:click="resetNewDeviceInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+			<button v-on:click="saveDevice" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
+				<b>Registrar</b>
+			</button>
+		</div>
+	</div>
+</template>
+<style type="text/css">
+	.inline-icon-large {
+	   vertical-align: bottom;
+	   font-size: 48px !important;
+	}
+	.inline-icon-small {
+	   vertical-align: bottom;
+	   font-size: 20px !important;
+	}
+	.helper-text{
+		min-height: 0 !important;
+	}
+	.no-vertical-margin{
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+</style>
+<script>
+	export default {
+	    mounted() {
+	        console.log('New device modal mounted.');
+	    },
+
+	    data(){
+	    	return {
+	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+	    		newDeviceName: null,
+	    		newDeviceSerialNumber: null,
+	    		newDeviceTroubleDescription: null,
+	    		validDeviceName: false,
+	    		invalidDeviceName: false,
+	    		validDeviceSerialNumber: false,
+	    		invalidDeviceSerialNumber: false,
+	    		validDeviceTroubleDescription: false,
+	    		invalidDeviceTroubleDescription: false
+	    	}
+	    },
+
+	    computed: {
+	    	validateForm: function(e) {
+	    		if(!this.validDeviceName || this.invalidDeviceSerialNumber || this.invalidDeviceTroubleDescription){
+	    			return true;
+	    		}
+	    	}
+	    },
+
+	    methods: {
+	    	saveDevice: function(){
+	    		var newDevice = {
+		    		device_id: '',
+		    		device_name: this.newDeviceName,
+		    		device_serial_number: this.newDeviceSerialNumber,
+		    		device_trouble_description: this.newDeviceTroubleDescription
+		    	};
+
+	    		axios.post('http://localhost:8000/devices',{
+	    			device_name: this.newDeviceName,
+	    			device_serial_number: this.newDeviceSerialNumber,
+	    			device_trouble_description: this.newDeviceTroubleDescription
+	    		})
+	    		.then((res)=>{newDevice.device_id = res.data.device_id})
+	    		.catch(function(err){
+	    			console.log(err);
+	    		});
+
+	    		this.$parent.devices.push(newDevice);
+	    		this.$parent.forceRerender();
+	    		$('#newDeviceModal').modal('close');
+	    	},
+
+	    	validateDeviceName: function(e) {
+	    		if(!this.newDeviceName){
+	    			this.validDeviceName = false;
+	    			this.invalidDeviceName = true;
+	    			$('.device_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
+	    		}
+	    		else{
+	    			this.validDeviceName = true;
+	    			this.invalidDeviceName = false;
+	    		}
+    		},
+
+    		validateDeviceSerialNumber: function(e) {
+    			const PHONE_REGEXP = /^[0-9]*$/gm;
+
+    			if(this.newDeviceSerialNumber ==null || this.newDeviceSerialNumber.length == 0){
+    				this.validDeviceSerialNumber = false;
+	    			this.invalidDeviceSerialNumber = false;
+    			}
+    			else if(!PHONE_REGEXP.test(this.newDeviceSerialNumber) || this.newDeviceSerialNumber.length < 10){
+    				this.validDeviceSerialNumber = false;
+	    			this.invalidDeviceSerialNumber = true;
+    				$('.device_serial_number_helper').attr('data-error', 'Número telefónico no válido.');
+    			}
+    			else{
+    				this.validDeviceSerialNumber = true;
+	    			this.invalidDeviceSerialNumber = false;
+    			}
+    		},
+
+    		validateDeviceTroubleDescription: function(e) {
+    			const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    			if(this.newDeviceTroubleDescription ==null || this.newDeviceTroubleDescription.length == 0){
+    				this.validDeviceTroubleDescription = false;
+	    			this.invalidDeviceTroubleDescription = false;
+    			}
+    			else if(!MAIL_REGEXP.test(this.newDeviceTroubleDescription)){
+    				this.validDeviceTroubleDescription = false;
+	    			this.invalidDeviceTroubleDescription = true;
+    				$('.device_trouble_description_helper').attr('data-error', 'Correo electrónico no válido.');
+    			}
+    			else{
+    				this.validDeviceTroubleDescription = true;
+	    			this.invalidDeviceTroubleDescription = false;
+    			}
+    		},
+
+    		resetNewDeviceInputs: function (e) {
+    			this.newDeviceName=null;
+    			this.newDeviceSerialNumber=null;
+    			this.newDeviceTroubleDescription=null;
+    			this.validDeviceName= false;
+    			this.invalidDeviceName=false;
+    			this.validDeviceSerialNumber=false;
+    			this.invalidDeviceSerialNumber=false;
+    			this.validDeviceTroubleDescription=false;
+    			this.invalidDeviceTroubleDescription=false;
+    		}
+	    }
+	}
+</script>

@@ -4,6 +4,7 @@
         <receipts-list-component :receipts="receipts" :key="componentKey"></receipts-list-component>
         <new-receipt-button-component></new-receipt-button-component>
         <new-receipt-modal-component></new-receipt-modal-component>
+        <new-device-modal-component></new-device-modal-component>
     </div>
 </template>
 <script>

@@ -32,7 +32,6 @@
 				<b>Guardar</b>
 			</button>
 		</div>
-		<delete-receipt-modal-component :receipt-id="receiptId.toString()"></delete-receipt-modal-component>
 	</div>
 </template>
 <style type="text/css">
