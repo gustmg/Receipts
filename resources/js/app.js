@@ -46,6 +46,11 @@ Vue.component('update-receipt-modal-component', require('./components/receipts/U
 
 Vue.component('new-device-modal-component', require('./components/devices/NewDeviceModalComponent.vue').default);
 Vue.component('new-device-button-component', require('./components/devices/NewDeviceButtonComponent.vue').default);
+
+Vue.component('new-accessory-modal-component', require('./components/accessories/NewAccessoryModalComponent.vue').default);
+Vue.component('new-accessory-button-component', require('./components/accessories/NewAccessoryButtonComponent.vue').default);
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

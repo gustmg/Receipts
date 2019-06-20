@@ -80,19 +80,19 @@
 										<li class="collection-item">Batería</li>
 										<li class="collection-item">Cargador</li>
 									</ul>
-									<span><b>Proceso:</b></span><br>
+									<!-- <span><b>Proceso:</b></span><br>
 									<div class="progress">
 										<div class="determinate" style="width: 70%"></div>
 									</div>
 									<h5 class="center-align">70%</h5>
 									<div class="full-width center-align">
 										<span>Diagnóstico post-reparación</span>
-									</div>
+									</div> -->
 								</div>
-								<div class="card-action">
+								<!-- <div class="card-action">
 									<a href="#">This is a link</a>
 									<a href="#">This is a link</a>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>

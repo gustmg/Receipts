@@ -23,6 +23,20 @@
 				        </div>
 			        </div>
 				</form>
+				<div class="col-m12">
+					<span><b>ACCESORIOS</b></span>
+					<div class="row">
+						<new-accessory-button-component></new-accessory-button-component>
+						<div class="col s12 m4">
+							<div class="card">
+								<div class="card-content">
+									<span class="card-title"><b>Cargador</b></span>
+									<span><b>SN:</b> 1234</span><br>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="modal-footer">

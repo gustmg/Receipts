@@ -5,6 +5,7 @@
         <new-receipt-button-component></new-receipt-button-component>
         <new-receipt-modal-component></new-receipt-modal-component>
         <new-device-modal-component></new-device-modal-component>
+        <new-accessory-modal-component></new-accessory-modal-component>
     </div>
 </template>
 <script>
