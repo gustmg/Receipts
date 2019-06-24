@@ -12,7 +12,7 @@
 							<span class="helper-text accessory_name_helper" data-success="Nombre validado."></span><br>
 				        </div>
 				        <div class="input-field col s12 m4 no-vertical-margin">
-				        	<input placeholder="" id="accessory_serial_number" type="tel" v-model="newAccessorySerialNumber" v-on:blur="validateAccessorySerialNumber" v-bind:class="{'valid': validAccessorySerialNumber, 'invalid': invalidAccessorySerialNumber}" data-length="4" minlength="4" maxlength="4">
+				        	<input placeholder="" id="accessory_serial_number" type="tel" v-model="newAccessorySerialNumber" v-bind:class="{'valid': validAccessorySerialNumber, 'invalid': invalidAccessorySerialNumber}" data-length="4" minlength="4" maxlength="4">
 							<label for="accessory_serial_number" class="valign-wrapper"><i class="material-icons">local_offer</i>&nbsp;&nbsp;Número de serie</label>
 							<span class="helper-text accessory_serial_number_helper" data-success="Número de serie validado."></span>
 				        </div>
@@ -22,8 +22,8 @@
 		</div>
 		<div class="modal-footer">
 			<button v-on:click="resetNewAccessoryInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
-			<button v-on:click="saveAccessory" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
-				<b>Registrar</b>
+			<button v-on:click="addAccessory" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
+				<b>Agregar</b>
 			</button>
 		</div>
 	</div>
@@ -72,6 +72,20 @@
 	    },
 
 	    methods: {
+			addAccessory: function () {
+				var newAccessory = {
+					accessory_id: '',
+					accessory_name: this.newAccessoryName,
+					accessory_serial_number: this.newAccessorySerialNumber
+				}
+
+				this.$parent.accessories.push(newAccessory);
+				this.$parent.forceAccessoryRerender();
+
+				$('#newAccessoryModal').modal('close');
+				this.resetNewAccessoryInputs();
+			},
+
 	    	saveAccessory: function(){
 	    		var newAccessory = {
 		    		accessory_id: '',
@@ -88,7 +102,7 @@
 	    			console.log(err);
 	    		});
 
-	    		this.$parent.accessorys.push(newAccessory);
+	    		this.$parent.accessories.push(newAccessory);
 	    		this.$parent.forceRerender();
 	    		$('#newAccessoryModal').modal('close');
 	    	},

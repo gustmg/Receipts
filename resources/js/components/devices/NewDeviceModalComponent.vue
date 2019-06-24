@@ -12,7 +12,7 @@
 							<span class="helper-text device_name_helper" data-success="Nombre validado."></span><br>
 				        </div>
 				        <div class="input-field col s12 m4 no-vertical-margin">
-				        	<input placeholder="" id="device_serial_number" type="tel" v-model="newDeviceSerialNumber" v-on:blur="validateDeviceSerialNumber" v-bind:class="{'valid': validDeviceSerialNumber, 'invalid': invalidDeviceSerialNumber}" data-length="4" minlength="4" maxlength="4">
+				        	<input placeholder="" id="device_serial_number" type="tel" v-model="newDeviceSerialNumber" v-bind:class="{'valid': validDeviceSerialNumber, 'invalid': invalidDeviceSerialNumber}" data-length="4" minlength="4" maxlength="4">
 							<label for="device_serial_number" class="valign-wrapper"><i class="material-icons">local_offer</i>&nbsp;&nbsp;Número de serie</label>
 							<span class="helper-text device_serial_number_helper" data-success="Número de serie validado."></span>
 				        </div>
@@ -27,11 +27,11 @@
 					<span><b>ACCESORIOS</b></span>
 					<div class="row">
 						<new-accessory-button-component></new-accessory-button-component>
-						<div class="col s12 m4">
+						<div class="col s12 m4" v-show="accessories.length > 0" v-for="(accessory, index) in accessories">
 							<div class="card">
 								<div class="card-content">
-									<span class="card-title"><b>Cargador</b></span>
-									<span><b>SN:</b> 1234</span><br>
+									<span class="card-title"><b>{{accessory.accessory_name}}</b></span>
+									<span><b>SN:</b> {{accessory.accessory_serial_number}}</span><br>
 								</div>
 							</div>
 						</div>
@@ -41,7 +41,7 @@
 		</div>
 		<div class="modal-footer">
 			<button v-on:click="resetNewDeviceInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
-			<button v-on:click="saveDevice" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
+			<button v-on:click="addDevice" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
 				<b>Registrar</b>
 			</button>
 		</div>
@@ -68,11 +68,18 @@
 	export default {
 	    mounted() {
 	        console.log('New device modal mounted.');
-	    },
+		},
+
+		props:{
+			accessories: {
+				type: Array
+			},
+		},
 
 	    data(){
 	    	return {
-	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+				newDevice:null,
 	    		newDeviceName: null,
 	    		newDeviceSerialNumber: null,
 	    		newDeviceTroubleDescription: null,
@@ -81,25 +88,41 @@
 	    		validDeviceSerialNumber: false,
 	    		invalidDeviceSerialNumber: false,
 	    		validDeviceTroubleDescription: false,
-	    		invalidDeviceTroubleDescription: false
+				invalidDeviceTroubleDescription: false
 	    	}
 	    },
 
 	    computed: {
 	    	validateForm: function(e) {
-	    		if(!this.validDeviceName || this.invalidDeviceSerialNumber || this.invalidDeviceTroubleDescription){
+	    		if(!this.validDeviceName || this.invalidDeviceTroubleDescription){
 	    			return true;
 	    		}
 	    	}
 	    },
 
 	    methods: {
+			addDevice: function() {
+				this.newDevice = {
+					device_id: '',
+					device_name: this.newDeviceName,
+					device_serial_number: this.newDeviceSerialNumber,
+					device_trouble_description: this.newDeviceTroubleDescription,
+					device_accessories: this.accessories
+				};
+
+				this.$parent.devices.push(this.newDevice);
+				this.$parent.forceRerender();
+
+				//TODO: Clean accessories array
+				$('#newDeviceModal').modal('close');
+			},
+
 	    	saveDevice: function(){
 	    		var newDevice = {
 		    		device_id: '',
 		    		device_name: this.newDeviceName,
 		    		device_serial_number: this.newDeviceSerialNumber,
-		    		device_trouble_description: this.newDeviceTroubleDescription
+					device_trouble_description: this.newDeviceTroubleDescription,
 		    	};
 
 	    		axios.post('http://localhost:8000/devices',{
@@ -129,35 +152,10 @@
 	    		}
     		},
 
-    		validateDeviceSerialNumber: function(e) {
-    			const PHONE_REGEXP = /^[0-9]*$/gm;
-
-    			if(this.newDeviceSerialNumber ==null || this.newDeviceSerialNumber.length == 0){
-    				this.validDeviceSerialNumber = false;
-	    			this.invalidDeviceSerialNumber = false;
-    			}
-    			else if(!PHONE_REGEXP.test(this.newDeviceSerialNumber) || this.newDeviceSerialNumber.length < 10){
-    				this.validDeviceSerialNumber = false;
-	    			this.invalidDeviceSerialNumber = true;
-    				$('.device_serial_number_helper').attr('data-error', 'Número telefónico no válido.');
-    			}
-    			else{
-    				this.validDeviceSerialNumber = true;
-	    			this.invalidDeviceSerialNumber = false;
-    			}
-    		},
-
     		validateDeviceTroubleDescription: function(e) {
-    			const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
     			if(this.newDeviceTroubleDescription ==null || this.newDeviceTroubleDescription.length == 0){
     				this.validDeviceTroubleDescription = false;
 	    			this.invalidDeviceTroubleDescription = false;
-    			}
-    			else if(!MAIL_REGEXP.test(this.newDeviceTroubleDescription)){
-    				this.validDeviceTroubleDescription = false;
-	    			this.invalidDeviceTroubleDescription = true;
-    				$('.device_trouble_description_helper').attr('data-error', 'Correo electrónico no válido.');
     			}
     			else{
     				this.validDeviceTroubleDescription = true;

@@ -1865,6 +1865,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    addAccessory: function addAccessory() {
+      var newAccessory = {
+        accessory_id: '',
+        accessory_name: this.newAccessoryName,
+        accessory_serial_number: this.newAccessorySerialNumber
+      };
+      this.$parent.accessories.push(newAccessory);
+      this.$parent.forceAccessoryRerender();
+      $('#newAccessoryModal').modal('close');
+      this.resetNewAccessoryInputs();
+    },
     saveAccessory: function saveAccessory() {
       var newAccessory = {
         accessory_id: '',
@@ -1879,7 +1890,7 @@ __webpack_require__.r(__webpack_exports__);
       }).catch(function (err) {
         console.log(err);
       });
-      this.$parent.accessorys.push(newAccessory);
+      this.$parent.accessories.push(newAccessory);
       this.$parent.forceRerender();
       $('#newAccessoryModal').modal('close');
     },
@@ -2635,9 +2646,15 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     console.log('New device modal mounted.');
   },
+  props: {
+    accessories: {
+      type: Array
+    }
+  },
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      newDevice: null,
       newDeviceName: null,
       newDeviceSerialNumber: null,
       newDeviceTroubleDescription: null,
@@ -2651,12 +2668,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     validateForm: function validateForm(e) {
-      if (!this.validDeviceName || this.invalidDeviceSerialNumber || this.invalidDeviceTroubleDescription) {
+      if (!this.validDeviceName || this.invalidDeviceTroubleDescription) {
         return true;
       }
     }
   },
   methods: {
+    addDevice: function addDevice() {
+      this.newDevice = {
+        device_id: '',
+        device_name: this.newDeviceName,
+        device_serial_number: this.newDeviceSerialNumber,
+        device_trouble_description: this.newDeviceTroubleDescription,
+        device_accessories: this.accessories
+      };
+      this.$parent.devices.push(this.newDevice);
+      this.$parent.forceRerender(); //TODO: Clean accessories array
+
+      $('#newDeviceModal').modal('close');
+    },
     saveDevice: function saveDevice() {
       var newDevice = {
         device_id: '',
@@ -2687,31 +2717,10 @@ __webpack_require__.r(__webpack_exports__);
         this.invalidDeviceName = false;
       }
     },
-    validateDeviceSerialNumber: function validateDeviceSerialNumber(e) {
-      var PHONE_REGEXP = /^[0-9]*$/gm;
-
-      if (this.newDeviceSerialNumber == null || this.newDeviceSerialNumber.length == 0) {
-        this.validDeviceSerialNumber = false;
-        this.invalidDeviceSerialNumber = false;
-      } else if (!PHONE_REGEXP.test(this.newDeviceSerialNumber) || this.newDeviceSerialNumber.length < 10) {
-        this.validDeviceSerialNumber = false;
-        this.invalidDeviceSerialNumber = true;
-        $('.device_serial_number_helper').attr('data-error', 'Número telefónico no válido.');
-      } else {
-        this.validDeviceSerialNumber = true;
-        this.invalidDeviceSerialNumber = false;
-      }
-    },
     validateDeviceTroubleDescription: function validateDeviceTroubleDescription(e) {
-      var MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
       if (this.newDeviceTroubleDescription == null || this.newDeviceTroubleDescription.length == 0) {
         this.validDeviceTroubleDescription = false;
         this.invalidDeviceTroubleDescription = false;
-      } else if (!MAIL_REGEXP.test(this.newDeviceTroubleDescription)) {
-        this.validDeviceTroubleDescription = false;
-        this.invalidDeviceTroubleDescription = true;
-        $('.device_trouble_description_helper').attr('data-error', 'Correo electrónico no válido.');
       } else {
         this.validDeviceTroubleDescription = true;
         this.invalidDeviceTroubleDescription = false;
@@ -2906,9 +2915,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('New receipt modal mounted.');
+  },
+  props: {
+    devices: {
+      type: Array
+    }
   },
   data: function data() {
     return {
@@ -3065,7 +3083,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       searchReceipt: '',
-      componentKey: 0
+      componentKey: 0,
+      componentAccessoryKey: 0,
+      devices: [],
+      accessories: []
     };
   },
   mounted: function mounted() {
@@ -3074,6 +3095,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     forceRerender: function forceRerender() {
       this.componentKey += 1;
+    },
+    forceAccessoryRerender: function forceAccessoryRerender() {
+      this.componentAccessoryKey += 1;
     }
   }
 });
@@ -40035,7 +40059,6 @@ var render = function() {
                       },
                       domProps: { value: _vm.newAccessorySerialNumber },
                       on: {
-                        blur: _vm.validateAccessorySerialNumber,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -40075,9 +40098,9 @@ var render = function() {
             staticClass: "modal-action btn waves-effect submit_button",
             class: { disabled: _vm.validateForm },
             attrs: { type: "submit" },
-            on: { click: _vm.saveAccessory }
+            on: { click: _vm.addAccessory }
           },
-          [_c("b", [_vm._v("Registrar")])]
+          [_c("b", [_vm._v("Agregar")])]
         )
       ])
     ]
@@ -41146,7 +41169,6 @@ var render = function() {
                       },
                       domProps: { value: _vm.newDeviceSerialNumber },
                       on: {
-                        blur: _vm.validateDeviceSerialNumber,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -41222,8 +41244,44 @@ var render = function() {
             _c(
               "div",
               { staticClass: "row" },
-              [_c("new-accessory-button-component"), _vm._v(" "), _vm._m(4)],
-              1
+              [
+                _c("new-accessory-button-component"),
+                _vm._v(" "),
+                _vm._l(_vm.accessories, function(accessory, index) {
+                  return _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.accessories.length > 0,
+                          expression: "accessories.length > 0"
+                        }
+                      ],
+                      staticClass: "col s12 m4"
+                    },
+                    [
+                      _c("div", { staticClass: "card" }, [
+                        _c("div", { staticClass: "card-content" }, [
+                          _c("span", { staticClass: "card-title" }, [
+                            _c("b", [_vm._v(_vm._s(accessory.accessory_name))])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", [
+                            _c("b", [_vm._v("SN:")]),
+                            _vm._v(
+                              " " + _vm._s(accessory.accessory_serial_number)
+                            )
+                          ]),
+                          _c("br")
+                        ])
+                      ])
+                    ]
+                  )
+                })
+              ],
+              2
             )
           ])
         ])
@@ -41245,7 +41303,7 @@ var render = function() {
             staticClass: "modal-action btn waves-effect submit_button",
             class: { disabled: _vm.validateForm },
             attrs: { type: "submit" },
-            on: { click: _vm.saveDevice }
+            on: { click: _vm.addDevice }
           },
           [_c("b", [_vm._v("Registrar")])]
         )
@@ -41301,23 +41359,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("span", [_c("b", [_vm._v("ACCESORIOS")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s12 m4" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-content" }, [
-          _c("span", { staticClass: "card-title" }, [
-            _c("b", [_vm._v("Cargador")])
-          ]),
-          _vm._v(" "),
-          _c("span", [_c("b", [_vm._v("SN:")]), _vm._v(" 1234")]),
-          _c("br")
-        ])
-      ])
-    ])
   }
 ]
 render._withStripped = true
@@ -41398,8 +41439,130 @@ var render = function() {
               _c(
                 "div",
                 { staticClass: "row" },
-                [_c("new-device-button-component"), _vm._v(" "), _vm._m(3)],
-                1
+                [
+                  _c("new-device-button-component"),
+                  _vm._v(" "),
+                  _vm._l(_vm.devices, function(device, index) {
+                    return _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.devices.length > 0,
+                            expression: "devices.length > 0"
+                          }
+                        ],
+                        staticClass: "col s12 m4"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "card hoverable hoverable-card selectable",
+                            on: {
+                              click: function($event) {
+                                _vm.updateDevice(device, index)
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "card" }, [
+                              _c(
+                                "div",
+                                { staticClass: "card-content" },
+                                [
+                                  _c("span", { staticClass: "card-title" }, [
+                                    _c("b", [
+                                      _vm._v(_vm._s(device.device_name))
+                                    ])
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("span", [
+                                    _c("b", [_vm._v("SN:")]),
+                                    _vm._v(
+                                      " " + _vm._s(device.device_serial_number)
+                                    )
+                                  ]),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c("span", [
+                                    _c("b", [_vm._v("Descripción:")]),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(
+                                          device.device_trouble_description
+                                        )
+                                    )
+                                  ]),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _vm._m(3, true),
+                                  _vm._v(" "),
+                                  _vm._l(device.device_accessories, function(
+                                    accessory,
+                                    index_accessory
+                                  ) {
+                                    return _c(
+                                      "ul",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value:
+                                              device.device_accessories.length >
+                                              0,
+                                            expression:
+                                              "device.device_accessories.length > 0"
+                                          }
+                                        ],
+                                        staticClass: "collection"
+                                      },
+                                      [
+                                        _c(
+                                          "li",
+                                          { staticClass: "collection-item" },
+                                          [
+                                            _vm._v(
+                                              _vm._s(accessory.accessory_name)
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  })
+                                ],
+                                2
+                              )
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c(
+                      "h5",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.devices.length == 0,
+                            expression: "devices.length == 0"
+                          }
+                        ],
+                        staticClass: "center grey-text"
+                      },
+                      [_vm._v("No hay equipos registrados.")]
+                    )
+                  ])
+                ],
+                2
               )
             ])
           ]
@@ -41544,34 +41707,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s12 m4" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-content" }, [
-          _c("span", { staticClass: "card-title" }, [
-            _c("b", [_vm._v("HP 14-ck001LA")])
-          ]),
-          _vm._v(" "),
-          _c("span", [_c("b", [_vm._v("SN:")]), _vm._v(" 1234")]),
-          _c("br"),
-          _vm._v(" "),
-          _c("span", [
-            _c("b", [_vm._v("Descripción:")]),
-            _vm._v(
-              " Formateo con respaldo, teclado no responde con algunas teclas y se apaga despues de encenderlo"
-            )
-          ]),
-          _c("br"),
-          _vm._v(" "),
-          _c("span", [_c("b", [_vm._v("Accesorios:")])]),
-          _vm._v(" "),
-          _c("ul", { staticClass: "collection" }, [
-            _c("li", { staticClass: "collection-item" }, [_vm._v("Batería")]),
-            _vm._v(" "),
-            _c("li", { staticClass: "collection-item" }, [_vm._v("Cargador")])
-          ])
-        ])
-      ])
-    ])
+    return _c("span", [_c("b", [_vm._v("Accesorios:")])])
   }
 ]
 render._withStripped = true
@@ -41671,9 +41807,14 @@ var render = function() {
       _vm._v(" "),
       _c("new-receipt-button-component"),
       _vm._v(" "),
-      _c("new-receipt-modal-component"),
+      _c("new-receipt-modal-component", { attrs: { devices: _vm.devices } }),
       _vm._v(" "),
-      _c("new-device-modal-component"),
+      _c("new-device-modal-component", {
+        attrs: {
+          accessories: _vm.accessories,
+          accessoryKey: _vm.componentAccessoryKey
+        }
+      }),
       _vm._v(" "),
       _c("new-accessory-modal-component")
     ],
