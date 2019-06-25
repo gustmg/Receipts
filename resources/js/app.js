@@ -24,6 +24,7 @@ window.Vue = require('vue');
 Vue.component('clients-component', require('./components/clients/ClientsComponent.vue').default);
 Vue.component('client-search-bar-component', require('./components/clients/ClientSearchBarComponent.vue').default);
 Vue.component('clients-list-component', require('./components/clients/ClientsListComponent.vue').default);
+Vue.component('clients-compact-list-modal-component', require('./components/clients/ClientsCompactListModalComponent.vue').default);
 Vue.component('new-client-button-component', require('./components/clients/NewClientButtonComponent.vue').default);
 Vue.component('new-client-modal-component', require('./components/clients/NewClientModalComponent.vue').default);
 Vue.component('update-client-modal-component', require('./components/clients/UpdateClientModalComponent.vue').default);

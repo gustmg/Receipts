@@ -37,28 +37,28 @@
 							<div class="switch">
 								<label>
 									<b>¿Cliente nuevo?</b>
-									<input type="checkbox">
+									<input type="checkbox" v-model="newClientToggle" v-on:click="newClientToggleHandler">
 									<span class="lever"></span>
 								</label>
-								<button class="btn waves-effect waves-light">Buscar cliente</button>
+								<button v-on:click="showClientsList" class="btn waves-effect waves-light" :disabled="newClientToggle == true">Buscar cliente</button>
 							</div><br>
 						</div>
 						<div class="col m12">
 							<form class="row">
 								<div class="input-field col s4">
-									<input placeholder="" id="client_id" type="text">
+									<input placeholder="" :value="receiptClient.client_id" id="receipt_client_id" type="text" disabled>
 									<label for="client_id">No. de cliente</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" id="client_name" type="text">
+									<input placeholder="" :value="receiptClient.client_name" id="receipt_client_name" type="text" :disabled="newClientToggle == false">
 									<label for="client_name">Nombre</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" id="client_email" type="email">
+									<input placeholder="" :value="receiptClient.client_email" id="receipt_client_email" type="email" :disabled="newClientToggle == false">
 									<label for="client_email">E-mail</label>
 								</div>
 								<div class="input-field col s4">
-									<input placeholder="" id="client_phone" type="tel">
+									<input placeholder="" :value="receiptClient.client_phone" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false">
 									<label for="client_phone">Teléfono</label>
 								</div>
 							</form>
@@ -77,8 +77,8 @@
 										<span><b>SN:</b> {{device.device_serial_number}}</span><br>
 										<span><b>Descripción:</b> {{device.device_trouble_description}}</span><br>
 										<span><b>Accesorios:</b></span>
-										<ul class="collection" v-show="device.device_accessories.length > 0" v-for="(accessory, index_accessory) in device.device_accessories">
-											<li class="collection-item">{{accessory.accessory_name}}</li>
+										<ul class="collection" v-show="device.device_accessories.length > 0">
+											<li class="collection-item" v-for="(accessory, index_accessory) in device.device_accessories">{{accessory.accessory_name}}</li>
 										</ul>
 										<!-- <span><b>Proceso:</b></span><br>
 										<div class="progress">
@@ -144,53 +144,55 @@
 			devices: {
 				type: Array
 			},
+
+			receiptClient: {
+				type: Object
+			},
+
+			lastClientId: {
+				type: Number
+			}
 		},
 
 	    data(){
 	    	return {
-	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-	    		newReceiptName: null,
-	    		newReceiptPhone: null,
-	    		newReceiptEmail: null,
-	    		validReceiptName: false,
-	    		invalidReceiptName: false,
-	    		validReceiptPhone: false,
-	    		invalidReceiptPhone: false,
-	    		validReceiptEmail: false,
-	    		invalidReceiptEmail: false
+				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+
+				newClientToggle: false
 	    	}
 	    },
 
 	    computed: {
 	    	validateForm: function(e) {
-	    		if(!this.validReceiptName || this.invalidReceiptPhone || this.invalidReceiptEmail){
+	    		if(this.devices.length==0){
 	    			return true;
-	    		}
+				}
 	    	}
 	    },
 
 	    methods: {
 	    	saveReceipt: function(){
-	    		var newReceipt = {
-		    		receipt_id: '',
-		    		receipt_name: this.newReceiptName,
-		    		receipt_phone: this.newReceiptPhone,
-		    		receipt_email: this.newReceiptEmail
-		    	};
+				
+	    		// var newReceipt = {
+		    	// 	receipt_id: '',
+		    	// 	receipt_name: this.newReceiptName,
+		    	// 	receipt_phone: this.newReceiptPhone,
+		    	// 	receipt_email: this.newReceiptEmail
+		    	// };
 
-	    		axios.post('http://localhost:8000/receipts',{
-	    			receipt_name: this.newReceiptName,
-	    			receipt_phone: this.newReceiptPhone,
-	    			receipt_email: this.newReceiptEmail
-	    		})
-	    		.then((res)=>{newReceipt.receipt_id = res.data.receipt_id})
-	    		.catch(function(err){
-	    			console.log(err);
-	    		});
+	    		// axios.post('http://localhost:8000/receipts',{
+	    		// 	receipt_name: this.newReceiptName,
+	    		// 	receipt_phone: this.newReceiptPhone,
+	    		// 	receipt_email: this.newReceiptEmail
+	    		// })
+	    		// .then((res)=>{newReceipt.receipt_id = res.data.receipt_id})
+	    		// .catch(function(err){
+	    		// 	console.log(err);
+	    		// });
 
-	    		this.$parent.receipts.push(newReceipt);
-	    		this.$parent.forceRerender();
-	    		$('#newReceiptModal').modal('close');
+	    		// this.$parent.receipts.push(newReceipt);
+	    		// this.$parent.forceRerender();
+	    		// $('#newReceiptModal').modal('close');
 	    	},
 
 	    	validateReceiptName: function(e) {
@@ -251,7 +253,28 @@
     			this.invalidReceiptPhone=false;
     			this.validReceiptEmail=false;
     			this.invalidReceiptEmail=false;
-    		}
+			},
+			
+			showClientsList: function () {
+				$('#clientsCompactListModal').modal({
+					dismissible: false
+				});
+				$('#clientsCompactListModal').modal('open');
+			},
+
+			newClientToggleHandler: function () {
+				if(!this.newClientToggle){
+					this.$parent.receiptClient={
+						client_id:this.lastClientId,
+						client_name: null,
+						client_email: null,
+						client_phone: null
+					};
+				}
+				else{
+					
+				}
+			},
 	    }
 	}
 </script>

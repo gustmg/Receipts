@@ -112,8 +112,7 @@
 
 				this.$parent.devices.push(this.newDevice);
 				this.$parent.forceRerender();
-
-				//TODO: Clean accessories array
+				this.resetNewDeviceInputs();
 				$('#newDeviceModal').modal('close');
 			},
 
@@ -172,7 +171,9 @@
     			this.validDeviceSerialNumber=false;
     			this.invalidDeviceSerialNumber=false;
     			this.validDeviceTroubleDescription=false;
-    			this.invalidDeviceTroubleDescription=false;
+				this.invalidDeviceTroubleDescription=false;
+				
+				this.$parent.accessories=[];
     		}
 	    }
 	}

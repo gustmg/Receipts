@@ -3,9 +3,10 @@
         <receipt-search-bar-component :search-value.sync="searchReceipt"></receipt-search-bar-component>
         <receipts-list-component :receipts="receipts" :key="componentKey"></receipts-list-component>
         <new-receipt-button-component></new-receipt-button-component>
-        <new-receipt-modal-component :devices="devices"></new-receipt-modal-component>
+        <new-receipt-modal-component :devices="devices" :receipt-client="receiptClient" :last-client-id="lastClientId"></new-receipt-modal-component>
         <new-device-modal-component :accessories="accessories" :accessoryKey="componentAccessoryKey"></new-device-modal-component>
         <new-accessory-modal-component></new-accessory-modal-component>
+        <clients-compact-list-modal-component :clients="clients"></clients-compact-list-modal-component>
     </div>
 </template>
 <script>
@@ -14,8 +15,12 @@
             receipts: {
                 type: Array
             },
+
+            clients:{
+                type: Array
+            },
             
-            searchValue: String,
+            searchValue: String
         },
 
         data() {
@@ -24,7 +29,14 @@
                 componentKey: 0,
                 componentAccessoryKey: 0,
                 devices: [],
-                accessories: []
+                accessories: [],
+                receiptClient: {
+                    client_id:null,
+                    client_name: null,
+                    client_email: null,
+                    client_phone: null
+                },
+                lastClientId: this.clients[this.clients.length - 1].client_id + 1
             }
         },
 
