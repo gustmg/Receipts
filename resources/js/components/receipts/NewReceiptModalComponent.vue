@@ -46,19 +46,19 @@
 						<div class="col m12">
 							<form class="row">
 								<div class="input-field col s4">
-									<input placeholder="" :value="receiptClient.client_id" id="receipt_client_id" type="text" disabled>
+									<input placeholder=""  id="receipt_client_id" type="text" disabled>
 									<label for="client_id">No. de cliente</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" :value="receiptClient.client_name" id="receipt_client_name" type="text" :disabled="newClientToggle == false">
+									<input placeholder="" v-model="receiptClientName" id="receipt_client_name" type="text" :disabled="newClientToggle == false">
 									<label for="client_name">Nombre</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" :value="receiptClient.client_email" id="receipt_client_email" type="email" :disabled="newClientToggle == false">
+									<input placeholder="" id="receipt_client_email" type="email" :disabled="newClientToggle == false">
 									<label for="client_email">E-mail</label>
 								</div>
 								<div class="input-field col s4">
-									<input placeholder="" :value="receiptClient.client_phone" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false">
+									<input placeholder="" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false">
 									<label for="client_phone">Teléfono</label>
 								</div>
 							</form>
@@ -145,8 +145,8 @@
 				type: Array
 			},
 
-			receiptClient: {
-				type: Object
+			receiptClientName: {
+				type: String
 			},
 
 			lastClientId: {
@@ -157,10 +157,15 @@
 	    data(){
 	    	return {
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-
 				newClientToggle: false
 	    	}
 	    },
+
+		watch: {
+			receiptClientName: function() {
+				console.log(this.receiptClientName);
+			}
+		},
 
 	    computed: {
 	    	validateForm: function(e) {

@@ -3095,8 +3095,8 @@ __webpack_require__.r(__webpack_exports__);
     devices: {
       type: Array
     },
-    receiptClient: {
-      type: Object
+    receiptClientName: {
+      type: String
     },
     lastClientId: {
       type: Number
@@ -3107,6 +3107,11 @@ __webpack_require__.r(__webpack_exports__);
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       newClientToggle: false
     };
+  },
+  watch: {
+    receiptClientName: function receiptClientName() {
+      console.log(this.receiptClientName);
+    }
   },
   computed: {
     validateForm: function validateForm(e) {
@@ -41807,31 +41812,33 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "col m12" }, [
                   _c("form", { staticClass: "row" }, [
-                    _c("div", { staticClass: "input-field col s4" }, [
-                      _c("input", {
-                        attrs: {
-                          placeholder: "",
-                          id: "receipt_client_id",
-                          type: "text",
-                          disabled: ""
-                        },
-                        domProps: { value: _vm.receiptClient.client_id }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "client_id" } }, [
-                        _vm._v("No. de cliente")
-                      ])
-                    ]),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("div", { staticClass: "input-field col s8" }, [
                       _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.receiptClientName,
+                            expression: "receiptClientName"
+                          }
+                        ],
                         attrs: {
                           placeholder: "",
                           id: "receipt_client_name",
                           type: "text",
                           disabled: _vm.newClientToggle == false
                         },
-                        domProps: { value: _vm.receiptClient.client_name }
+                        domProps: { value: _vm.receiptClientName },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.receiptClientName = $event.target.value
+                          }
+                        }
                       }),
                       _vm._v(" "),
                       _c("label", { attrs: { for: "client_name" } }, [
@@ -41846,8 +41853,7 @@ var render = function() {
                           id: "receipt_client_email",
                           type: "email",
                           disabled: _vm.newClientToggle == false
-                        },
-                        domProps: { value: _vm.receiptClient.client_email }
+                        }
                       }),
                       _vm._v(" "),
                       _c("label", { attrs: { for: "client_email" } }, [
@@ -41862,8 +41868,7 @@ var render = function() {
                           id: "receipt_client_phone",
                           type: "tel",
                           disabled: _vm.newClientToggle == false
-                        },
-                        domProps: { value: _vm.receiptClient.client_phone }
+                        }
                       }),
                       _vm._v(" "),
                       _c("label", { attrs: { for: "client_phone" } }, [
@@ -41876,7 +41881,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col m12" }, [
-              _vm._m(2),
+              _vm._m(3),
               _vm._v(" "),
               _c(
                 "div",
@@ -41934,7 +41939,7 @@ var render = function() {
                                 ]),
                                 _c("br"),
                                 _vm._v(" "),
-                                _vm._m(3, true),
+                                _vm._m(4, true),
                                 _vm._v(" "),
                                 _c(
                                   "ul",
@@ -42065,6 +42070,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s4" }, [
+      _c("input", {
+        attrs: {
+          placeholder: "",
+          id: "receipt_client_id",
+          type: "text",
+          disabled: ""
+        }
+      }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "client_id" } }, [_vm._v("No. de cliente")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("span", [_c("b", [_vm._v("EQUIPOS")])])
   },
   function() {
@@ -42174,7 +42196,7 @@ var render = function() {
       _c("new-receipt-modal-component", {
         attrs: {
           devices: _vm.devices,
-          "receipt-client": _vm.receiptClient,
+          "receipt-client-name": _vm.receiptClient.client_name,
           "last-client-id": _vm.lastClientId
         }
       }),

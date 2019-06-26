@@ -3,7 +3,7 @@
         <receipt-search-bar-component :search-value.sync="searchReceipt"></receipt-search-bar-component>
         <receipts-list-component :receipts="receipts" :key="componentKey"></receipts-list-component>
         <new-receipt-button-component></new-receipt-button-component>
-        <new-receipt-modal-component :devices="devices" :receipt-client="receiptClient" :last-client-id="lastClientId"></new-receipt-modal-component>
+        <new-receipt-modal-component :devices="devices" :receipt-client-name="receiptClient.client_name" :last-client-id="lastClientId"></new-receipt-modal-component>
         <new-device-modal-component :accessories="accessories" :accessoryKey="componentAccessoryKey"></new-device-modal-component>
         <new-accessory-modal-component></new-accessory-modal-component>
         <clients-compact-list-modal-component :clients="clients"></clients-compact-list-modal-component>
