@@ -191,14 +191,17 @@
 
 			receiptClientName: function() {
 				this.newReceiptClientName=this.receiptClientName;
+				// console.log("receiptclient name changed to "+this.receiptClientName);
 			},
 
 			receiptClientEmail: function() {
 				this.newReceiptClientEmail=this.receiptClientEmail;
+				// console.log("receiptclient email changed to "+this.receiptClientEmail);
 			},
 
 			receiptClientPhone: function() {
 				this.newReceiptClientPhone=this.receiptClientPhone;
+				// console.log("receiptclient phone changed to "+this.receiptClientPhone);
 			}
 		},
 
@@ -308,9 +311,9 @@
 				}
 				else{
 					this.newReceiptClientId=0;
-					this.newReceiptClientName= null;
-					this.newReceiptClientEmail= null;
-					this.newReceiptClientPhone= null;
+					this.newReceiptClientName= '';
+					this.newReceiptClientEmail= '';
+					this.newReceiptClientPhone= '';
 				}
 				this.validNewReceiptClientName= false;
 				this.invalidNewReceiptClientName=false;

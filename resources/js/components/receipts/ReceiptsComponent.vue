@@ -6,7 +6,7 @@
         <new-receipt-modal-component :devices="devices" :receipt-client-id="receiptClient.client_id" :receipt-client-name="receiptClient.client_name" :receipt-client-phone="receiptClient.client_phone" :receipt-client-email="receiptClient.client_email" :last-client-id="lastClientId"></new-receipt-modal-component>
         <new-device-modal-component :accessories="accessories" :accessoryKey="componentAccessoryKey"></new-device-modal-component>
         <new-accessory-modal-component></new-accessory-modal-component>
-        <clients-compact-list-modal-component :clients="clients"></clients-compact-list-modal-component>
+        <clients-compact-list-modal-component :clients="clients" :receipt-client="receiptClient"></clients-compact-list-modal-component>
     </div>
 </template>
 <script>
@@ -19,6 +19,18 @@
             devices: {
                 type: Array,
                 default: function () { return [] }
+            },
+
+            receiptClient: { //TODO
+                type: Object,
+                default: function () {
+                    return {
+                        client_id: 0,
+                        client_name:null,
+                        client_email:null,
+                        client_phone:null
+                    }
+                }
             },
 
             clients:{
@@ -34,12 +46,6 @@
                 componentKey: 0,
                 componentAccessoryKey: 0,
                 accessories: [],
-                receiptClient: {
-                    client_id:null,
-                    client_name: null,
-                    client_email: null,
-                    client_phone: null
-                },
                 lastClientId: this.clients[this.clients.length - 1].client_id + 1
             }
         },

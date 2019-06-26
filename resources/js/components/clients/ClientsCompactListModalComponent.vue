@@ -70,7 +70,13 @@
 	    		if(!this.validReceiptName || this.invalidReceiptPhone || this.invalidReceiptEmail){
 	    			return true;
 	    		}
-	    	}
+			},
+			
+			selectClient: function (index) {
+                // alert(this.clients[index].client_name);
+				this.$parent.receiptClient=this.clients[index];
+                $('#clientsCompactListModal').modal('close');
+            }
 	    },
 
 	    methods: {
@@ -162,12 +168,6 @@
 					dismissible: false
 				});
 				$('#clientsCompactListModal').modal('open');
-            },
-            
-            selectClient: function (index) {
-                // alert(this.clients[index].client_name);
-				this.$parent.receiptClient=this.clients[index];
-                $('#clientsCompactListModal').modal('close');
             }
 	    }
 	}

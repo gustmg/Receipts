@@ -2022,6 +2022,11 @@ __webpack_require__.r(__webpack_exports__);
       if (!this.validReceiptName || this.invalidReceiptPhone || this.invalidReceiptEmail) {
         return true;
       }
+    },
+    selectClient: function selectClient(index) {
+      // alert(this.clients[index].client_name);
+      this.$parent.receiptClient = this.clients[index];
+      $('#clientsCompactListModal').modal('close');
     }
   },
   methods: {
@@ -2101,11 +2106,6 @@ __webpack_require__.r(__webpack_exports__);
         dismissible: false
       });
       $('#clientsCompactListModal').modal('open');
-    },
-    selectClient: function selectClient(index) {
-      // alert(this.clients[index].client_name);
-      this.$parent.receiptClient = this.clients[index];
-      $('#clientsCompactListModal').modal('close');
     }
   }
 });
@@ -3132,13 +3132,13 @@ __webpack_require__.r(__webpack_exports__);
       this.newReceiptClientId = this.receiptClientId;
     },
     receiptClientName: function receiptClientName() {
-      this.newReceiptClientName = this.receiptClientName;
+      this.newReceiptClientName = this.receiptClientName; // console.log("receiptclient name changed to "+this.receiptClientName);
     },
     receiptClientEmail: function receiptClientEmail() {
-      this.newReceiptClientEmail = this.receiptClientEmail;
+      this.newReceiptClientEmail = this.receiptClientEmail; // console.log("receiptclient email changed to "+this.receiptClientEmail);
     },
     receiptClientPhone: function receiptClientPhone() {
-      this.newReceiptClientPhone = this.receiptClientPhone;
+      this.newReceiptClientPhone = this.receiptClientPhone; // console.log("receiptclient phone changed to "+this.receiptClientPhone);
     }
   },
   computed: {
@@ -3230,9 +3230,9 @@ __webpack_require__.r(__webpack_exports__);
         this.newReceiptClientPhone = null;
       } else {
         this.newReceiptClientId = 0;
-        this.newReceiptClientName = null;
-        this.newReceiptClientEmail = null;
-        this.newReceiptClientPhone = null;
+        this.newReceiptClientName = '';
+        this.newReceiptClientEmail = '';
+        this.newReceiptClientPhone = '';
       }
 
       this.validNewReceiptClientName = false;
@@ -3306,6 +3306,18 @@ __webpack_require__.r(__webpack_exports__);
         return [];
       }
     },
+    receiptClient: {
+      //TODO
+      type: Object,
+      default: function _default() {
+        return {
+          client_id: 0,
+          client_name: null,
+          client_email: null,
+          client_phone: null
+        };
+      }
+    },
     clients: {
       type: Array
     },
@@ -3317,12 +3329,6 @@ __webpack_require__.r(__webpack_exports__);
       componentKey: 0,
       componentAccessoryKey: 0,
       accessories: [],
-      receiptClient: {
-        client_id: null,
-        client_name: null,
-        client_email: null,
-        client_phone: null
-      },
       lastClientId: this.clients[this.clients.length - 1].client_id + 1
     };
   },
@@ -42324,7 +42330,7 @@ var render = function() {
       _c("new-accessory-modal-component"),
       _vm._v(" "),
       _c("clients-compact-list-modal-component", {
-        attrs: { clients: _vm.clients }
+        attrs: { clients: _vm.clients, "receipt-client": _vm.receiptClient }
       })
     ],
     1
@@ -56069,15 +56075,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************************************************!*\
   !*** ./resources/js/components/receipts/ReceiptsComponent.vue ***!
   \****************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReceiptsComponent.vue?vue&type=template&id=0dd2dd99& */ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99&");
 /* harmony import */ var _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReceiptsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -56107,7 +56112,7 @@ component.options.__file = "resources/js/components/receipts/ReceiptsComponent.v
 /*!*****************************************************************************************!*\
   !*** ./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
