@@ -3,7 +3,7 @@
         <receipt-search-bar-component :search-value.sync="searchReceipt"></receipt-search-bar-component>
         <receipts-list-component :receipts="receipts" :key="componentKey"></receipts-list-component>
         <new-receipt-button-component></new-receipt-button-component>
-        <new-receipt-modal-component :devices="devices" :receipt-client-name="receiptClient.client_name" :last-client-id="lastClientId"></new-receipt-modal-component>
+        <new-receipt-modal-component :devices="devices" :receipt-client-id="receiptClient.client_id" :receipt-client-name="receiptClient.client_name" :receipt-client-phone="receiptClient.client_phone" :receipt-client-email="receiptClient.client_email" :last-client-id="lastClientId"></new-receipt-modal-component>
         <new-device-modal-component :accessories="accessories" :accessoryKey="componentAccessoryKey"></new-device-modal-component>
         <new-accessory-modal-component></new-accessory-modal-component>
         <clients-compact-list-modal-component :clients="clients"></clients-compact-list-modal-component>
@@ -14,6 +14,11 @@
         props: {
             receipts: {
                 type: Array
+            },
+
+            devices: {
+                type: Array,
+                default: function () { return [] }
             },
 
             clients:{
@@ -28,7 +33,6 @@
                 searchReceipt: '',
                 componentKey: 0,
                 componentAccessoryKey: 0,
-                devices: [],
                 accessories: [],
                 receiptClient: {
                     client_id:null,

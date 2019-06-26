@@ -3095,7 +3095,16 @@ __webpack_require__.r(__webpack_exports__);
     devices: {
       type: Array
     },
+    receiptClientId: {
+      type: Number
+    },
     receiptClientName: {
+      type: String
+    },
+    receiptClientEmail: {
+      type: String
+    },
+    receiptClientPhone: {
       type: String
     },
     lastClientId: {
@@ -3105,17 +3114,36 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      newReceiptClientId: 0,
+      newReceiptClientName: null,
+      newReceiptClientEmail: null,
+      newReceiptClientPhone: null,
+      validNewReceiptClientName: false,
+      invalidNewReceiptClientName: false,
+      validNewReceiptClientPhone: false,
+      invalidNewReceiptClientPhone: false,
+      validNewReceiptClientEmail: false,
+      invalidNewReceiptClientEmail: false,
       newClientToggle: false
     };
   },
   watch: {
+    receiptClientId: function receiptClientId() {
+      this.newReceiptClientId = this.receiptClientId;
+    },
     receiptClientName: function receiptClientName() {
-      console.log(this.receiptClientName);
+      this.newReceiptClientName = this.receiptClientName;
+    },
+    receiptClientEmail: function receiptClientEmail() {
+      this.newReceiptClientEmail = this.receiptClientEmail;
+    },
+    receiptClientPhone: function receiptClientPhone() {
+      this.newReceiptClientPhone = this.receiptClientPhone;
     }
   },
   computed: {
     validateForm: function validateForm(e) {
-      if (this.devices.length == 0) {
+      if (this.devices.length == 0 || !this.validNewReceiptClientName || this.invalidNewReceiptClientPhone || this.invalidNewReceiptClientEmail) {
         return true;
       }
     }
@@ -3124,13 +3152,13 @@ __webpack_require__.r(__webpack_exports__);
     saveReceipt: function saveReceipt() {// var newReceipt = {
       // 	receipt_id: '',
       // 	receipt_name: this.newReceiptName,
-      // 	receipt_phone: this.newReceiptPhone,
-      // 	receipt_email: this.newReceiptEmail
+      // 	receipt_phone: this.receiptClientPhone,
+      // 	receipt_email: this.receiptClientEmail
       // };
       // axios.post('http://localhost:8000/receipts',{
       // 	receipt_name: this.newReceiptName,
-      // 	receipt_phone: this.newReceiptPhone,
-      // 	receipt_email: this.newReceiptEmail
+      // 	receipt_phone: this.receiptClientPhone,
+      // 	receipt_email: this.receiptClientEmail
       // })
       // .then((res)=>{newReceipt.receipt_id = res.data.receipt_id})
       // .catch(function(err){
@@ -3140,56 +3168,53 @@ __webpack_require__.r(__webpack_exports__);
       // this.$parent.forceRerender();
       // $('#newReceiptModal').modal('close');
     },
-    validateReceiptName: function validateReceiptName(e) {
-      if (!this.newReceiptName) {
-        this.validReceiptName = false;
-        this.invalidReceiptName = true;
+    validateReceiptClientName: function validateReceiptClientName(e) {
+      if (!this.newReceiptClientName) {
+        this.validNewReceiptClientName = false;
+        this.invalidNewReceiptClientName = true;
         $('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
       } else {
-        this.validReceiptName = true;
-        this.invalidReceiptName = false;
+        this.validNewReceiptClientName = true;
+        this.invalidNewReceiptClientName = false;
       }
     },
-    validateReceiptPhone: function validateReceiptPhone(e) {
+    validateReceiptClientPhone: function validateReceiptClientPhone(e) {
       var PHONE_REGEXP = /^[0-9]*$/gm;
 
-      if (this.newReceiptPhone == null || this.newReceiptPhone.length == 0) {
-        this.validReceiptPhone = false;
-        this.invalidReceiptPhone = false;
-      } else if (!PHONE_REGEXP.test(this.newReceiptPhone) || this.newReceiptPhone.length < 10) {
-        this.validReceiptPhone = false;
-        this.invalidReceiptPhone = true;
+      if (this.newReceiptClientPhone == null || this.newReceiptClientPhone.length == 0) {
+        this.validNewReceiptClientPhone = false;
+        this.invalidNewReceiptClientPhone = false;
+      } else if (!PHONE_REGEXP.test(this.newReceiptClientPhone) || this.newReceiptClientPhone.length < 10) {
+        this.validNewReceiptClientPhone = false;
+        this.invalidNewReceiptClientPhone = true;
         $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
       } else {
-        this.validReceiptPhone = true;
-        this.invalidReceiptPhone = false;
+        this.validNewReceiptClientPhone = true;
+        this.invalidNewReceiptClientPhone = false;
       }
     },
-    validateReceiptEmail: function validateReceiptEmail(e) {
+    validateReceiptClientEmail: function validateReceiptClientEmail(e) {
       var MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-      if (this.newReceiptEmail == null || this.newReceiptEmail.length == 0) {
-        this.validReceiptEmail = false;
-        this.invalidReceiptEmail = false;
-      } else if (!MAIL_REGEXP.test(this.newReceiptEmail)) {
-        this.validReceiptEmail = false;
-        this.invalidReceiptEmail = true;
+      if (this.newReceiptClientEmail == null || this.newReceiptClientEmail.length == 0) {
+        this.validNewReceiptClientEmail = false;
+        this.invalidNewReceiptClientEmail = false;
+      } else if (!MAIL_REGEXP.test(this.newReceiptClientEmail)) {
+        this.validNewReceiptClientEmail = false;
+        this.invalidNewReceiptClientEmail = true;
         $('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
       } else {
-        this.validReceiptEmail = true;
-        this.invalidReceiptEmail = false;
+        this.validNewReceiptClientEmail = true;
+        this.invalidNewReceiptClientEmail = false;
       }
     },
     resetNewReceiptInputs: function resetNewReceiptInputs(e) {
-      this.newReceiptName = null;
-      this.newReceiptPhone = null;
-      this.newReceiptEmail = null;
-      this.validReceiptName = false;
-      this.invalidReceiptName = false;
-      this.validReceiptPhone = false;
-      this.invalidReceiptPhone = false;
-      this.validReceiptEmail = false;
-      this.invalidReceiptEmail = false;
+      this.validNewReceiptClientName = false;
+      this.invalidNewReceiptClientName = false;
+      this.validNewReceiptClientPhone = false;
+      this.invalidNewReceiptClientPhone = false;
+      this.validNewReceiptClientEmail = false;
+      this.invalidNewReceiptClientEmail = false;
     },
     showClientsList: function showClientsList() {
       $('#clientsCompactListModal').modal({
@@ -3199,13 +3224,23 @@ __webpack_require__.r(__webpack_exports__);
     },
     newClientToggleHandler: function newClientToggleHandler() {
       if (!this.newClientToggle) {
-        this.$parent.receiptClient = {
-          client_id: this.lastClientId,
-          client_name: null,
-          client_email: null,
-          client_phone: null
-        };
-      } else {}
+        this.newReceiptClientId = this.lastClientId;
+        this.newReceiptClientName = null;
+        this.newReceiptClientEmail = null;
+        this.newReceiptClientPhone = null;
+      } else {
+        this.newReceiptClientId = 0;
+        this.newReceiptClientName = null;
+        this.newReceiptClientEmail = null;
+        this.newReceiptClientPhone = null;
+      }
+
+      this.validNewReceiptClientName = false;
+      this.invalidNewReceiptClientName = false;
+      this.validNewReceiptClientPhone = false;
+      this.invalidNewReceiptClientPhone = false;
+      this.validNewReceiptClientEmail = false;
+      this.invalidNewReceiptClientEmail = false;
     }
   }
 });
@@ -3265,6 +3300,12 @@ __webpack_require__.r(__webpack_exports__);
     receipts: {
       type: Array
     },
+    devices: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
     clients: {
       type: Array
     },
@@ -3275,7 +3316,6 @@ __webpack_require__.r(__webpack_exports__);
       searchReceipt: '',
       componentKey: 0,
       componentAccessoryKey: 0,
-      devices: [],
       accessories: [],
       receiptClient: {
         client_id: null,
@@ -41812,7 +41852,37 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "col m12" }, [
                   _c("form", { staticClass: "row" }, [
-                    _vm._m(2),
+                    _c("div", { staticClass: "input-field col s4" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newReceiptClientId,
+                            expression: "newReceiptClientId"
+                          }
+                        ],
+                        attrs: {
+                          placeholder: "",
+                          id: "receipt_client_id",
+                          type: "text",
+                          disabled: ""
+                        },
+                        domProps: { value: _vm.newReceiptClientId },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.newReceiptClientId = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "client_id" } }, [
+                        _vm._v("No. de cliente")
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "input-field col s8" }, [
                       _c("input", {
@@ -41820,23 +41890,31 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.receiptClientName,
-                            expression: "receiptClientName"
+                            value: _vm.newReceiptClientName,
+                            expression: "newReceiptClientName"
                           }
                         ],
+                        class: {
+                          valid: _vm.validNewReceiptClientName,
+                          invalid: _vm.invalidNewReceiptClientName
+                        },
                         attrs: {
                           placeholder: "",
                           id: "receipt_client_name",
                           type: "text",
-                          disabled: _vm.newClientToggle == false
+                          disabled: _vm.newClientToggle == false,
+                          "data-length": "50",
+                          maxlength: "50",
+                          required: ""
                         },
-                        domProps: { value: _vm.receiptClientName },
+                        domProps: { value: _vm.newReceiptClientName },
                         on: {
+                          blur: _vm.validateReceiptClientName,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.receiptClientName = $event.target.value
+                            _vm.newReceiptClientName = $event.target.value
                           }
                         }
                       }),
@@ -41848,11 +41926,35 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "input-field col s8" }, [
                       _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newReceiptClientEmail,
+                            expression: "newReceiptClientEmail"
+                          }
+                        ],
+                        class: {
+                          valid: _vm.validNewReceiptClientEmail,
+                          invalid: _vm.invalidNewReceiptClientEmail
+                        },
                         attrs: {
                           placeholder: "",
                           id: "receipt_client_email",
                           type: "email",
-                          disabled: _vm.newClientToggle == false
+                          disabled: _vm.newClientToggle == false,
+                          "data-length": "40",
+                          maxlength: "40"
+                        },
+                        domProps: { value: _vm.newReceiptClientEmail },
+                        on: {
+                          blur: _vm.validateReceiptClientEmail,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.newReceiptClientEmail = $event.target.value
+                          }
                         }
                       }),
                       _vm._v(" "),
@@ -41863,11 +41965,36 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "input-field col s4" }, [
                       _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newReceiptClientPhone,
+                            expression: "newReceiptClientPhone"
+                          }
+                        ],
+                        class: {
+                          valid: _vm.validNewReceiptClientPhone,
+                          invalid: _vm.invalidNewReceiptClientPhone
+                        },
                         attrs: {
                           placeholder: "",
                           id: "receipt_client_phone",
                           type: "tel",
-                          disabled: _vm.newClientToggle == false
+                          disabled: _vm.newClientToggle == false,
+                          "data-length": "10",
+                          minlength: "10",
+                          maxlength: "10"
+                        },
+                        domProps: { value: _vm.newReceiptClientPhone },
+                        on: {
+                          blur: _vm.validateReceiptClientPhone,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.newReceiptClientPhone = $event.target.value
+                          }
                         }
                       }),
                       _vm._v(" "),
@@ -41881,7 +42008,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col m12" }, [
-              _vm._m(3),
+              _vm._m(2),
               _vm._v(" "),
               _c(
                 "div",
@@ -41939,7 +42066,7 @@ var render = function() {
                                 ]),
                                 _c("br"),
                                 _vm._v(" "),
-                                _vm._m(4, true),
+                                _vm._m(3, true),
                                 _vm._v(" "),
                                 _c(
                                   "ul",
@@ -42070,23 +42197,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field col s4" }, [
-      _c("input", {
-        attrs: {
-          placeholder: "",
-          id: "receipt_client_id",
-          type: "text",
-          disabled: ""
-        }
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { for: "client_id" } }, [_vm._v("No. de cliente")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("span", [_c("b", [_vm._v("EQUIPOS")])])
   },
   function() {
@@ -42196,7 +42306,10 @@ var render = function() {
       _c("new-receipt-modal-component", {
         attrs: {
           devices: _vm.devices,
+          "receipt-client-id": _vm.receiptClient.client_id,
           "receipt-client-name": _vm.receiptClient.client_name,
+          "receipt-client-phone": _vm.receiptClient.client_phone,
+          "receipt-client-email": _vm.receiptClient.client_email,
           "last-client-id": _vm.lastClientId
         }
       }),
@@ -55956,14 +56069,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************************************************!*\
   !*** ./resources/js/components/receipts/ReceiptsComponent.vue ***!
   \****************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ReceiptsComponent_vue_vue_type_template_id_0dd2dd99___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReceiptsComponent.vue?vue&type=template&id=0dd2dd99& */ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=template&id=0dd2dd99&");
 /* harmony import */ var _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReceiptsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ReceiptsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -55993,7 +56107,7 @@ component.options.__file = "resources/js/components/receipts/ReceiptsComponent.v
 /*!*****************************************************************************************!*\
   !*** ./resources/js/components/receipts/ReceiptsComponent.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

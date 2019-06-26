@@ -46,19 +46,19 @@
 						<div class="col m12">
 							<form class="row">
 								<div class="input-field col s4">
-									<input placeholder=""  id="receipt_client_id" type="text" disabled>
+									<input placeholder="" v-model="newReceiptClientId" id="receipt_client_id" type="text" disabled>
 									<label for="client_id">No. de cliente</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" v-model="receiptClientName" id="receipt_client_name" type="text" :disabled="newClientToggle == false">
+									<input placeholder="" v-model="newReceiptClientName" id="receipt_client_name" type="text" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientName" v-bind:class="{'valid': validNewReceiptClientName, 'invalid': invalidNewReceiptClientName}" data-length="50" maxlength="50" required>
 									<label for="client_name">Nombre</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" id="receipt_client_email" type="email" :disabled="newClientToggle == false">
+									<input placeholder="" v-model="newReceiptClientEmail" id="receipt_client_email" type="email" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientEmail" v-bind:class="{'valid': validNewReceiptClientEmail, 'invalid': invalidNewReceiptClientEmail}" data-length="40" maxlength="40">
 									<label for="client_email">E-mail</label>
 								</div>
 								<div class="input-field col s4">
-									<input placeholder="" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false">
+									<input placeholder="" v-model="newReceiptClientPhone" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientPhone" v-bind:class="{'valid': validNewReceiptClientPhone, 'invalid': invalidNewReceiptClientPhone}" data-length="10" minlength="10" maxlength="10">
 									<label for="client_phone">Teléfono</label>
 								</div>
 							</form>
@@ -145,7 +145,19 @@
 				type: Array
 			},
 
+			receiptClientId: {
+				type: Number
+			},
+
 			receiptClientName: {
+				type: String
+			},
+
+			receiptClientEmail: {
+				type: String
+			},
+
+			receiptClientPhone: {
 				type: String
 			},
 
@@ -157,22 +169,45 @@
 	    data(){
 	    	return {
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+				newReceiptClientId:0,
+				newReceiptClientName:null,
+				newReceiptClientEmail:null,
+				newReceiptClientPhone:null,
+
+				validNewReceiptClientName: false,
+				invalidNewReceiptClientName: false,
+				validNewReceiptClientPhone: false,
+				invalidNewReceiptClientPhone: false,
+				validNewReceiptClientEmail: false,
+				invalidNewReceiptClientEmail: false,
 				newClientToggle: false
 	    	}
-	    },
-
+		},
+		
 		watch: {
+			receiptClientId: function() {
+				this.newReceiptClientId=this.receiptClientId;
+			},
+
 			receiptClientName: function() {
-				console.log(this.receiptClientName);
+				this.newReceiptClientName=this.receiptClientName;
+			},
+
+			receiptClientEmail: function() {
+				this.newReceiptClientEmail=this.receiptClientEmail;
+			},
+
+			receiptClientPhone: function() {
+				this.newReceiptClientPhone=this.receiptClientPhone;
 			}
 		},
 
 	    computed: {
 	    	validateForm: function(e) {
-	    		if(this.devices.length==0){
+	    		if(this.devices.length==0 || !this.validNewReceiptClientName || this.invalidNewReceiptClientPhone || this.invalidNewReceiptClientEmail){
 	    			return true;
 				}
-	    	}
+			}
 	    },
 
 	    methods: {
@@ -181,14 +216,14 @@
 	    		// var newReceipt = {
 		    	// 	receipt_id: '',
 		    	// 	receipt_name: this.newReceiptName,
-		    	// 	receipt_phone: this.newReceiptPhone,
-		    	// 	receipt_email: this.newReceiptEmail
+		    	// 	receipt_phone: this.receiptClientPhone,
+		    	// 	receipt_email: this.receiptClientEmail
 		    	// };
 
 	    		// axios.post('http://localhost:8000/receipts',{
 	    		// 	receipt_name: this.newReceiptName,
-	    		// 	receipt_phone: this.newReceiptPhone,
-	    		// 	receipt_email: this.newReceiptEmail
+	    		// 	receipt_phone: this.receiptClientPhone,
+	    		// 	receipt_email: this.receiptClientEmail
 	    		// })
 	    		// .then((res)=>{newReceipt.receipt_id = res.data.receipt_id})
 	    		// .catch(function(err){
@@ -200,64 +235,61 @@
 	    		// $('#newReceiptModal').modal('close');
 	    	},
 
-	    	validateReceiptName: function(e) {
-	    		if(!this.newReceiptName){
-	    			this.validReceiptName = false;
-	    			this.invalidReceiptName = true;
+	    	validateReceiptClientName: function(e) {
+	    		if(!this.newReceiptClientName){
+	    			this.validNewReceiptClientName = false;
+	    			this.invalidNewReceiptClientName = true;
 	    			$('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
 	    		}
 	    		else{
-	    			this.validReceiptName = true;
-	    			this.invalidReceiptName = false;
+	    			this.validNewReceiptClientName = true;
+	    			this.invalidNewReceiptClientName = false;
 	    		}
     		},
 
-    		validateReceiptPhone: function(e) {
+    		validateReceiptClientPhone: function(e) {
     			const PHONE_REGEXP = /^[0-9]*$/gm;
 
-    			if(this.newReceiptPhone ==null || this.newReceiptPhone.length == 0){
-    				this.validReceiptPhone = false;
-	    			this.invalidReceiptPhone = false;
+    			if(this.newReceiptClientPhone ==null || this.newReceiptClientPhone.length == 0){
+    				this.validNewReceiptClientPhone = false;
+	    			this.invalidNewReceiptClientPhone = false;
     			}
-    			else if(!PHONE_REGEXP.test(this.newReceiptPhone) || this.newReceiptPhone.length < 10){
-    				this.validReceiptPhone = false;
-	    			this.invalidReceiptPhone = true;
+    			else if(!PHONE_REGEXP.test(this.newReceiptClientPhone) || this.newReceiptClientPhone.length < 10){
+    				this.validNewReceiptClientPhone = false;
+	    			this.invalidNewReceiptClientPhone = true;
     				$('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
     			}
     			else{
-    				this.validReceiptPhone = true;
-	    			this.invalidReceiptPhone = false;
+    				this.validNewReceiptClientPhone = true;
+	    			this.invalidNewReceiptClientPhone = false;
     			}
     		},
 
-    		validateReceiptEmail: function(e) {
+    		validateReceiptClientEmail: function(e) {
     			const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    			if(this.newReceiptEmail ==null || this.newReceiptEmail.length == 0){
-    				this.validReceiptEmail = false;
-	    			this.invalidReceiptEmail = false;
+    			if(this.newReceiptClientEmail ==null || this.newReceiptClientEmail.length == 0){
+    				this.validNewReceiptClientEmail = false;
+	    			this.invalidNewReceiptClientEmail = false;
     			}
-    			else if(!MAIL_REGEXP.test(this.newReceiptEmail)){
-    				this.validReceiptEmail = false;
-	    			this.invalidReceiptEmail = true;
+    			else if(!MAIL_REGEXP.test(this.newReceiptClientEmail)){
+    				this.validNewReceiptClientEmail = false;
+	    			this.invalidNewReceiptClientEmail = true;
     				$('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
     			}
     			else{
-    				this.validReceiptEmail = true;
-	    			this.invalidReceiptEmail = false;
+    				this.validNewReceiptClientEmail = true;
+	    			this.invalidNewReceiptClientEmail = false;
     			}
     		},
 
     		resetNewReceiptInputs: function (e) {
-    			this.newReceiptName=null;
-    			this.newReceiptPhone=null;
-    			this.newReceiptEmail=null;
-    			this.validReceiptName= false;
-    			this.invalidReceiptName=false;
-    			this.validReceiptPhone=false;
-    			this.invalidReceiptPhone=false;
-    			this.validReceiptEmail=false;
-    			this.invalidReceiptEmail=false;
+    			this.validNewReceiptClientName= false;
+    			this.invalidNewReceiptClientName=false;
+    			this.validNewReceiptClientPhone=false;
+    			this.invalidNewReceiptClientPhone=false;
+    			this.validNewReceiptClientEmail=false;
+    			this.invalidNewReceiptClientEmail=false;
 			},
 			
 			showClientsList: function () {
@@ -269,16 +301,23 @@
 
 			newClientToggleHandler: function () {
 				if(!this.newClientToggle){
-					this.$parent.receiptClient={
-						client_id:this.lastClientId,
-						client_name: null,
-						client_email: null,
-						client_phone: null
-					};
+					this.newReceiptClientId=this.lastClientId;
+					this.newReceiptClientName= null;
+					this.newReceiptClientEmail= null;
+					this.newReceiptClientPhone= null;
 				}
 				else{
-					
+					this.newReceiptClientId=0;
+					this.newReceiptClientName= null;
+					this.newReceiptClientEmail= null;
+					this.newReceiptClientPhone= null;
 				}
+				this.validNewReceiptClientName= false;
+				this.invalidNewReceiptClientName=false;
+				this.validNewReceiptClientPhone=false;
+				this.invalidNewReceiptClientPhone=false;
+				this.validNewReceiptClientEmail=false;
+				this.invalidNewReceiptClientEmail=false;
 			},
 	    }
 	}
