@@ -3,10 +3,10 @@
         <receipt-search-bar-component :search-value.sync="searchReceipt"></receipt-search-bar-component>
         <receipts-list-component :receipts="receipts" :key="componentKey"></receipts-list-component>
         <new-receipt-button-component></new-receipt-button-component>
-        <new-receipt-modal-component :devices="devices" :receipt-client-id="receiptClient.client_id" :receipt-client-name="receiptClient.client_name" :receipt-client-phone="receiptClient.client_phone" :receipt-client-email="receiptClient.client_email" :last-client-id="lastClientId"></new-receipt-modal-component>
+        <new-receipt-modal-component :devices="devices" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail" :last-client-id="lastClientId"></new-receipt-modal-component>
         <new-device-modal-component :accessories="accessories" :accessoryKey="componentAccessoryKey"></new-device-modal-component>
         <new-accessory-modal-component></new-accessory-modal-component>
-        <clients-compact-list-modal-component :clients="clients" :receipt-client="receiptClient"></clients-compact-list-modal-component>
+        <clients-compact-list-modal-component :clients="clients" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail"></clients-compact-list-modal-component>
     </div>
 </template>
 <script>
@@ -21,18 +21,6 @@
                 default: function () { return [] }
             },
 
-            receiptClient: { //TODO
-                type: Object,
-                default: function () {
-                    return {
-                        client_id: 0,
-                        client_name:null,
-                        client_email:null,
-                        client_phone:null
-                    }
-                }
-            },
-
             clients:{
                 type: Array
             },
@@ -42,6 +30,10 @@
 
         data() {
             return {
+                clientId: 0,
+                clientName: null,
+                clientPhone: null,
+                clientEmail: null,
                 searchReceipt: '',
                 componentKey: 0,
                 componentAccessoryKey: 0,
@@ -61,7 +53,7 @@
 
             forceAccessoryRerender() {
                 this.componentAccessoryKey += 1;
-            }
+            },
         }
     }
 </script>

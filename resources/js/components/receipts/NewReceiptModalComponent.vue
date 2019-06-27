@@ -46,19 +46,19 @@
 						<div class="col m12">
 							<form class="row">
 								<div class="input-field col s4">
-									<input placeholder="" v-model="newReceiptClientId" id="receipt_client_id" type="text" disabled>
+									<input placeholder="" :value="clientId" @input="$emit('update:clientId', $event.target.value)" id="receipt_client_id" type="text" disabled>
 									<label for="client_id">No. de cliente</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" v-model="newReceiptClientName" id="receipt_client_name" type="text" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientName" v-bind:class="{'valid': validNewReceiptClientName, 'invalid': invalidNewReceiptClientName}" data-length="50" maxlength="50" required>
+									<input placeholder="" :value="clientName" @input="$emit('update:clientName', $event.target.value)" id="receipt_client_name" type="text" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientName" v-bind:class="{'valid': validNewReceiptClientName, 'invalid': invalidNewReceiptClientName}" data-length="50" maxlength="50" required>
 									<label for="client_name">Nombre</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" v-model="newReceiptClientEmail" id="receipt_client_email" type="email" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientEmail" v-bind:class="{'valid': validNewReceiptClientEmail, 'invalid': invalidNewReceiptClientEmail}" data-length="40" maxlength="40">
+									<input placeholder="" :value="clientEmail" @input="$emit('update:clientEmail', $event.target.value)" id="receipt_client_email" type="email" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientEmail" v-bind:class="{'valid': validNewReceiptClientEmail, 'invalid': invalidNewReceiptClientEmail}" data-length="40" maxlength="40">
 									<label for="client_email">E-mail</label>
 								</div>
 								<div class="input-field col s4">
-									<input placeholder="" v-model="newReceiptClientPhone" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientPhone" v-bind:class="{'valid': validNewReceiptClientPhone, 'invalid': invalidNewReceiptClientPhone}" data-length="10" minlength="10" maxlength="10">
+									<input placeholder="" :value="clientPhone" @input="$emit('update:clientPhone', $event.target.value)" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientPhone" v-bind:class="{'valid': validNewReceiptClientPhone, 'invalid': invalidNewReceiptClientPhone}" data-length="10" minlength="10" maxlength="10">
 									<label for="client_phone">Teléfono</label>
 								</div>
 							</form>
@@ -145,19 +145,19 @@
 				type: Array
 			},
 
-			receiptClientId: {
+			clientId: {
 				type: Number
 			},
 
-			receiptClientName: {
+			clientName: {
 				type: String
 			},
 
-			receiptClientEmail: {
+			clientEmail: {
 				type: String
 			},
 
-			receiptClientPhone: {
+			clientPhone: {
 				type: String
 			},
 
@@ -182,27 +182,6 @@
 				invalidNewReceiptClientEmail: false,
 				newClientToggle: false
 	    	}
-		},
-		
-		watch: {
-			receiptClientId: function() {
-				this.newReceiptClientId=this.receiptClientId;
-			},
-
-			receiptClientName: function() {
-				this.newReceiptClientName=this.receiptClientName;
-				// console.log("receiptclient name changed to "+this.receiptClientName);
-			},
-
-			receiptClientEmail: function() {
-				this.newReceiptClientEmail=this.receiptClientEmail;
-				// console.log("receiptclient email changed to "+this.receiptClientEmail);
-			},
-
-			receiptClientPhone: function() {
-				this.newReceiptClientPhone=this.receiptClientPhone;
-				// console.log("receiptclient phone changed to "+this.receiptClientPhone);
-			}
 		},
 
 	    computed: {

@@ -1976,23 +1976,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Clients compact list modal mounted.');
@@ -2000,112 +1983,33 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     clients: {
       type: Array
-    }
-  },
-  data: function data() {
-    return {
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      newReceiptName: null,
-      newReceiptPhone: null,
-      newReceiptEmail: null,
-      validReceiptName: false,
-      invalidReceiptName: false,
-      validReceiptPhone: false,
-      invalidReceiptPhone: false,
-      validReceiptEmail: false,
-      invalidReceiptEmail: false,
-      newClientToggle: false
-    };
-  },
-  computed: {
-    validateForm: function validateForm(e) {
-      if (!this.validReceiptName || this.invalidReceiptPhone || this.invalidReceiptEmail) {
-        return true;
-      }
     },
-    selectClient: function selectClient(index) {
-      // alert(this.clients[index].client_name);
-      this.$parent.receiptClient = this.clients[index];
-      $('#clientsCompactListModal').modal('close');
+    clientId: {
+      type: Number
+    },
+    clientName: {
+      type: String
+    },
+    clientEmail: {
+      type: String
+    },
+    clientPhone: {
+      type: String
     }
   },
   methods: {
-    saveReceipt: function saveReceipt() {
-      var newReceipt = {
-        receipt_id: '',
-        receipt_name: this.newReceiptName,
-        receipt_phone: this.newReceiptPhone,
-        receipt_email: this.newReceiptEmail
-      };
-      axios.post('http://localhost:8000/receipts', {
-        receipt_name: this.newReceiptName,
-        receipt_phone: this.newReceiptPhone,
-        receipt_email: this.newReceiptEmail
-      }).then(function (res) {
-        newReceipt.receipt_id = res.data.receipt_id;
-      }).catch(function (err) {
-        console.log(err);
-      });
-      this.$parent.receipts.push(newReceipt);
-      this.$parent.forceRerender();
-      $('#newReceiptModal').modal('close');
-    },
-    validateReceiptName: function validateReceiptName(e) {
-      if (!this.newReceiptName) {
-        this.validReceiptName = false;
-        this.invalidReceiptName = true;
-        $('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
-      } else {
-        this.validReceiptName = true;
-        this.invalidReceiptName = false;
-      }
-    },
-    validateReceiptPhone: function validateReceiptPhone(e) {
-      var PHONE_REGEXP = /^[0-9]*$/gm;
-
-      if (this.newReceiptPhone == null || this.newReceiptPhone.length == 0) {
-        this.validReceiptPhone = false;
-        this.invalidReceiptPhone = false;
-      } else if (!PHONE_REGEXP.test(this.newReceiptPhone) || this.newReceiptPhone.length < 10) {
-        this.validReceiptPhone = false;
-        this.invalidReceiptPhone = true;
-        $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
-      } else {
-        this.validReceiptPhone = true;
-        this.invalidReceiptPhone = false;
-      }
-    },
-    validateReceiptEmail: function validateReceiptEmail(e) {
-      var MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-      if (this.newReceiptEmail == null || this.newReceiptEmail.length == 0) {
-        this.validReceiptEmail = false;
-        this.invalidReceiptEmail = false;
-      } else if (!MAIL_REGEXP.test(this.newReceiptEmail)) {
-        this.validReceiptEmail = false;
-        this.invalidReceiptEmail = true;
-        $('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
-      } else {
-        this.validReceiptEmail = true;
-        this.invalidReceiptEmail = false;
-      }
-    },
-    resetNewReceiptInputs: function resetNewReceiptInputs(e) {
-      this.newReceiptName = null;
-      this.newReceiptPhone = null;
-      this.newReceiptEmail = null;
-      this.validReceiptName = false;
-      this.invalidReceiptName = false;
-      this.validReceiptPhone = false;
-      this.invalidReceiptPhone = false;
-      this.validReceiptEmail = false;
-      this.invalidReceiptEmail = false;
-    },
     showClientsList: function showClientsList() {
       $('#clientsCompactListModal').modal({
         dismissible: false
       });
       $('#clientsCompactListModal').modal('open');
+    },
+    selectClient: function selectClient(index) {
+      this.$emit('update:clientId', this.clients[index].client_id);
+      this.$emit('update:clientName', this.clients[index].client_name);
+      this.$emit('update:clientEmail', this.clients[index].client_email);
+      this.$emit('update:clientPhone', this.clients[index].client_phone);
+      $('#clientsCompactListModal').modal('close');
     }
   }
 });
@@ -3095,16 +2999,16 @@ __webpack_require__.r(__webpack_exports__);
     devices: {
       type: Array
     },
-    receiptClientId: {
+    clientId: {
       type: Number
     },
-    receiptClientName: {
+    clientName: {
       type: String
     },
-    receiptClientEmail: {
+    clientEmail: {
       type: String
     },
-    receiptClientPhone: {
+    clientPhone: {
       type: String
     },
     lastClientId: {
@@ -3126,20 +3030,6 @@ __webpack_require__.r(__webpack_exports__);
       invalidNewReceiptClientEmail: false,
       newClientToggle: false
     };
-  },
-  watch: {
-    receiptClientId: function receiptClientId() {
-      this.newReceiptClientId = this.receiptClientId;
-    },
-    receiptClientName: function receiptClientName() {
-      this.newReceiptClientName = this.receiptClientName; // console.log("receiptclient name changed to "+this.receiptClientName);
-    },
-    receiptClientEmail: function receiptClientEmail() {
-      this.newReceiptClientEmail = this.receiptClientEmail; // console.log("receiptclient email changed to "+this.receiptClientEmail);
-    },
-    receiptClientPhone: function receiptClientPhone() {
-      this.newReceiptClientPhone = this.receiptClientPhone; // console.log("receiptclient phone changed to "+this.receiptClientPhone);
-    }
   },
   computed: {
     validateForm: function validateForm(e) {
@@ -3306,18 +3196,6 @@ __webpack_require__.r(__webpack_exports__);
         return [];
       }
     },
-    receiptClient: {
-      //TODO
-      type: Object,
-      default: function _default() {
-        return {
-          client_id: 0,
-          client_name: null,
-          client_email: null,
-          client_phone: null
-        };
-      }
-    },
     clients: {
       type: Array
     },
@@ -3325,6 +3203,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      clientId: 0,
+      clientName: null,
+      clientPhone: null,
+      clientEmail: null,
       searchReceipt: '',
       componentKey: 0,
       componentAccessoryKey: 0,
@@ -8474,7 +8356,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n\t   vertical-align: bottom;\n\t   font-size: 48px !important;\n}\n.inline-icon-small {\n\t   vertical-align: bottom;\n\t   font-size: 20px !important;\n}\n.helper-text{\n\t\tmin-height: 0 !important;\n}\n.no-vertical-margin{\n\t\tmargin-top: 0;\n\t\tmargin-bottom: 0;\n}\n.modal-content{\n\t\tpadding-bottom: 0 !important;\n}\n.newReceiptModal{\n\t\twidth:75% !important;\n}\n.client-element{\n        color:#039be5 !important;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n\t\tpadding-bottom: 0 !important;\n}\n.client-element{\n        color:#039be5 !important;\n}\n", ""]);
 
 // exports
 
@@ -41860,27 +41742,16 @@ var render = function() {
                   _c("form", { staticClass: "row" }, [
                     _c("div", { staticClass: "input-field col s4" }, [
                       _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newReceiptClientId,
-                            expression: "newReceiptClientId"
-                          }
-                        ],
                         attrs: {
                           placeholder: "",
                           id: "receipt_client_id",
                           type: "text",
                           disabled: ""
                         },
-                        domProps: { value: _vm.newReceiptClientId },
+                        domProps: { value: _vm.clientId },
                         on: {
                           input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.newReceiptClientId = $event.target.value
+                            _vm.$emit("update:clientId", $event.target.value)
                           }
                         }
                       }),
@@ -41892,14 +41763,6 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "input-field col s8" }, [
                       _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newReceiptClientName,
-                            expression: "newReceiptClientName"
-                          }
-                        ],
                         class: {
                           valid: _vm.validNewReceiptClientName,
                           invalid: _vm.invalidNewReceiptClientName
@@ -41913,15 +41776,12 @@ var render = function() {
                           maxlength: "50",
                           required: ""
                         },
-                        domProps: { value: _vm.newReceiptClientName },
+                        domProps: { value: _vm.clientName },
                         on: {
-                          blur: _vm.validateReceiptClientName,
                           input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.newReceiptClientName = $event.target.value
-                          }
+                            _vm.$emit("update:clientName", $event.target.value)
+                          },
+                          blur: _vm.validateReceiptClientName
                         }
                       }),
                       _vm._v(" "),
@@ -41932,14 +41792,6 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "input-field col s8" }, [
                       _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newReceiptClientEmail,
-                            expression: "newReceiptClientEmail"
-                          }
-                        ],
                         class: {
                           valid: _vm.validNewReceiptClientEmail,
                           invalid: _vm.invalidNewReceiptClientEmail
@@ -41952,15 +41804,12 @@ var render = function() {
                           "data-length": "40",
                           maxlength: "40"
                         },
-                        domProps: { value: _vm.newReceiptClientEmail },
+                        domProps: { value: _vm.clientEmail },
                         on: {
-                          blur: _vm.validateReceiptClientEmail,
                           input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.newReceiptClientEmail = $event.target.value
-                          }
+                            _vm.$emit("update:clientEmail", $event.target.value)
+                          },
+                          blur: _vm.validateReceiptClientEmail
                         }
                       }),
                       _vm._v(" "),
@@ -41971,14 +41820,6 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "input-field col s4" }, [
                       _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newReceiptClientPhone,
-                            expression: "newReceiptClientPhone"
-                          }
-                        ],
                         class: {
                           valid: _vm.validNewReceiptClientPhone,
                           invalid: _vm.invalidNewReceiptClientPhone
@@ -41992,15 +41833,12 @@ var render = function() {
                           minlength: "10",
                           maxlength: "10"
                         },
-                        domProps: { value: _vm.newReceiptClientPhone },
+                        domProps: { value: _vm.clientPhone },
                         on: {
-                          blur: _vm.validateReceiptClientPhone,
                           input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.newReceiptClientPhone = $event.target.value
-                          }
+                            _vm.$emit("update:clientPhone", $event.target.value)
+                          },
+                          blur: _vm.validateReceiptClientPhone
                         }
                       }),
                       _vm._v(" "),
@@ -42312,11 +42150,25 @@ var render = function() {
       _c("new-receipt-modal-component", {
         attrs: {
           devices: _vm.devices,
-          "receipt-client-id": _vm.receiptClient.client_id,
-          "receipt-client-name": _vm.receiptClient.client_name,
-          "receipt-client-phone": _vm.receiptClient.client_phone,
-          "receipt-client-email": _vm.receiptClient.client_email,
+          "client-id": _vm.clientId,
+          "client-name": _vm.clientName,
+          "client-phone": _vm.clientPhone,
+          "client-email": _vm.clientEmail,
           "last-client-id": _vm.lastClientId
+        },
+        on: {
+          "update:clientId": function($event) {
+            _vm.clientId = $event
+          },
+          "update:clientName": function($event) {
+            _vm.clientName = $event
+          },
+          "update:clientPhone": function($event) {
+            _vm.clientPhone = $event
+          },
+          "update:clientEmail": function($event) {
+            _vm.clientEmail = $event
+          }
         }
       }),
       _vm._v(" "),
@@ -42330,7 +42182,27 @@ var render = function() {
       _c("new-accessory-modal-component"),
       _vm._v(" "),
       _c("clients-compact-list-modal-component", {
-        attrs: { clients: _vm.clients, "receipt-client": _vm.receiptClient }
+        attrs: {
+          clients: _vm.clients,
+          "client-id": _vm.clientId,
+          "client-name": _vm.clientName,
+          "client-phone": _vm.clientPhone,
+          "client-email": _vm.clientEmail
+        },
+        on: {
+          "update:clientId": function($event) {
+            _vm.clientId = $event
+          },
+          "update:clientName": function($event) {
+            _vm.clientName = $event
+          },
+          "update:clientPhone": function($event) {
+            _vm.clientPhone = $event
+          },
+          "update:clientEmail": function($event) {
+            _vm.clientEmail = $event
+          }
+        }
       })
     ],
     1
