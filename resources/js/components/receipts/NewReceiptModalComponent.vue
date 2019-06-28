@@ -50,15 +50,15 @@
 									<label for="client_id">No. de cliente</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" :value="clientName" @input="$emit('update:clientName', $event.target.value)" id="receipt_client_name" type="text" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientName" v-bind:class="{'valid': validNewReceiptClientName, 'invalid': invalidNewReceiptClientName}" data-length="50" maxlength="50" required>
+									<input placeholder="" :value="clientName" @input="$emit('update:clientName', $event.target.value)" id="receipt_client_name" type="text" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" data-length="50" maxlength="50" required>
 									<label for="client_name">Nombre</label>
 								</div>
 								<div class="input-field col s8">
-									<input placeholder="" :value="clientEmail" @input="$emit('update:clientEmail', $event.target.value)" id="receipt_client_email" type="email" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientEmail" v-bind:class="{'valid': validNewReceiptClientEmail, 'invalid': invalidNewReceiptClientEmail}" data-length="40" maxlength="40">
+									<input placeholder="" :value="clientEmail" @input="$emit('update:clientEmail', $event.target.value)" id="receipt_client_email" type="email" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" data-length="40" maxlength="40">
 									<label for="client_email">E-mail</label>
 								</div>
 								<div class="input-field col s4">
-									<input placeholder="" :value="clientPhone" @input="$emit('update:clientPhone', $event.target.value)" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientPhone" v-bind:class="{'valid': validNewReceiptClientPhone, 'invalid': invalidNewReceiptClientPhone}" data-length="10" minlength="10" maxlength="10">
+									<input placeholder="" :value="clientPhone" @input="$emit('update:clientPhone', $event.target.value)" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" data-length="10" minlength="10" maxlength="10">
 									<label for="client_phone">Teléfono</label>
 								</div>
 							</form>
@@ -104,7 +104,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button v-on:click="resetNewReceiptInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+			<button v-on:click="resetInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
 			<button v-on:click="saveReceipt" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
 				<b>Registrar</b>
 			</button>
@@ -169,109 +169,119 @@
 	    data(){
 	    	return {
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-				newReceiptClientId:0,
-				newReceiptClientName:null,
-				newReceiptClientEmail:null,
-				newReceiptClientPhone:null,
-
-				validNewReceiptClientName: false,
-				invalidNewReceiptClientName: false,
-				validNewReceiptClientPhone: false,
-				invalidNewReceiptClientPhone: false,
-				validNewReceiptClientEmail: false,
-				invalidNewReceiptClientEmail: false,
+				validClientName: false,
+				invalidClientName: false,
+				validClientPhone: false,
+				invalidClientPhone: false,
+				validClientEmail: false,
+				invalidClientEmail: false,
 				newClientToggle: false
 	    	}
 		},
 
 	    computed: {
 	    	validateForm: function(e) {
-	    		if(this.devices.length==0 || !this.validNewReceiptClientName || this.invalidNewReceiptClientPhone || this.invalidNewReceiptClientEmail){
-	    			return true;
+				if(this.newClientToggle){
+					if(this.devices.length==0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail){
+						return true;
+					}
+				}
+				else{
+					if(this.devices.length==0 || this.clientName==null){
+						return true;
+					}
 				}
 			}
 	    },
 
 	    methods: {
 	    	saveReceipt: function(){
-				
-	    		// var newReceipt = {
-		    	// 	receipt_id: '',
-		    	// 	receipt_name: this.newReceiptName,
-		    	// 	receipt_phone: this.receiptClientPhone,
-		    	// 	receipt_email: this.receiptClientEmail
-		    	// };
+				if(this.newClientToggle){
+					this.saveClient();
+				}
 
-	    		// axios.post('http://localhost:8000/receipts',{
-	    		// 	receipt_name: this.newReceiptName,
-	    		// 	receipt_phone: this.receiptClientPhone,
-	    		// 	receipt_email: this.receiptClientEmail
-	    		// })
-	    		// .then((res)=>{newReceipt.receipt_id = res.data.receipt_id})
-	    		// .catch(function(err){
-	    		// 	console.log(err);
-	    		// });
+	    		axios.post('http://localhost:8000/receipts',{
+	    			receipt_client_id: this.clientId,
+	    		})
+	    		.then((res)=>{newReceipt.receipt_id = res.data.receipt_id})
+	    		.catch(function(err){
+	    			console.log(err);
+	    		});
 
 	    		// this.$parent.receipts.push(newReceipt);
 	    		// this.$parent.forceRerender();
-	    		// $('#newReceiptModal').modal('close');
-	    	},
+	    		$('#newReceiptModal').modal('close');
+			},
+			
+			saveClient: function() {
+				axios.post('http://localhost:8000/clients',{
+					client_name: this.clientName,
+					client_phone: this.clientPhone,
+					client_email: this.clientEmail
+				})
+				.then((res)=>{
+					console.log("Cliente registrado");
+				})
+				.catch(function(err){
+					console.log(err);
+				});
+			},
 
 	    	validateReceiptClientName: function(e) {
-	    		if(!this.newReceiptClientName){
-	    			this.validNewReceiptClientName = false;
-	    			this.invalidNewReceiptClientName = true;
+	    		if(!this.clientName){
+	    			this.validClientName = false;
+	    			this.invalidClientName = true;
 	    			$('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
 	    		}
 	    		else{
-	    			this.validNewReceiptClientName = true;
-	    			this.invalidNewReceiptClientName = false;
+	    			this.validClientName = true;
+	    			this.invalidClientName = false;
 	    		}
     		},
 
     		validateReceiptClientPhone: function(e) {
     			const PHONE_REGEXP = /^[0-9]*$/gm;
 
-    			if(this.newReceiptClientPhone ==null || this.newReceiptClientPhone.length == 0){
-    				this.validNewReceiptClientPhone = false;
-	    			this.invalidNewReceiptClientPhone = false;
+    			if(this.clientPhone ==null || this.clientPhone.length == 0){
+    				this.validClientPhone = false;
+	    			this.invalidClientPhone = false;
     			}
-    			else if(!PHONE_REGEXP.test(this.newReceiptClientPhone) || this.newReceiptClientPhone.length < 10){
-    				this.validNewReceiptClientPhone = false;
-	    			this.invalidNewReceiptClientPhone = true;
+    			else if(!PHONE_REGEXP.test(this.clientPhone) || this.clientPhone.length < 10){
+    				this.validClientPhone = false;
+	    			this.invalidClientPhone = true;
     				$('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
     			}
     			else{
-    				this.validNewReceiptClientPhone = true;
-	    			this.invalidNewReceiptClientPhone = false;
+    				this.validClientPhone = true;
+	    			this.invalidClientPhone = false;
     			}
     		},
 
     		validateReceiptClientEmail: function(e) {
     			const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    			if(this.newReceiptClientEmail ==null || this.newReceiptClientEmail.length == 0){
-    				this.validNewReceiptClientEmail = false;
-	    			this.invalidNewReceiptClientEmail = false;
+    			if(this.clientEmail ==null || this.clientEmail.length == 0){
+    				this.validClientEmail = false;
+	    			this.invalidClientEmail = false;
     			}
-    			else if(!MAIL_REGEXP.test(this.newReceiptClientEmail)){
-    				this.validNewReceiptClientEmail = false;
-	    			this.invalidNewReceiptClientEmail = true;
+    			else if(!MAIL_REGEXP.test(this.clientEmail)){
+    				this.validClientEmail = false;
+	    			this.invalidClientEmail = true;
     				$('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
     			}
     			else{
-    				this.validNewReceiptClientEmail = true;
-	    			this.invalidNewReceiptClientEmail = false;
+    				this.validClientEmail = true;
+	    			this.invalidClientEmail = false;
     			}
     		},
 
-    		resetNewReceiptInputs: function (e) {
-    			this.validNewReceiptClientName= false;
-    			this.invalidNewReceiptClientName=false;
-    			this.validNewReceiptClientPhone=false;
-    			this.invalidNewReceiptClientPhone=false;
-    			this.validNewReceiptClientEmail=false;
-    			this.invalidNewReceiptClientEmail=false;
+    		resetInputs: function (e) {
+    			this.validClientName= false;
+    			this.invalidClientName=false;
+    			this.validClientPhone=false;
+    			this.invalidClientPhone=false;
+    			this.validClientEmail=false;
+    			this.invalidClientEmail=false;
 			},
 			
 			showClientsList: function () {
@@ -283,23 +293,23 @@
 
 			newClientToggleHandler: function () {
 				if(!this.newClientToggle){
-					this.newReceiptClientId=this.lastClientId;
-					this.newReceiptClientName= null;
-					this.newReceiptClientEmail= null;
-					this.newReceiptClientPhone= null;
+					this.$emit('update:clientId', this.lastClientId);
+					this.$emit('update:clientName', null);
+					this.$emit('update:clientEmail', null);
+					this.$emit('update:clientPhone', null);
 				}
 				else{
-					this.newReceiptClientId=0;
-					this.newReceiptClientName= '';
-					this.newReceiptClientEmail= '';
-					this.newReceiptClientPhone= '';
+					this.$emit('update:clientId', 0);
+					this.$emit('update:clientName', null);
+					this.$emit('update:clientEmail', null);
+					this.$emit('update:clientPhone', null);
 				}
-				this.validNewReceiptClientName= false;
-				this.invalidNewReceiptClientName=false;
-				this.validNewReceiptClientPhone=false;
-				this.invalidNewReceiptClientPhone=false;
-				this.validNewReceiptClientEmail=false;
-				this.invalidNewReceiptClientEmail=false;
+				this.validClientName= false;
+				this.invalidClientName=false;
+				this.validClientPhone=false;
+				this.invalidClientPhone=false;
+				this.validClientEmail=false;
+				this.invalidClientEmail=false;
 			},
 	    }
 	}

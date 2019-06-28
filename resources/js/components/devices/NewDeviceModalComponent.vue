@@ -94,7 +94,7 @@
 
 	    computed: {
 	    	validateForm: function(e) {
-	    		if(!this.validDeviceName || this.invalidDeviceTroubleDescription){
+	    		if(!this.validDeviceName || !this.validDeviceTroubleDescription){
 	    			return true;
 	    		}
 	    	}
@@ -152,9 +152,10 @@
     		},
 
     		validateDeviceTroubleDescription: function(e) {
-    			if(this.newDeviceTroubleDescription ==null || this.newDeviceTroubleDescription.length == 0){
+    			if(!this.newDeviceTroubleDescription){
     				this.validDeviceTroubleDescription = false;
-	    			this.invalidDeviceTroubleDescription = false;
+					this.invalidDeviceTroubleDescription = true;
+					$('.device_trouble_description_helper').attr('data-error', 'Este campo no puede quedar vacío.');
     			}
     			else{
     				this.validDeviceTroubleDescription = true;
