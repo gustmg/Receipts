@@ -3014,6 +3014,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     lastClientId: {
       type: Number
+    },
+    receiptId: {
+      type: Number
+    },
+    worker: {
+      type: Object
     }
   },
   data: function data() {
@@ -3039,10 +3045,61 @@ __webpack_require__.r(__webpack_exports__);
           return true;
         }
       }
+    },
+    date: function date() {
+      var d = new Date();
+
+      switch (d.getMonth()) {
+        case 0:
+          return "Enero" + d.getDate() + ", " + d.getFullYear();
+
+        case 1:
+          return "Febrero" + d.getDate() + ", " + d.getFullYear();
+
+        case 2:
+          return "Marzo" + d.getDate() + ", " + d.getFullYear();
+
+        case 3:
+          return "Abril" + d.getDate() + ", " + d.getFullYear();
+
+        case 4:
+          return "Mayo" + d.getDate() + ", " + d.getFullYear();
+
+        case 5:
+          return "Junio" + d.getDate() + ", " + d.getFullYear();
+
+        case 6:
+          return "Julio " + d.getDate() + ", " + d.getFullYear();
+
+        case 7:
+          return "Agosto" + d.getDate() + ", " + d.getFullYear();
+
+        case 8:
+          return "Septiembre" + d.getDate() + ", " + d.getFullYear();
+
+        case 9:
+          return "Octubre" + d.getDate() + ", " + d.getFullYear();
+
+        case 10:
+          return "Noviembre" + d.getDate() + ", " + d.getFullYear();
+
+        case 11:
+          return "Diciembre" + d.getDate() + ", " + d.getFullYear();
+
+        default:
+          break;
+      }
     }
   },
   methods: {
     saveReceipt: function saveReceipt() {
+      var newReceipt = {
+        receipt_id: 0,
+        receipt_date: null,
+        receipt_worker_id: 0,
+        receipt_client_id: 0
+      };
+
       if (this.newClientToggle) {
         this.saveClient();
       }
@@ -3051,6 +3108,9 @@ __webpack_require__.r(__webpack_exports__);
         receipt_client_id: this.clientId
       }).then(function (res) {
         newReceipt.receipt_id = res.data.receipt_id;
+        newReceipt.receipt_date = res.data.receipt_date;
+        newReceipt.receipt_worker_id = res.data.receipt_worker_id;
+        newReceipt.receipt_client_id = res.data.receipt_client_id;
       }).catch(function (err) {
         console.log(err);
       }); // this.$parent.receipts.push(newReceipt);
@@ -3210,6 +3270,9 @@ __webpack_require__.r(__webpack_exports__);
     clients: {
       type: Array
     },
+    worker: {
+      type: Object
+    },
     searchValue: String
   },
   data: function data() {
@@ -3227,6 +3290,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     console.log('Receipts component mounted');
+  },
+  computed: {
+    lastReceiptId: function lastReceiptId() {
+      if (this.receipts.length > 0) {
+        return this.receipts[this.receipts.length - 1].receipt_id + 1;
+      } else {
+        return 1;
+      }
+    }
   },
   methods: {
     forceRerender: function forceRerender() {
@@ -41682,11 +41754,33 @@ var render = function() {
             staticStyle: { "margin-bottom": "0 !important" }
           },
           [
-            _vm._m(0),
+            _c("div", { staticClass: "col m5" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _vm._m(1),
+                _vm._v(" "),
+                _c("div", { staticClass: "col s7" }, [
+                  _c("span", [_vm._v(_vm._s(_vm.receiptId))])
+                ]),
+                _vm._v(" "),
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "col s7" }, [
+                  _c("span", [_vm._v(_vm._s(_vm.date))])
+                ]),
+                _vm._v(" "),
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "col s7" }, [
+                  _c("span", [_vm._v(_vm._s(_vm.worker.name))])
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "col m7" }, [
               _c("div", { staticClass: "row" }, [
-                _vm._m(1),
+                _vm._m(4),
                 _vm._v(" "),
                 _c("div", { staticClass: "col m12" }, [
                   _c("div", { staticClass: "switch" }, [
@@ -41863,7 +41957,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col m12" }, [
-              _vm._m(2),
+              _vm._m(5),
               _vm._v(" "),
               _c(
                 "div",
@@ -41921,7 +42015,7 @@ var render = function() {
                                 ]),
                                 _c("br"),
                                 _vm._v(" "),
-                                _vm._m(3, true),
+                                _vm._m(6, true),
                                 _vm._v(" "),
                                 _c(
                                   "ul",
@@ -42012,32 +42106,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col m5" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col m12" }, [
-          _c("span", [_c("b", [_vm._v("DATOS DE RECEPCIÓN")])])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col s5" }, [
-          _c("span", [_c("b", [_vm._v("Folio")])])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col s7" }, [_c("span", [_vm._v("0001")])]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col s5" }, [
-          _c("span", [_c("b", [_vm._v("Fecha")])])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col s7" }, [
-          _c("span", [_vm._v("Junio 13, 2019")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col s5" }, [
-          _c("span", [_c("b", [_vm._v("Creada por")])])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col s7" }, [_c("span", [_vm._v("Gustavo")])])
-      ])
+    return _c("div", { staticClass: "col m12" }, [
+      _c("span", [_c("b", [_vm._v("DATOS DE RECEPCIÓN")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col s5" }, [
+      _c("span", [_c("b", [_vm._v("Folio")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col s5" }, [
+      _c("span", [_c("b", [_vm._v("Fecha")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col s5" }, [
+      _c("span", [_c("b", [_vm._v("Creada por")])])
     ])
   },
   function() {
@@ -42160,6 +42254,8 @@ var render = function() {
       _vm._v(" "),
       _c("new-receipt-modal-component", {
         attrs: {
+          "receipt-id": _vm.lastReceiptId,
+          worker: _vm.worker,
           devices: _vm.devices,
           "client-id": _vm.clientId,
           "client-name": _vm.clientName,

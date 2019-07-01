@@ -12,19 +12,19 @@
 							<span><b>Folio</b></span>
 						</div>
 						<div class="col s7">
-							<span>0001</span>
+							<span>{{receiptId}}</span>
 						</div>
 						<div class="col s5">
 							<span><b>Fecha</b></span>
 						</div>
 						<div class="col s7">
-							<span>Junio 13, 2019</span>
+							<span>{{date}}</span>
 						</div>
 						<div class="col s5">
 							<span><b>Creada por</b></span>
 						</div>
 						<div class="col s7">
-							<span>Gustavo</span>
+							<span>{{worker.name}}</span>
 						</div>
 					</div>
 				</div>
@@ -163,6 +163,14 @@
 
 			lastClientId: {
 				type: Number
+			},
+
+			receiptId: {
+				type: Number
+			},
+
+			worker: {
+				type: Object
 			}
 		},
 
@@ -191,11 +199,52 @@
 						return true;
 					}
 				}
+			},
+
+			date: function() {
+				var d = new Date();
+
+				switch (d.getMonth()) {
+					case 0:
+						return "Enero"+d.getDate()+", "+d.getFullYear();
+					case 1:
+						return "Febrero"+d.getDate()+", "+d.getFullYear();
+					case 2:
+						return "Marzo"+d.getDate()+", "+d.getFullYear();
+					case 3:
+						return "Abril"+d.getDate()+", "+d.getFullYear();
+					case 4:
+						return "Mayo"+d.getDate()+", "+d.getFullYear();
+					case 5:
+						return "Junio"+d.getDate()+", "+d.getFullYear();
+					case 6:
+						return "Julio "+d.getDate()+", "+d.getFullYear();
+					case 7:
+						return "Agosto"+d.getDate()+", "+d.getFullYear();
+					case 8:
+						return "Septiembre"+d.getDate()+", "+d.getFullYear();
+					case 9:
+						return "Octubre"+d.getDate()+", "+d.getFullYear();
+					case 10:
+						return "Noviembre"+d.getDate()+", "+d.getFullYear();
+					case 11:
+						return "Diciembre"+d.getDate()+", "+d.getFullYear();
+					default:
+						break;
+				}
 			}
 	    },
 
 	    methods: {
 	    	saveReceipt: function(){
+				var newReceipt = {
+					receipt_id : 0,
+					receipt_date : null,
+					receipt_worker_id : 0,
+					receipt_client_id : 0
+
+				};
+
 				if(this.newClientToggle){
 					this.saveClient();
 				}
@@ -203,7 +252,12 @@
 	    		axios.post('http://localhost:8000/receipts',{
 	    			receipt_client_id: this.clientId,
 	    		})
-	    		.then((res)=>{newReceipt.receipt_id = res.data.receipt_id})
+	    		.then((res)=>{
+					newReceipt.receipt_id = res.data.receipt_id;
+					newReceipt.receipt_date = res.data.receipt_date;
+					newReceipt.receipt_worker_id = res.data.receipt_worker_id;
+					newReceipt.receipt_client_id = res.data.receipt_client_id;
+				})
 	    		.catch(function(err){
 	    			console.log(err);
 	    		});

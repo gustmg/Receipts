@@ -24,16 +24,6 @@ class ReceiptController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -41,7 +31,20 @@ class ReceiptController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->ajax()){
+            $receipt=new Receipt;
+            $receipt->receipt_worker_id=Auth::id();
+            $receipt->receipt_client_id=$request->client_id;
+            $receipt->save();
+
+            return response()->json([
+                "message" => "Recepción creada correctamente.",
+                "receipt_id" => $receipt->receipt_id,
+                "receipt_date" => $receipt->receipt_date,
+                "receipt_worker_id" => $receipt->receipt_worker_id,
+                "receipt_client_id" => $receipt->receipt_client_id
+            ],200);
+        }
     }
 
     /**

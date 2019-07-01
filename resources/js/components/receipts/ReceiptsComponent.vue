@@ -3,7 +3,7 @@
         <receipt-search-bar-component :search-value.sync="searchReceipt"></receipt-search-bar-component>
         <receipts-list-component :receipts="receipts" :key="componentKey"></receipts-list-component>
         <new-receipt-button-component></new-receipt-button-component>
-        <new-receipt-modal-component :devices="devices" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail" :last-client-id="lastClientId"></new-receipt-modal-component>
+        <new-receipt-modal-component :receipt-id="lastReceiptId" :worker="worker" :devices="devices" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail" :last-client-id="lastClientId"></new-receipt-modal-component>
         <new-device-modal-component :accessories="accessories" :accessoryKey="componentAccessoryKey"></new-device-modal-component>
         <new-accessory-modal-component></new-accessory-modal-component>
         <clients-compact-list-modal-component :clients="clients" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail"></clients-compact-list-modal-component>
@@ -23,6 +23,10 @@
 
             clients:{
                 type: Array
+            },
+
+            worker: {
+                type: Object
             },
             
             searchValue: String
@@ -44,6 +48,17 @@
 
         mounted() {
             console.log('Receipts component mounted');
+        },
+
+        computed: {
+            lastReceiptId: function() {
+                if(this.receipts.length > 0){
+                    return this.receipts[this.receipts.length - 1].receipt_id + 1;
+                }
+                else{
+                    return 1;
+                }
+            }
         },
 
         methods: {
