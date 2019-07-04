@@ -16,7 +16,7 @@ class CreateDevicesTable extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->increments('device_id');
             $table->string('device_name');
-            $table->string('device_serial_number');
+            $table->string('device_serial_number')->nullable();
             $table->mediumText('device_trouble_description');
             $table->unsignedInteger('device_service_status_id');
             $table->unsignedInteger('device_receipt_id');

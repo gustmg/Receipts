@@ -8,15 +8,16 @@ class Device extends Model
 {
     protected $table = 'devices';
     protected $primaryKey = 'device_id';
+    protected $with = ['accessories'];
 
     public function receipts()
     {
     	return $this->belongsToMany('App\Receipt');
     }
 
-    public function accesories()
+    public function accessories()
     {
-    	return $this->belongsToMany('App\Accesory');
+    	return $this->hasMany('App\Accessory', 'accessory_device_id');
     }
 
     public function diagnostics()

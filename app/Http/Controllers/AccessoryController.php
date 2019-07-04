@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Receipt;
-use App\Service;
-use App\Client;
-use View;
-use Auth;
+use App\Accessory;
 
-class ReceiptController extends Controller
+class AccessoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +14,17 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        $receipts=Receipt::latest()->get();
-        $services=Service::all();
-        $clients=Client::all();
-        return View::make('receipts.index', ['receipts'=>$receipts, 'services'=>$services, 'clients'=>$clients]);
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -33,17 +36,14 @@ class ReceiptController extends Controller
     public function store(Request $request)
     {
         if($request->ajax()){
-            $receipt=new Receipt;
-            $receipt->receipt_worker_id=Auth::id();
-            $receipt->receipt_client_id=$request->receipt_client_id;
-            $receipt->save();
+            $accessory=new Accessory;
+            $accessory->accessory_name=$request->accessory_name;
+            $accessory->accessory_serial_number=$request->accessory_serial_number;
+            $accessory->accessory_device_id=$request->accessory_device_id;
+            $accessory->save();
 
             return response()->json([
-                "message" => "Recepción creada correctamente.",
-                "receipt_id" => $receipt->receipt_id,
-                "receipt_date" => $receipt->receipt_date,
-                "receipt_worker_id" => $receipt->receipt_worker_id,
-                "receipt_client_id" => $receipt->receipt_client_id
+                "message" => "Accesorio registrado correctamente."
             ],200);
         }
     }

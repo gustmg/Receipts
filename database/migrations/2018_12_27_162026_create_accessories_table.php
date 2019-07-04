@@ -16,8 +16,11 @@ class CreateAccessoriesTable extends Migration
         Schema::create('accessories', function (Blueprint $table) {
             $table->increments('accessory_id');
             $table->string('accessory_name');
-            $table->string('accessory_serial_number');
+            $table->string('accessory_serial_number')->nullable();
+            $table->unsignedInteger('accessory_device_id');
             $table->timestamps();
+
+            $table->foreign('accessory_device_id')->references('device_id')->on('devices');
         });
     }
 

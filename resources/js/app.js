@@ -47,6 +47,7 @@ Vue.component('update-receipt-modal-component', require('./components/receipts/U
 
 Vue.component('new-device-modal-component', require('./components/devices/NewDeviceModalComponent.vue').default);
 Vue.component('new-device-button-component', require('./components/devices/NewDeviceButtonComponent.vue').default);
+Vue.component('devices-list-component', require('./components/devices/DevicesListComponent.vue').default);
 
 Vue.component('new-accessory-modal-component', require('./components/accessories/NewAccessoryModalComponent.vue').default);
 Vue.component('new-accessory-button-component', require('./components/accessories/NewAccessoryButtonComponent.vue').default);

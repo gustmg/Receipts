@@ -18,6 +18,7 @@ class CreateReceiptsTable extends Migration
             $table->timestamp('receipt_date');
             $table->unsignedInteger('receipt_worker_id');
             $table->unsignedInteger('receipt_client_id');
+            $table->timestamps();
 
             $table->foreign('receipt_worker_id')->references('id')->on('users');
             $table->foreign('receipt_client_id')->references('client_id')->on('clients');

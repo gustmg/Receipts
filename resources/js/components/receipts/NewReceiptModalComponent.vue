@@ -253,10 +253,13 @@
 	    			receipt_client_id: this.clientId,
 	    		})
 	    		.then((res)=>{
-					newReceipt.receipt_id = res.data.receipt_id;
-					newReceipt.receipt_date = res.data.receipt_date;
-					newReceipt.receipt_worker_id = res.data.receipt_worker_id;
-					newReceipt.receipt_client_id = res.data.receipt_client_id;
+					// newReceipt.receipt_id = res.data.receipt_id;
+					// newReceipt.receipt_date = res.data.receipt_date;
+					// newReceipt.receipt_worker_id = res.data.receipt_worker_id;
+					// newReceipt.receipt_client_id = res.data.receipt_client_id;
+					
+					this.saveDevices(res.data.receipt_id);
+					
 				})
 	    		.catch(function(err){
 	    			console.log(err);
@@ -278,6 +281,40 @@
 				})
 				.catch(function(err){
 					console.log(err);
+				});
+			},
+
+			saveDevices: function (receipt_id) {
+				this.devices.forEach(device => {
+					axios.post('http://localhost:8000/devices',{
+						device_name: device.device_name,
+						device_serial_number: device.device_serial_number,
+						device_trouble_description: device.device_trouble_description,
+						device_receipt_id: receipt_id
+					})
+					.then((res)=>{
+						// console.log("Equipo registrado");
+						this.saveAccessories(res.data.device_id, device.device_accessories);
+					})
+					.catch(function(err){
+						console.log(err);
+					});
+				});
+			},
+
+			saveAccessories: function (device_id, accessories) {
+				accessories.forEach(accessory => {
+					axios.post('http://localhost:8000/accessories',{
+						accessory_name: accessory.accessory_name,
+						accessory_serial_number: accessory.accessory_serial_number,
+						accessory_device_id: device_id
+					})
+					.then((res)=>{
+						console.log("Accessorios de equipo registrados");
+					})
+					.catch(function(err){
+						console.log(err);
+					});
 				});
 			},
 

@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Receipt;
-use App\Service;
-use App\Client;
-use View;
-use Auth;
+use App\Device;
 
-class ReceiptController extends Controller
+class DeviceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +14,17 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        $receipts=Receipt::latest()->get();
-        $services=Service::all();
-        $clients=Client::all();
-        return View::make('receipts.index', ['receipts'=>$receipts, 'services'=>$services, 'clients'=>$clients]);
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -33,17 +36,17 @@ class ReceiptController extends Controller
     public function store(Request $request)
     {
         if($request->ajax()){
-            $receipt=new Receipt;
-            $receipt->receipt_worker_id=Auth::id();
-            $receipt->receipt_client_id=$request->receipt_client_id;
-            $receipt->save();
+            $device=new Device;
+            $device->device_name=$request->device_name;
+            $device->device_serial_number=$request->device_serial_number;
+            $device->device_trouble_description=$request->device_trouble_description;
+            $device->device_service_status_id=1;
+            $device->device_receipt_id=$request->device_receipt_id;
+            $device->save();
 
             return response()->json([
-                "message" => "Recepción creada correctamente.",
-                "receipt_id" => $receipt->receipt_id,
-                "receipt_date" => $receipt->receipt_date,
-                "receipt_worker_id" => $receipt->receipt_worker_id,
-                "receipt_client_id" => $receipt->receipt_client_id
+                "message" => "Equipo registrado correctamente.",
+                "device_id" => $device->device_id
             ],200);
         }
     }

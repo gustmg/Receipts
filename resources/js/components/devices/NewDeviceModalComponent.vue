@@ -17,7 +17,7 @@
 							<span class="helper-text device_serial_number_helper" data-success="Número de serie validado."></span>
 				        </div>
 				        <div class="input-field col s12 no-vertical-margin">
-							<input placeholder="" id="device_trouble_description" type="email" v-model="newDeviceTroubleDescription" v-on:blur="validateDeviceTroubleDescription" v-bind:class="{'valid': validDeviceTroubleDescription, 'invalid': invalidDeviceTroubleDescription}" data-length="40" maxlength="40">
+							<input placeholder="" id="device_trouble_description" type="email" v-model="newDeviceTroubleDescription" v-on:blur="validateDeviceTroubleDescription" v-bind:class="{'valid': validDeviceTroubleDescription, 'invalid': invalidDeviceTroubleDescription}" data-length="100" maxlength="100">
 							<label for="device_trouble_description" class="valign-wrapper"><i class="material-icons">description</i>&nbsp;&nbsp;Descripción del problema</label>
 							<span class="helper-text device_trouble_description_helper" data-success="Descripción de problema validado."></span>
 				        </div>
@@ -82,7 +82,7 @@
 				newDevice:null,
 	    		newDeviceName: null,
 	    		newDeviceSerialNumber: null,
-	    		newDeviceTroubleDescription: null,
+				newDeviceTroubleDescription: null,
 	    		validDeviceName: false,
 	    		invalidDeviceName: false,
 	    		validDeviceSerialNumber: false,

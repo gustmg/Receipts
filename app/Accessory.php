@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Accesory extends Model
+class Accessory extends Model
 {
-    protected $table = 'accesories';
-    protected $primaryKey = 'accesory_id';
+    protected $table = 'accessories';
+    protected $primaryKey = 'accessory_id';
 
     public function devices()
     {
