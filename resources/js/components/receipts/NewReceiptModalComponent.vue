@@ -104,7 +104,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button v-on:click="resetInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+			<button v-on:click="resetReceipt" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
 			<button v-on:click="saveReceipt" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
 				<b>Registrar</b>
 			</button>
@@ -366,7 +366,14 @@
     			}
     		},
 
-    		resetInputs: function (e) {
+    		resetReceipt: function (e) {
+				this.$emit('update:clientId', 0);
+				this.$emit('update:clientName', null);
+				this.$emit('update:clientEmail', null);
+				this.$emit('update:clientPhone', null);
+
+				this.$parent.resetDevices();
+
     			this.validClientName= false;
     			this.invalidClientName=false;
     			this.validClientPhone=false;

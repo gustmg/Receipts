@@ -16,10 +16,10 @@
                 type: Array
             },
 
-            devices: {
-                type: Array,
-                default: function () { return [] }
-            },
+            // devices: {
+            //     type: Array,
+            //     default: function () { return [] }
+            // },
 
             clients:{
                 type: Array
@@ -41,6 +41,7 @@
                 searchReceipt: '',
                 componentKey: 0,
                 componentAccessoryKey: 0,
+                devices: [],
                 accessories: [],
                 lastClientId: this.clients[this.clients.length - 1].client_id + 1
             }
@@ -70,6 +71,10 @@
             forceAccessoryRerender() {
                 this.componentAccessoryKey += 1;
             },
+
+            resetDevices() {
+                this.devices=[];
+            }
         }
     }
 </script>

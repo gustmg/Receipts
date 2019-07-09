@@ -38,6 +38,14 @@ Vue.component('new-service-modal-component', require('./components/services/NewS
 Vue.component('update-service-modal-component', require('./components/services/UpdateServiceModalComponent.vue').default);
 Vue.component('delete-service-modal-component', require('./components/services/DeleteServiceModalComponent.vue').default);
 
+Vue.component('products-component', require('./components/products/ProductsComponent.vue').default);
+Vue.component('product-search-bar-component', require('./components/products/ProductSearchBarComponent.vue').default);
+Vue.component('products-list-component', require('./components/products/ProductsListComponent.vue').default);
+Vue.component('new-product-button-component', require('./components/products/NewProductButtonComponent.vue').default);
+Vue.component('new-product-modal-component', require('./components/products/NewProductModalComponent.vue').default);
+Vue.component('update-product-modal-component', require('./components/products/UpdateProductModalComponent.vue').default);
+Vue.component('delete-product-modal-component', require('./components/products/DeleteProductModalComponent.vue').default);
+
 Vue.component('receipts-component', require('./components/receipts/ReceiptsComponent.vue').default);
 Vue.component('receipt-search-bar-component', require('./components/receipts/ReceiptSearchBarComponent.vue').default);
 Vue.component('receipts-list-component', require('./components/receipts/ReceiptsListComponent.vue').default);
@@ -51,6 +59,8 @@ Vue.component('devices-list-component', require('./components/devices/DevicesLis
 
 Vue.component('new-accessory-modal-component', require('./components/accessories/NewAccessoryModalComponent.vue').default);
 Vue.component('new-accessory-button-component', require('./components/accessories/NewAccessoryButtonComponent.vue').default);
+
+Vue.component('sales-component', require('./components/sales/SalesComponent.vue').default);
 
 
 /**

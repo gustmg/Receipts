@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-		<div class="col s12 m3" v-show="receipts.length > 0" v-for="(receipt, index) in receipts">
+		<div class="col s12 m3" v-show="receipts.length > 0" v-for="(receipt, index) in filteredReceipts">
 			<div v-on:click="updateReceipt(receipt, index)" class="card hoverable hoverable-card selectable">
 		        <div class="card-content">
 					<span><b>Recepción #{{receipt.receipt_id}}</b></span>
@@ -102,14 +102,13 @@
 		// 	}
 		// },
 
-		// computed: {
-		// 	filteredReceipts: function() {
-		// 		return this.receipts.filter((receipt)=>{
-		// 			return receipt.receipt_name.toLowerCase().indexOf(this.$parent.searchReceipt.toLowerCase()) >= 0;
-		// 			// || receipt.receipt_phone.indexOf(this.searchReceipt) >= 0
-		// 			// || receipt.receipt_email.indexOf(this.searchReceipt) >= 0;
-		// 		});   		
-		// 	}
-		// }
+		computed: {
+			filteredReceipts: function() {
+				return this.receipts.filter((receipt)=>{
+					return receipt.client.client_name.toLowerCase().indexOf(this.$parent.searchReceipt.toLowerCase()) >= 0;
+					// || receipt.receipt_id.indexOf(this.searchReceipt) >= 0;
+				});   		
+			}
+		}
 	}
 </script>
