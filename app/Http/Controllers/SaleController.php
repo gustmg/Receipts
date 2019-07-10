@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Sale;
+use App\Service;
+use App\Product;
+use App\Client;
+use View;
+use Auth;
 
 class SaleController extends Controller
 {
@@ -17,7 +23,7 @@ class SaleController extends Controller
         $services=Service::all();
         $products=Product::all();
         $clients=Client::all();
-        return View::make('sales.index', ['sales'=>$sales, 'services'=>$services, 'clients'=>$clients]);
+        return View::make('sales.index', ['sales'=>$sales, 'services'=>$services, 'products'=>$products, 'clients'=>$clients]);
     }
 
     /**

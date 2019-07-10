@@ -26,6 +26,7 @@
         <ul id="slide-out" class="sidenav">
             <li><a href="#!"><i class="material-icons">home</i>Inicio</a></li>
             <li><a href="{{route('receipts.index')}}"><i class="material-icons">assignment</i>Recepciones</a></li>
+            <li><a href="{{route('sales.index')}}"><i class="material-icons">local_grocery_store</i>Punto de Venta</a></li>
             <li><a href="{{route('clients.index')}}"><i class="material-icons">person</i>Clientes</a></li>
             <li><a href="{{route('services.index')}}"><i class="material-icons">layers</i>Servicios</a></li>
             <li><a href="{{route('products.index')}}"><i class="material-icons">local_offer</i>Productos</a></li>
