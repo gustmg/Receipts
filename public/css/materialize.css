@@ -6570,9 +6570,9 @@ body.keyboard-focused .select-dropdown.dropdown-content li:focus {
 }
 
 .select-dropdown li img {
-  height: 40px;
-  width: 40px;
-  margin: 5px 15px;
+  height: 24px;
+  width: 24px;
+  margin: 15px 15px;
   float: right;
 }
 

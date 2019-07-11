@@ -1768,7 +1768,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('New accessory button component mounted');
@@ -4264,6 +4263,122 @@ __webpack_require__.r(__webpack_exports__);
       });
       $('#deleteReceiptModal').modal('open');
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['search']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems);
+    });
+  },
+  data: function data() {
+    return {
+      searchProduct: '',
+      componentKey: 0
+    };
   }
 });
 
@@ -44382,6 +44497,365 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row", staticStyle: { "margin-bottom": "0" } },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "card hoverable col s12 m12",
+          staticStyle: { float: "none" }
+        },
+        [
+          _c("div", { staticClass: "input-field valign-wrapper" }, [
+            _c("i", { staticClass: "material-icons prefix" }, [
+              _vm._v("add_shopping_cart")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              staticStyle: {
+                "border-bottom": "none!important",
+                "box-shadow": "none!important",
+                "margin-bottom": "0"
+              },
+              attrs: {
+                placeholder: "Agregar servicio o producto",
+                type: "text"
+              },
+              domProps: { value: _vm.search },
+              on: {
+                input: function($event) {
+                  _vm.$emit("update:searchValue", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      {
+        staticClass: "col m9",
+        staticStyle: { "padding-left": "24px !important" }
+      },
+      [
+        _c("sale-search-bar-component", {
+          attrs: { "search-value": _vm.searchProduct },
+          on: {
+            "update:searchValue": function($event) {
+              _vm.searchProduct = $event
+            }
+          }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "col m3",
+        staticStyle: {
+          "padding-left": "24px !important",
+          "padding-top": "8px !important"
+        }
+      },
+      [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col m12" }, [
+            _c("b", [_vm._v("Información de venta")]),
+            _c("br"),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col m12" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col m12" }, [
+                    _c("div", { staticClass: "switch" }, [
+                      _c("label", [
+                        _c("b", [_vm._v("¿Cliente nuevo?")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newClientToggle,
+                              expression: "newClientToggle"
+                            }
+                          ],
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            checked: Array.isArray(_vm.newClientToggle)
+                              ? _vm._i(_vm.newClientToggle, null) > -1
+                              : _vm.newClientToggle
+                          },
+                          on: {
+                            click: _vm.newClientToggleHandler,
+                            change: function($event) {
+                              var $$a = _vm.newClientToggle,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    (_vm.newClientToggle = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.newClientToggle = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.newClientToggle = $$c
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "lever" })
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn waves-effect waves-light",
+                          attrs: { disabled: _vm.newClientToggle == true },
+                          on: { click: _vm.showClientsList }
+                        },
+                        [_vm._v("Buscar cliente")]
+                      )
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col m12" }, [
+                    _c("form", { staticClass: "row" }, [
+                      _c("div", { staticClass: "input-field col s4" }, [
+                        _c("input", {
+                          attrs: {
+                            placeholder: "",
+                            id: "receipt_client_id",
+                            type: "text",
+                            disabled: ""
+                          },
+                          domProps: { value: _vm.clientId },
+                          on: {
+                            input: function($event) {
+                              _vm.$emit("update:clientId", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "client_id" } }, [
+                          _vm._v("No. de cliente")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s8" }, [
+                        _c("input", {
+                          class: {
+                            valid: _vm.validClientName,
+                            invalid: _vm.invalidClientName
+                          },
+                          attrs: {
+                            placeholder: "",
+                            id: "receipt_client_name",
+                            type: "text",
+                            disabled: _vm.newClientToggle == false,
+                            "data-length": "50",
+                            maxlength: "50",
+                            required: ""
+                          },
+                          domProps: { value: _vm.clientName },
+                          on: {
+                            input: function($event) {
+                              _vm.$emit(
+                                "update:clientName",
+                                $event.target.value
+                              )
+                            },
+                            blur: _vm.validateReceiptClientName
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "client_name" } }, [
+                          _vm._v("Nombre")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s8" }, [
+                        _c("input", {
+                          class: {
+                            valid: _vm.validClientEmail,
+                            invalid: _vm.invalidClientEmail
+                          },
+                          attrs: {
+                            placeholder: "",
+                            id: "receipt_client_email",
+                            type: "email",
+                            disabled: _vm.newClientToggle == false,
+                            "data-length": "40",
+                            maxlength: "40"
+                          },
+                          domProps: { value: _vm.clientEmail },
+                          on: {
+                            input: function($event) {
+                              _vm.$emit(
+                                "update:clientEmail",
+                                $event.target.value
+                              )
+                            },
+                            blur: _vm.validateReceiptClientEmail
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "client_email" } }, [
+                          _vm._v("E-mail")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-field col s4" }, [
+                        _c("input", {
+                          class: {
+                            valid: _vm.validClientPhone,
+                            invalid: _vm.invalidClientPhone
+                          },
+                          attrs: {
+                            placeholder: "",
+                            id: "receipt_client_phone",
+                            type: "tel",
+                            disabled: _vm.newClientToggle == false,
+                            "data-length": "10",
+                            minlength: "10",
+                            maxlength: "10"
+                          },
+                          domProps: { value: _vm.clientPhone },
+                          on: {
+                            input: function($event) {
+                              _vm.$emit(
+                                "update:clientPhone",
+                                $event.target.value
+                              )
+                            },
+                            blur: _vm.validateReceiptClientPhone
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: "client_phone" } }, [
+                          _vm._v("Teléfono")
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ])
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s12 m12" }, [
+      _c("select", { staticClass: "icons" }, [
+        _c(
+          "option",
+          {
+            attrs: {
+              value: "",
+              "data-icon": "svg/baseline-attach_money-24px.svg"
+            }
+          },
+          [_vm._v("Efectivo")]
+        ),
+        _vm._v(" "),
+        _c(
+          "option",
+          {
+            attrs: { value: "", "data-icon": "svg/baseline-payment-24px.svg" }
+          },
+          [_vm._v("Tarjeta de crédito / débito")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Forma de pago")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col m8 switch" }, [
+      _c("label", [
+        _vm._v(
+          "\n                          Venta facturada\n                          "
+        ),
+        _c("input", { attrs: { type: "checkbox" } }),
+        _vm._v(" "),
+        _c("span", { staticClass: "lever" })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/services/DeleteServiceModalComponent.vue?vue&type=template&id=040b0418&":
 /*!***************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/services/DeleteServiceModalComponent.vue?vue&type=template&id=040b0418& ***!
@@ -56463,6 +56937,7 @@ Vue.component('devices-list-component', __webpack_require__(/*! ./components/dev
 Vue.component('new-accessory-modal-component', __webpack_require__(/*! ./components/accessories/NewAccessoryModalComponent.vue */ "./resources/js/components/accessories/NewAccessoryModalComponent.vue").default);
 Vue.component('new-accessory-button-component', __webpack_require__(/*! ./components/accessories/NewAccessoryButtonComponent.vue */ "./resources/js/components/accessories/NewAccessoryButtonComponent.vue").default);
 Vue.component('sales-component', __webpack_require__(/*! ./components/sales/SalesComponent.vue */ "./resources/js/components/sales/SalesComponent.vue").default);
+Vue.component('sale-search-bar-component', __webpack_require__(/*! ./components/sales/SaleSearchBarComponent.vue */ "./resources/js/components/sales/SaleSearchBarComponent.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -58561,6 +59036,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/sales/SaleSearchBarComponent.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/sales/SaleSearchBarComponent.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SaleSearchBarComponent_vue_vue_type_template_id_307250e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SaleSearchBarComponent.vue?vue&type=template&id=307250e7& */ "./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7&");
+/* harmony import */ var _SaleSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SaleSearchBarComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SaleSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SaleSearchBarComponent_vue_vue_type_template_id_307250e7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SaleSearchBarComponent_vue_vue_type_template_id_307250e7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/sales/SaleSearchBarComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SaleSearchBarComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleSearchBarComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleSearchBarComponent_vue_vue_type_template_id_307250e7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SaleSearchBarComponent.vue?vue&type=template&id=307250e7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleSearchBarComponent_vue_vue_type_template_id_307250e7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleSearchBarComponent_vue_vue_type_template_id_307250e7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/sales/SalesComponent.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/sales/SalesComponent.vue ***!
@@ -58570,17 +59114,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-var render, staticRenderFns
-var script = {}
+/* harmony import */ var _SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=template&id=705720c2& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2&");
+/* harmony import */ var _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
-  script,
-  render,
-  staticRenderFns,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -58588,8 +59135,42 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   
 )
 
+/* hot reload */
+if (false) { var api; }
 component.options.__file = "resources/js/components/sales/SalesComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SalesComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SalesComponent.vue?vue&type=template&id=705720c2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

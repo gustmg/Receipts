@@ -3,7 +3,6 @@
         <button v-on:click="newAccessory" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">add</i></button>
     </div>
 </template>
-<style></style>
 <script>
 	export default {
 		mounted() {

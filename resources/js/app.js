@@ -61,7 +61,7 @@ Vue.component('new-accessory-modal-component', require('./components/accessories
 Vue.component('new-accessory-button-component', require('./components/accessories/NewAccessoryButtonComponent.vue').default);
 
 Vue.component('sales-component', require('./components/sales/SalesComponent.vue').default);
-
+Vue.component('sale-search-bar-component', require('./components/sales/SaleSearchBarComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
