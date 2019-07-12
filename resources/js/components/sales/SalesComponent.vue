@@ -1,13 +1,43 @@
 <template>
     <div class="row">
-        <div class="col m9" style="padding-left:24px !important;">
+        <div class="col m8" style="padding-left:24px !important;">
             <sale-search-bar-component :search-value.sync="searchProduct"></sale-search-bar-component>
+            
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:10%;">Cantidad</th>
+                    <th style="width:60%;">Descripción</th>
+                    <th style="width:15%;">Precio Unitario</th>
+                    <th style="width:15%;">Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="input-field">
+                            <input value="0" type="number">
+                        </div>
+                    </td>
+                    <td>Eclair</td>
+                    <td>
+                        <div class="input-field">
+                            <input value="0" type="number">
+                        </div>
+                    </td>
+                    <td>$0.87</td>
+                </tr>
+            </tbody>
+        </table>
+
         </div>
-        <div class="col m3" style="padding-left:24px !important;padding-top:8px !important;">
+        <div class="col m4" style="padding-left:24px !important;padding-top:8px !important;">
             <div class="row">
                 <div class="col m12">
-                    <b>Información de venta</b><br>
-                    <div class="row">
+                    <span class="grey-text"><b>Información de venta</b></span><br>
+                    <span><b>Fecha:</b></span><br>
+                    <span><b>Venta realizada por:</b> Gustavo</span><br>
+                    <div class="row" style="padding-top:12px !important;">
                         <div class="col m12">
                             <div class="row">
                                 <div class="col m12">
@@ -42,7 +72,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-field col s12 m12">
+                        <div class="input-field col s12 m8">
                             <select class="icons">
                                 <option value="" data-icon="svg/baseline-attach_money-24px.svg">Efectivo</option>
                                 <option value="" data-icon="svg/baseline-payment-24px.svg">Tarjeta de crédito / débito</option>
@@ -55,6 +85,9 @@
                               <input type="checkbox">
                               <span class="lever"></span>
                             </label>
+                        </div>
+                        <div class="col m12 right-align">
+                            <button class="btn waves-effect waves-light btn-large">Realizar venta</button>
                         </div>
                     </div>
                 </div>

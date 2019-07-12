@@ -4367,6 +4367,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     document.addEventListener('DOMContentLoaded', function () {
@@ -44577,7 +44610,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "col m9",
+        staticClass: "col m8",
         staticStyle: { "padding-left": "24px !important" }
       },
       [
@@ -44588,7 +44621,9 @@ var render = function() {
               _vm.searchProduct = $event
             }
           }
-        })
+        }),
+        _vm._v(" "),
+        _vm._m(0)
       ],
       1
     ),
@@ -44596,7 +44631,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "col m3",
+        staticClass: "col m4",
         staticStyle: {
           "padding-left": "24px !important",
           "padding-top": "8px !important"
@@ -44605,199 +44640,217 @@ var render = function() {
       [
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col m12" }, [
-            _c("b", [_vm._v("Información de venta")]),
+            _vm._m(1),
             _c("br"),
             _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col m12" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col m12" }, [
-                    _c("div", { staticClass: "switch" }, [
-                      _c("label", [
-                        _c("b", [_vm._v("¿Cliente nuevo?")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.newClientToggle,
-                              expression: "newClientToggle"
-                            }
-                          ],
-                          attrs: { type: "checkbox" },
-                          domProps: {
-                            checked: Array.isArray(_vm.newClientToggle)
-                              ? _vm._i(_vm.newClientToggle, null) > -1
-                              : _vm.newClientToggle
-                          },
-                          on: {
-                            click: _vm.newClientToggleHandler,
-                            change: function($event) {
-                              var $$a = _vm.newClientToggle,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = null,
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    (_vm.newClientToggle = $$a.concat([$$v]))
+            _vm._m(2),
+            _c("br"),
+            _vm._v(" "),
+            _vm._m(3),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "row",
+                staticStyle: { "padding-top": "12px !important" }
+              },
+              [
+                _c("div", { staticClass: "col m12" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col m12" }, [
+                      _c("div", { staticClass: "switch" }, [
+                        _c("label", [
+                          _c("b", [_vm._v("¿Cliente nuevo?")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.newClientToggle,
+                                expression: "newClientToggle"
+                              }
+                            ],
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked: Array.isArray(_vm.newClientToggle)
+                                ? _vm._i(_vm.newClientToggle, null) > -1
+                                : _vm.newClientToggle
+                            },
+                            on: {
+                              click: _vm.newClientToggleHandler,
+                              change: function($event) {
+                                var $$a = _vm.newClientToggle,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.newClientToggle = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.newClientToggle = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
                                 } else {
-                                  $$i > -1 &&
-                                    (_vm.newClientToggle = $$a
-                                      .slice(0, $$i)
-                                      .concat($$a.slice($$i + 1)))
+                                  _vm.newClientToggle = $$c
                                 }
-                              } else {
-                                _vm.newClientToggle = $$c
                               }
                             }
-                          }
-                        }),
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "lever" })
+                        ]),
                         _vm._v(" "),
-                        _c("span", { staticClass: "lever" })
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn waves-effect waves-light",
+                            attrs: { disabled: _vm.newClientToggle == true },
+                            on: { click: _vm.showClientsList }
+                          },
+                          [_vm._v("Buscar cliente")]
+                        )
                       ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn waves-effect waves-light",
-                          attrs: { disabled: _vm.newClientToggle == true },
-                          on: { click: _vm.showClientsList }
-                        },
-                        [_vm._v("Buscar cliente")]
-                      )
+                      _c("br")
                     ]),
-                    _c("br")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col m12" }, [
-                    _c("form", { staticClass: "row" }, [
-                      _c("div", { staticClass: "input-field col s4" }, [
-                        _c("input", {
-                          attrs: {
-                            placeholder: "",
-                            id: "receipt_client_id",
-                            type: "text",
-                            disabled: ""
-                          },
-                          domProps: { value: _vm.clientId },
-                          on: {
-                            input: function($event) {
-                              _vm.$emit("update:clientId", $event.target.value)
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col m12" }, [
+                      _c("form", { staticClass: "row" }, [
+                        _c("div", { staticClass: "input-field col s4" }, [
+                          _c("input", {
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_id",
+                              type: "text",
+                              disabled: ""
+                            },
+                            domProps: { value: _vm.clientId },
+                            on: {
+                              input: function($event) {
+                                _vm.$emit(
+                                  "update:clientId",
+                                  $event.target.value
+                                )
+                              }
                             }
-                          }
-                        }),
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_id" } }, [
+                            _vm._v("No. de cliente")
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _c("label", { attrs: { for: "client_id" } }, [
-                          _vm._v("No. de cliente")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-field col s8" }, [
-                        _c("input", {
-                          class: {
-                            valid: _vm.validClientName,
-                            invalid: _vm.invalidClientName
-                          },
-                          attrs: {
-                            placeholder: "",
-                            id: "receipt_client_name",
-                            type: "text",
-                            disabled: _vm.newClientToggle == false,
-                            "data-length": "50",
-                            maxlength: "50",
-                            required: ""
-                          },
-                          domProps: { value: _vm.clientName },
-                          on: {
-                            input: function($event) {
-                              _vm.$emit(
-                                "update:clientName",
-                                $event.target.value
-                              )
+                        _c("div", { staticClass: "input-field col s8" }, [
+                          _c("input", {
+                            class: {
+                              valid: _vm.validClientName,
+                              invalid: _vm.invalidClientName
                             },
-                            blur: _vm.validateReceiptClientName
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("label", { attrs: { for: "client_name" } }, [
-                          _vm._v("Nombre")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-field col s8" }, [
-                        _c("input", {
-                          class: {
-                            valid: _vm.validClientEmail,
-                            invalid: _vm.invalidClientEmail
-                          },
-                          attrs: {
-                            placeholder: "",
-                            id: "receipt_client_email",
-                            type: "email",
-                            disabled: _vm.newClientToggle == false,
-                            "data-length": "40",
-                            maxlength: "40"
-                          },
-                          domProps: { value: _vm.clientEmail },
-                          on: {
-                            input: function($event) {
-                              _vm.$emit(
-                                "update:clientEmail",
-                                $event.target.value
-                              )
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_name",
+                              type: "text",
+                              disabled: _vm.newClientToggle == false,
+                              "data-length": "50",
+                              maxlength: "50",
+                              required: ""
                             },
-                            blur: _vm.validateReceiptClientEmail
-                          }
-                        }),
+                            domProps: { value: _vm.clientName },
+                            on: {
+                              input: function($event) {
+                                _vm.$emit(
+                                  "update:clientName",
+                                  $event.target.value
+                                )
+                              },
+                              blur: _vm.validateReceiptClientName
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_name" } }, [
+                            _vm._v("Nombre")
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _c("label", { attrs: { for: "client_email" } }, [
-                          _vm._v("E-mail")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-field col s4" }, [
-                        _c("input", {
-                          class: {
-                            valid: _vm.validClientPhone,
-                            invalid: _vm.invalidClientPhone
-                          },
-                          attrs: {
-                            placeholder: "",
-                            id: "receipt_client_phone",
-                            type: "tel",
-                            disabled: _vm.newClientToggle == false,
-                            "data-length": "10",
-                            minlength: "10",
-                            maxlength: "10"
-                          },
-                          domProps: { value: _vm.clientPhone },
-                          on: {
-                            input: function($event) {
-                              _vm.$emit(
-                                "update:clientPhone",
-                                $event.target.value
-                              )
+                        _c("div", { staticClass: "input-field col s8" }, [
+                          _c("input", {
+                            class: {
+                              valid: _vm.validClientEmail,
+                              invalid: _vm.invalidClientEmail
                             },
-                            blur: _vm.validateReceiptClientPhone
-                          }
-                        }),
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_email",
+                              type: "email",
+                              disabled: _vm.newClientToggle == false,
+                              "data-length": "40",
+                              maxlength: "40"
+                            },
+                            domProps: { value: _vm.clientEmail },
+                            on: {
+                              input: function($event) {
+                                _vm.$emit(
+                                  "update:clientEmail",
+                                  $event.target.value
+                                )
+                              },
+                              blur: _vm.validateReceiptClientEmail
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_email" } }, [
+                            _vm._v("E-mail")
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _c("label", { attrs: { for: "client_phone" } }, [
-                          _vm._v("Teléfono")
+                        _c("div", { staticClass: "input-field col s4" }, [
+                          _c("input", {
+                            class: {
+                              valid: _vm.validClientPhone,
+                              invalid: _vm.invalidClientPhone
+                            },
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_phone",
+                              type: "tel",
+                              disabled: _vm.newClientToggle == false,
+                              "data-length": "10",
+                              minlength: "10",
+                              maxlength: "10"
+                            },
+                            domProps: { value: _vm.clientPhone },
+                            on: {
+                              input: function($event) {
+                                _vm.$emit(
+                                  "update:clientPhone",
+                                  $event.target.value
+                                )
+                              },
+                              blur: _vm.validateReceiptClientPhone
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_phone" } }, [
+                            _vm._v("Teléfono")
+                          ])
                         ])
                       ])
                     ])
                   ])
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(0),
-              _vm._v(" "),
-              _vm._m(1)
-            ])
+                ]),
+                _vm._v(" "),
+                _vm._m(4),
+                _vm._v(" "),
+                _vm._m(5),
+                _vm._v(" "),
+                _vm._m(6)
+              ]
+            )
           ])
         ])
       ]
@@ -44809,7 +44862,70 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field col s12 m12" }, [
+    return _c("table", [
+      _c("thead", [
+        _c("tr", [
+          _c("th", { staticStyle: { width: "10%" } }, [_vm._v("Cantidad")]),
+          _vm._v(" "),
+          _c("th", { staticStyle: { width: "60%" } }, [_vm._v("Descripción")]),
+          _vm._v(" "),
+          _c("th", { staticStyle: { width: "15%" } }, [
+            _vm._v("Precio Unitario")
+          ]),
+          _vm._v(" "),
+          _c("th", { staticStyle: { width: "15%" } }, [_vm._v("Importe")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("tbody", [
+        _c("tr", [
+          _c("td", [
+            _c("div", { staticClass: "input-field" }, [
+              _c("input", { attrs: { value: "0", type: "number" } })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("td", [_vm._v("Eclair")]),
+          _vm._v(" "),
+          _c("td", [
+            _c("div", { staticClass: "input-field" }, [
+              _c("input", { attrs: { value: "0", type: "number" } })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("td", [_vm._v("$0.87")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "grey-text" }, [
+      _c("b", [_vm._v("Información de venta")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [_c("b", [_vm._v("Fecha:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _c("b", [_vm._v("Venta realizada por:")]),
+      _vm._v(" Gustavo")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-field col s12 m8" }, [
       _c("select", { staticClass: "icons" }, [
         _c(
           "option",
@@ -44846,6 +44962,16 @@ var staticRenderFns = [
         _c("input", { attrs: { type: "checkbox" } }),
         _vm._v(" "),
         _c("span", { staticClass: "lever" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col m12 right-align" }, [
+      _c("button", { staticClass: "btn waves-effect waves-light btn-large" }, [
+        _vm._v("Realizar venta")
       ])
     ])
   }
