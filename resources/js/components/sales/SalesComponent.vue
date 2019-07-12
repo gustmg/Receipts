@@ -1,35 +1,47 @@
 <template>
-    <div class="row">
+    <div class="row" style="margin-bottom:0px; !important;">
         <div class="col m8" style="padding-left:24px !important;">
-            <sale-search-bar-component :search-value.sync="searchProduct"></sale-search-bar-component>
-            
-        <table>
-            <thead>
-                <tr>
-                    <th style="width:10%;">Cantidad</th>
-                    <th style="width:60%;">Descripción</th>
-                    <th style="width:15%;">Precio Unitario</th>
-                    <th style="width:15%;">Importe</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="input-field">
-                            <input value="0" type="number">
-                        </div>
-                    </td>
-                    <td>Eclair</td>
-                    <td>
-                        <div class="input-field">
-                            <input value="0" type="number">
-                        </div>
-                    </td>
-                    <td>$0.87</td>
-                </tr>
-            </tbody>
-        </table>
-
+            <div class="row" style="margin-bottom:0px; !important;">
+                <div class="col m6">
+                    <sale-search-bar-component :search-value.sync="searchProduct"></sale-search-bar-component>
+                </div>
+                <div class="col m3 center-align" style="padding-top:16px !important;">
+                    <button v-on:click="showProductsList" class="btn waves-effect waves-light">Lista de productos</button>
+                </div>
+                <div class="col m3 center-align" style="padding-top:16px !important;">
+                    <button v-on:click="showServicesList" class="btn waves-effect waves-light">Lista de servicios</button>
+                </div>
+                <div class="col m12 card">
+                    <table class="centered">
+                        <thead class="">
+                            <tr>
+                                <th style="width:10%;">Cantidad</th>
+                                <th style="width:10%;">Tipo</th>
+                                <th style="width:50%;">Descripción</th>
+                                <th style="width:15%;">Precio Unitario</th>
+                                <th style="width:15%;">Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(article, index) in articles">
+                                <td>
+                                    <div class="input-field custom-sale-field">
+                                        <input v-model="article.article_quantity" type="number" min="1">
+                                    </div>
+                                </td>
+                                <td>{{setArticleType(article.article_type)}}</td>
+                                <td>{{article.article_description}}</td>
+                                <td>
+                                    <div class="input-field custom-sale-field">
+                                        <input v-model="article.article_unit_price" type="number" step="0.01" pattern="^\d*(\.\d{0,2})?$" >
+                                    </div>
+                                </td>
+                                <td>${{getArticleImport(article.article_quantity, article.article_unit_price)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="col m4" style="padding-left:24px !important;padding-top:8px !important;">
             <div class="row">
@@ -72,7 +84,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-field col s12 m8">
+                        <div class="input-field col s12 m8" style="margin-top:0 !important;">
                             <select class="icons">
                                 <option value="" data-icon="svg/baseline-attach_money-24px.svg">Efectivo</option>
                                 <option value="" data-icon="svg/baseline-payment-24px.svg">Tarjeta de crédito / débito</option>
@@ -86,15 +98,57 @@
                               <span class="lever"></span>
                             </label>
                         </div>
-                        <div class="col m12 right-align">
+                        <div class="col m6">
+                            <br><span><b>Subtotal: {{subtotal_amount}}</b></span>
+                            <br><span><b>IVA: {{iva_amount}}</b></span>
+                            <br><span><b>Total: {{total_amount}}</b></span>
+                        </div>
+                        <div class="col m6 right-align">
                             <button class="btn waves-effect waves-light btn-large">Realizar venta</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <clients-compact-list-modal-component :clients="clients" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail"></clients-compact-list-modal-component>
+        <div id="servicesCompactListModal" class="modal servicesCompactListModal">
+            <div class="modal-content">
+                <!-- <client-search-bar-component></client-search-bar-component> -->
+                <ul class="collection with-header">
+                    <a class="collection-item selectable service-element" v-on:click="selectArticle(service.service_name, 1)" v-for="(service, index) in services">{{service.service_name}}</a>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+            </div>
+        </div>
+        <div id="productsCompactListModal" class="modal productsCompactListModal">
+            <div class="modal-content">
+                <!-- <client-search-bar-component></client-search-bar-component> -->
+                <ul class="collection with-header">
+                    <a class="collection-item selectable product-element" v-on:click="selectArticle(product.product_name, 0)" v-for="(product, index) in products">{{product.product_name}}</a>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+            </div>
+        </div>
     </div>
 </template>
+<style type="text/css">
+	.modal-content{
+		padding-bottom: 0 !important;
+	}
+
+    .custom-sale-field{
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+	
+    .client-element, .service-element, .product-element{
+        color:#039be5 !important;
+    }
+</style>
 <script>
     export default {
         mounted() {
@@ -104,11 +158,175 @@
             });
         },
 
+        props: {
+            products: {
+                type: Array
+            },
+
+            services: {
+                type: Array
+            },
+
+            clients: {
+                type: Array
+            },
+
+            worker: {
+                type: Object
+            },
+        },
+
         data() {
             return {
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 searchProduct: '',
-                componentKey: 0
+                componentKey: 0,
+                clientId: 0,
+                clientName: null,
+                clientEmail: null,
+                clientPhone: null,
+                validClientName: false,
+                invalidClientName: false,
+                validClientPhone: false,
+                invalidClientPhone: false,
+                validClientEmail: false,
+                invalidClientEmail: false,
+                newClientToggle: false,
+                iva_amount: 0,
+                total_amount:0,
+                articles: []
             }
         },
+
+        computed: {
+            subtotal_amount: function (){
+                var subtotal=0;
+                this.articles.forEach(article => {
+                    subtotal+this.getArticleImport(article.article_quantity, article.article_unit_price);
+                });
+                return subtotal;
+            }
+        },
+
+        methods: {
+            setTwoNumberDecimal: function() {
+                this.value = parseFloat(this.value).toFixed(2);
+            },
+
+            showClientsList: function () {
+                $('#clientsCompactListModal').modal({
+                    dismissible: false
+                });
+                $('#clientsCompactListModal').modal('open');
+            },
+
+            showProductsList: function () {
+                $('#productsCompactListModal').modal({
+                    dismissible: false
+                });
+                $('#productsCompactListModal').modal('open');
+            },
+
+            showServicesList: function () {
+                $('#servicesCompactListModal').modal({
+                    dismissible: false
+                });
+                $('#servicesCompactListModal').modal('open');
+            },
+
+            newClientToggleHandler: function () {
+                if(!this.newClientToggle){
+                    this.clientId=this.lastClientId;
+                    this.clientName=null;
+                    this.clientEmail=null;
+                    this.clientPhone=null;
+                }
+                else{
+                    this.clientId=0;
+                    this.clientName=null;
+                    this.clientEmail=null;
+                    this.clientPhone=null;
+                }
+                this.validClientName= false;
+                this.invalidClientName=false;
+                this.validClientPhone=false;
+                this.invalidClientPhone=false;
+                this.validClientEmail=false;
+                this.invalidClientEmail=false;
+            },
+
+            validateReceiptClientName: function(e) {
+                if(!this.clientName){
+                    this.validClientName = false;
+                    this.invalidClientName = true;
+                    $('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
+                }
+                else{
+                    this.validClientName = true;
+                    this.invalidClientName = false;
+                }
+            },
+
+            validateReceiptClientPhone: function(e) {
+                const PHONE_REGEXP = /^[0-9]*$/gm;
+
+                if(this.clientPhone ==null || this.clientPhone.length == 0){
+                    this.validClientPhone = false;
+                    this.invalidClientPhone = false;
+                }
+                else if(!PHONE_REGEXP.test(this.clientPhone) || this.clientPhone.length < 10){
+                    this.validClientPhone = false;
+                    this.invalidClientPhone = true;
+                    $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
+                }
+                else{
+                    validateReceiptClientNamethis.validClientPhone = true;
+                    this.invalidClientPhone = false;
+                }
+            },
+
+            validateReceiptClientEmail: function(e) {
+                const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+                if(this.clientEmail ==null || this.clientEmail.length == 0){
+                    this.validClientEmail = false;
+                    this.invalidClientEmail = false;
+                }
+                else if(!MAIL_REGEXP.test(this.clientEmail)){
+                    this.validClientEmail = false;
+                    this.invalidClientEmail = true;
+                    $('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
+                }
+                else{
+                    this.validClientEmail = true;
+                    this.invalidClientEmail = false;
+                }
+            },
+
+            setArticleType: function(article_type) {
+                if(article_type==0){
+                    return "Producto";
+                }
+                else{
+                    return "Servicio";
+                }
+            },
+
+            selectArticle: function(article_description, article_type) {
+                var newArticle = {
+                    article_quantity: 1,
+                    article_type: article_type,
+                    article_description: article_description,
+                    article_unit_price: 0
+                }
+                this.articles.push(newArticle);
+                $('#servicesCompactListModal').modal('close');
+                $('#productsCompactListModal').modal('close');
+            },
+
+            getArticleImport: function(article_quantity, article_unit_price) {
+                return article_quantity * article_unit_price;
+            },
+        }
     }
 </script>
