@@ -6,11 +6,16 @@
 				<form id="updateServiceForm" class="col s12 no-padding" method="POST" action="services">
 					<input type="hidden" name="_token" :value="csrf">
 					<div class="row">
-						<div class="input-field col s12 m12 no-vertical-margin">
+						<div class="input-field col s8 m8 no-vertical-margin">
 							<input placeholder="" v-model="updateServiceName" @input="emitServiceName" v-on:blur="validateServiceName" v-bind:class="{'valid': validServiceName, 'invalid': invalidServiceName}" id="update_service_name" type="text" data-length="50" maxlength="50" required>
 							<label for="update_service_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Servicio *</label>
 							<span class="helper-text service_name_helper" data-success="Nombre validado."></span>
 				        </div>
+						<div class="input-field col s4 m4 no-vertical-margin">
+							<input placeholder="" v-model="updateServiceCode" @input="emitServiceCode" id="update_service_code" type="text" data-length="50" maxlength="50" required>
+							<label for="update_service_code" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Código de servicio *</label>
+							<span class="helper-text service_code_helper" data-success="Código validado."></span>
+						</div>
 				        <div class="input-field col s12 m6 no-vertical-margin">
 							<input placeholder="" v-model="updateServiceDescription" @input="emitServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" id="update_service_description" type="text" data-length="50" maxlength="50" required>
 							<label for="update_service_description" class="valign-wrapper"><i class="material-icons">settings</i>&nbsp;&nbsp;Descripción *</label>
@@ -56,6 +61,7 @@
 		props: {
 			serviceId: String,
 			serviceName: String,
+			serviceCode: String,
 			serviceDescription: String
 		},
 
@@ -66,7 +72,8 @@
 	    data(){
 	    	return {
 	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-	    		updateServiceName:'',
+				updateServiceName:'',
+				updateServiceCode:'',
 	    		updateServiceDescription:'',
 	    		validServiceName: false,
 	    		invalidServiceName: false,
@@ -79,6 +86,9 @@
 	    watch: {
             serviceName(newVal) {
                 this.updateServiceName = newVal;
+			},
+			serviceCode(newVal) {
+                this.updateServiceCode = newVal;
             },
             serviceDescription(newVal) {
                 this.updateServiceDescription = newVal;
@@ -89,6 +99,10 @@
 	    methods: {
 	    	emitServiceName(newInputValue) {
 	            this.$emit('service-name', newInputValue);
+			},
+			
+			emitServiceCode(newInputValue) {
+	            this.$emit('service-code', newInputValue);
 	        },
 
 	        emitServiceDescription(newInputValue) {
@@ -97,7 +111,8 @@
 
 	    	updateService: function(){
 	    		axios.put('http://localhost:8000/services/'+this.serviceId,{
-	    			service_name: this.updateServiceName,
+					service_name: this.updateServiceName,
+					service_code: this.updateServiceCode,
 	    			service_description: this.updateServiceDescription
 	    		})
 	    		.then(function(res){
@@ -106,7 +121,8 @@
 	    		.catch(function(err){
 	    			console.log(err.response);
 	    		});
-	    		this.$parent.services[this.$parent.serviceIndex].service_name=this.updateServiceName;
+				this.$parent.services[this.$parent.serviceIndex].service_name=this.updateServiceName;
+				this.$parent.services[this.$parent.serviceIndex].service_code=this.updateServiceCode;
 	    		this.$parent.services[this.$parent.serviceIndex].service_description=this.updateServiceDescription;
 	    		this.$parent.$parent.forceRerender();
 	    		$('#updateServiceModal').modal('close');

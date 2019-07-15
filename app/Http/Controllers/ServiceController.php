@@ -35,6 +35,7 @@ class ServiceController extends Controller
 
             $service=new Service;
             $service->service_name=$request->service_name;
+            $service->service_code=$request->service_code;
             $service->service_description=$request->service_description;
             $service->save();
 
@@ -62,6 +63,7 @@ class ServiceController extends Controller
 
             $service=Service::find($id);
             $service->service_name=$request->service_name;
+            $service->service_code=$request->service_code;
             $service->service_description=$request->service_description;
             $service->save();
 

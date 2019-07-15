@@ -6,10 +6,15 @@
                 <form id="newProductForm" class="col s12 no-padding" method="POST" action="products">
                     <input type="hidden" name="_token" :value="csrf">
                     <div class="row">
-                        <div class="input-field col s12 m12 no-vertical-margin">
+                        <div class="input-field col s8 m8 no-vertical-margin">
                             <input placeholder="" id="product_name" type="text" v-model="newProductName" v-on:blur="validateProductName" v-bind:class="{'valid': validProductName, 'invalid': invalidProductName}" data-length="50" maxlength="50" required>
                             <label for="product_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Producto *</label>
                             <span class="helper-text product_name_helper" data-success="Servicio validado."></span><br>
+                        </div>
+                        <div class="input-field col s4 m4 no-vertical-margin">
+                            <input placeholder="" id="product_code" type="text" v-model="newProductCode" data-length="10" maxlength="10">
+                            <label for="product_code" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Código de producto</label>
+                            <span class="helper-text product_code_helper" data-success="Código de producto validado."></span><br>
                         </div>
                         <div class="input-field col s12 m12 no-vertical-margin">
                             <input placeholder="" id="product_description" type="text" v-model="newProductDescription" v-on:blur="validateProductDescription" v-bind:class="{'valid': validProductDescription, 'invalid': invalidProductDescription}" data-length="50" maxlength="50" required>
@@ -55,6 +60,7 @@
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 newProductName: null,
+                newProductCode: null,
                 newProductDescription: null,
                 validProductName: false,
                 invalidProductName: false,
@@ -76,11 +82,13 @@
                 var newProduct = {
                     product_id: '',
                     product_name: this.newProductName,
+                    product_code: this.newProductCode,
                     product_description: this.newProductDescription
                 };
 
                 axios.post('http://localhost:8000/products',{
                     product_name: this.newProductName,
+                    product_code: this.newProductCode,
                     product_description: this.newProductDescription
                 })
                 .then((res)=>{newProduct.product_id = res.data.product_id})
@@ -119,9 +127,12 @@
 
             resetNewProductInputs: function (e) {
                 this.newProductName= null;
+                this.newProductCode= null;
                 this.newProductDescription= null;
                 this.validProductName= false;
                 this.invalidProductName= false;
+                this.validProductCode= false;
+                this.invalidProductCode= false;
                 this.validProductDescription= false;
                 this.invalidProductDescription= false;
             }

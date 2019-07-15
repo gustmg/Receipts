@@ -6,10 +6,15 @@
 				<form id="updateProductForm" class="col s12 no-padding" method="POST" action="products">
 					<input type="hidden" name="_token" :value="csrf">
 					<div class="row">
-						<div class="input-field col s12 m12 no-vertical-margin">
+						<div class="input-field col s8 m8 no-vertical-margin">
 							<input placeholder="" v-model="updateProductName" @input="emitProductName" v-on:blur="validateProductName" v-bind:class="{'valid': validProductName, 'invalid': invalidProductName}" id="update_product_name" type="text" data-length="50" maxlength="50" required>
 							<label for="update_product_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Producto *</label>
 							<span class="helper-text product_name_helper" data-success="Nombre validado."></span>
+				        </div>
+						<div class="input-field col s4 m4 no-vertical-margin">
+							<input placeholder="" v-model="updateProductCode" @input="emitProductCode" id="update_product_code" type="text" data-length="50" maxlength="50" required>
+							<label for="update_product_code" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Código de producto *</label>
+							<span class="helper-text product_code_helper" data-success="Nombre validado."></span>
 				        </div>
 				        <div class="input-field col s12 m6 no-vertical-margin">
 							<input placeholder="" v-model="updateProductDescription" @input="emitProductDescription" v-on:blur="validateProductDescription" v-bind:class="{'valid': validProductDescription, 'invalid': invalidProductDescription}" id="update_product_description" type="text" data-length="50" maxlength="50" required>
@@ -56,6 +61,7 @@
 		props: {
 			productId: String,
 			productName: String,
+			productCode: String,
 			productDescription: String
 		},
 
@@ -66,7 +72,8 @@
 	    data(){
 	    	return {
 	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-	    		updateProductName:'',
+				updateProductName:'',
+				updateProductCode:'',
 	    		updateProductDescription:'',
 	    		validProductName: false,
 	    		invalidProductName: false,
@@ -79,6 +86,9 @@
 	    watch: {
             productName(newVal) {
                 this.updateProductName = newVal;
+			},
+			productCode(newVal) {
+                this.updateProductCode = newVal;
             },
             productDescription(newVal) {
                 this.updateProductDescription = newVal;
@@ -89,6 +99,10 @@
 	    methods: {
 	    	emitProductName(newInputValue) {
 	            this.$emit('product-name', newInputValue);
+			},
+			
+			emitProductCode(newInputValue) {
+	            this.$emit('product-code', newInputValue);
 	        },
 
 	        emitProductDescription(newInputValue) {
@@ -97,7 +111,8 @@
 
 	    	updateProduct: function(){
 	    		axios.put('http://localhost:8000/products/'+this.productId,{
-	    			product_name: this.updateProductName,
+					product_name: this.updateProductName,
+					product_code: this.updateProductCode,
 	    			product_description: this.updateProductDescription
 	    		})
 	    		.then(function(res){
@@ -106,7 +121,8 @@
 	    		.catch(function(err){
 	    			console.log(err.response);
 	    		});
-	    		this.$parent.products[this.$parent.productIndex].product_name=this.updateProductName;
+				this.$parent.products[this.$parent.productIndex].product_name=this.updateProductName;
+				this.$parent.products[this.$parent.productIndex].product_code=this.updateProductCode;
 	    		this.$parent.products[this.$parent.productIndex].product_description=this.updateProductDescription;
 	    		this.$parent.$parent.forceRerender();
 	    		$('#updateProductModal').modal('close');

@@ -3024,6 +3024,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('New product modal component mounted');
@@ -3032,6 +3037,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       newProductName: null,
+      newProductCode: null,
       newProductDescription: null,
       validProductName: false,
       invalidProductName: false,
@@ -3051,10 +3057,12 @@ __webpack_require__.r(__webpack_exports__);
       var newProduct = {
         product_id: '',
         product_name: this.newProductName,
+        product_code: this.newProductCode,
         product_description: this.newProductDescription
       };
       axios.post('http://localhost:8000/products', {
         product_name: this.newProductName,
+        product_code: this.newProductCode,
         product_description: this.newProductDescription
       }).then(function (res) {
         newProduct.product_id = res.data.product_id;
@@ -3087,9 +3095,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     resetNewProductInputs: function resetNewProductInputs(e) {
       this.newProductName = null;
+      this.newProductCode = null;
       this.newProductDescription = null;
       this.validProductName = false;
       this.invalidProductName = false;
+      this.validProductCode = false;
+      this.invalidProductCode = false;
       this.validProductDescription = false;
       this.invalidProductDescription = false;
     }
@@ -3235,6 +3246,7 @@ __webpack_require__.r(__webpack_exports__);
       productIndex: null,
       productId: '',
       productName: '',
+      productCode: '',
       productDescription: ''
     };
   },
@@ -3243,14 +3255,15 @@ __webpack_require__.r(__webpack_exports__);
       this.productIndex = index;
       this.productId = product.product_id;
       this.productName = product.product_name;
+      this.productCode = product.product_code;
       this.productDescription = product.product_description;
-      $('#update_product_name,#update_product_description').characterCounter();
+      $('#update_product_name,#update_product_code,#update_product_description').characterCounter();
       $('#updateProductModal').modal({
         dismissible: false,
         onOpenStart: function onOpenStart() {
           $('.label_update_product_name').addClass('active');
 
-          if (product.product_phone != null) {
+          if (product.product_description != null) {
             $('.label_update_product_description').addClass('active');
           }
         },
@@ -3335,10 +3348,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     productId: String,
     productName: String,
+    productCode: String,
     productDescription: String
   },
   mounted: function mounted() {
@@ -3348,6 +3367,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       updateProductName: '',
+      updateProductCode: '',
       updateProductDescription: '',
       validProductName: false,
       invalidProductName: false,
@@ -3360,6 +3380,9 @@ __webpack_require__.r(__webpack_exports__);
     productName: function productName(newVal) {
       this.updateProductName = newVal;
     },
+    productCode: function productCode(newVal) {
+      this.updateProductCode = newVal;
+    },
     productDescription: function productDescription(newVal) {
       this.updateProductDescription = newVal;
     }
@@ -3368,12 +3391,16 @@ __webpack_require__.r(__webpack_exports__);
     emitProductName: function emitProductName(newInputValue) {
       this.$emit('product-name', newInputValue);
     },
+    emitProductCode: function emitProductCode(newInputValue) {
+      this.$emit('product-code', newInputValue);
+    },
     emitProductDescription: function emitProductDescription(newInputValue) {
       this.$emit('product-description', newInputValue);
     },
     updateProduct: function updateProduct() {
       axios.put('http://localhost:8000/products/' + this.productId, {
         product_name: this.updateProductName,
+        product_code: this.updateProductCode,
         product_description: this.updateProductDescription
       }).then(function (res) {
         console.log(res);
@@ -3381,6 +3408,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err.response);
       });
       this.$parent.products[this.$parent.productIndex].product_name = this.updateProductName;
+      this.$parent.products[this.$parent.productIndex].product_code = this.updateProductCode;
       this.$parent.products[this.$parent.productIndex].product_description = this.updateProductDescription;
       this.$parent.$parent.forceRerender();
       $('#updateProductModal').modal('close');
@@ -4289,7 +4317,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['search']
+  props: ['search'],
+  mounted: function mounted() {
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.autocomplete');
+      var instances = M.Autocomplete.init(elems, {
+        data: {
+          "Apple": null,
+          "Microsoft": null,
+          "Google": 'https://placehold.it/250x250'
+        }
+      });
+    });
+    console.log("Autocomplete mounted");
+  }
 });
 
 /***/ }),
@@ -4303,6 +4344,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -4491,20 +4534,73 @@ __webpack_require__.r(__webpack_exports__);
       validClientEmail: false,
       invalidClientEmail: false,
       newClientToggle: false,
-      iva_amount: 0,
-      total_amount: 0,
+      vatChargeToggle: false,
       articles: []
     };
   },
   computed: {
-    subtotal_amount: function subtotal_amount() {
-      var _this = this;
-
-      var subtotal = 0;
+    subtotalAmount: function subtotalAmount() {
+      var x = 0;
+      var subtotal;
       this.articles.forEach(function (article) {
-        subtotal + _this.getArticleImport(article.article_quantity, article.article_unit_price);
+        subtotal = article.article_quantity * article.article_unit_price;
+        x = x + subtotal;
       });
-      return subtotal;
+      return parseFloat(Math.round(x * 100) / 100).toFixed(2);
+    },
+    vatAmount: function vatAmount() {
+      if (this.vatChargeToggle) {
+        return parseFloat(Math.round(this.subtotalAmount * 0.16 * 100) / 100).toFixed(2);
+      } else {
+        return parseFloat(Math.round(0 * 100) / 100).toFixed(2);
+      }
+    },
+    totalAmount: function totalAmount() {
+      return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
+    },
+    date: function date() {
+      var d = new Date();
+
+      switch (d.getMonth()) {
+        case 0:
+          return "Enero" + d.getDate() + ", " + d.getFullYear();
+
+        case 1:
+          return "Febrero" + d.getDate() + ", " + d.getFullYear();
+
+        case 2:
+          return "Marzo" + d.getDate() + ", " + d.getFullYear();
+
+        case 3:
+          return "Abril" + d.getDate() + ", " + d.getFullYear();
+
+        case 4:
+          return "Mayo" + d.getDate() + ", " + d.getFullYear();
+
+        case 5:
+          return "Junio" + d.getDate() + ", " + d.getFullYear();
+
+        case 6:
+          return "Julio " + d.getDate() + ", " + d.getFullYear();
+
+        case 7:
+          return "Agosto" + d.getDate() + ", " + d.getFullYear();
+
+        case 8:
+          return "Septiembre" + d.getDate() + ", " + d.getFullYear();
+
+        case 9:
+          return "Octubre" + d.getDate() + ", " + d.getFullYear();
+
+        case 10:
+          return "Noviembre" + d.getDate() + ", " + d.getFullYear();
+
+        case 11:
+          return "Diciembre" + d.getDate() + ", " + d.getFullYear();
+
+        default:
+          break;
+      }
     }
   },
   methods: {
@@ -4570,7 +4666,7 @@ __webpack_require__.r(__webpack_exports__);
         this.invalidClientPhone = true;
         $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
       } else {
-        validateReceiptClientNamethis.validClientPhone = true;
+        this.validClientPhone = true;
         this.invalidClientPhone = false;
       }
     },
@@ -4609,6 +4705,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     getArticleImport: function getArticleImport(article_quantity, article_unit_price) {
       return article_quantity * article_unit_price;
+    },
+    removeArticle: function removeArticle(index) {
+      this.articles.splice(index, 1);
     }
   }
 });
@@ -4751,6 +4850,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('New service modal component mounted');
@@ -4759,6 +4863,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       newServiceName: null,
+      newServiceCode: null,
       newServiceDescription: null,
       validServiceName: false,
       invalidServiceName: false,
@@ -4778,10 +4883,12 @@ __webpack_require__.r(__webpack_exports__);
       var newService = {
         service_id: '',
         service_name: this.newServiceName,
+        service_code: this.newServiceCode,
         service_description: this.newServiceDescription
       };
       axios.post('http://localhost:8000/services', {
         service_name: this.newServiceName,
+        service_code: this.newServiceCode,
         service_description: this.newServiceDescription
       }).then(function (res) {
         newService.service_id = res.data.service_id;
@@ -4814,6 +4921,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     resetNewServiceInputs: function resetNewServiceInputs(e) {
       this.newServiceName = null;
+      this.newServiceCode = null;
       this.newServiceDescription = null;
       this.validServiceName = false;
       this.invalidServiceName = false;
@@ -4962,6 +5070,7 @@ __webpack_require__.r(__webpack_exports__);
       serviceIndex: null,
       serviceId: '',
       serviceName: '',
+      serviceCode: '',
       serviceDescription: ''
     };
   },
@@ -4970,6 +5079,7 @@ __webpack_require__.r(__webpack_exports__);
       this.serviceIndex = index;
       this.serviceId = service.service_id;
       this.serviceName = service.service_name;
+      this.serviceCode = service.service_code;
       this.serviceDescription = service.service_description;
       $('#update_service_name,#update_service_description').characterCounter();
       $('#updateServiceModal').modal({
@@ -5062,10 +5172,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     serviceId: String,
     serviceName: String,
+    serviceCode: String,
     serviceDescription: String
   },
   mounted: function mounted() {
@@ -5075,6 +5191,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       updateServiceName: '',
+      updateServiceCode: '',
       updateServiceDescription: '',
       validServiceName: false,
       invalidServiceName: false,
@@ -5087,6 +5204,9 @@ __webpack_require__.r(__webpack_exports__);
     serviceName: function serviceName(newVal) {
       this.updateServiceName = newVal;
     },
+    serviceCode: function serviceCode(newVal) {
+      this.updateServiceCode = newVal;
+    },
     serviceDescription: function serviceDescription(newVal) {
       this.updateServiceDescription = newVal;
     }
@@ -5095,12 +5215,16 @@ __webpack_require__.r(__webpack_exports__);
     emitServiceName: function emitServiceName(newInputValue) {
       this.$emit('service-name', newInputValue);
     },
+    emitServiceCode: function emitServiceCode(newInputValue) {
+      this.$emit('service-code', newInputValue);
+    },
     emitServiceDescription: function emitServiceDescription(newInputValue) {
       this.$emit('service-description', newInputValue);
     },
     updateService: function updateService() {
       axios.put('http://localhost:8000/services/' + this.serviceId, {
         service_name: this.updateServiceName,
+        service_code: this.updateServiceCode,
         service_description: this.updateServiceDescription
       }).then(function (res) {
         console.log(res);
@@ -5108,6 +5232,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err.response);
       });
       this.$parent.services[this.$parent.serviceIndex].service_name = this.updateServiceName;
+      this.$parent.services[this.$parent.serviceIndex].service_code = this.updateServiceCode;
       this.$parent.services[this.$parent.serviceIndex].service_description = this.updateServiceDescription;
       this.$parent.$parent.forceRerender();
       $('#updateServiceModal').modal('close');
@@ -43138,7 +43263,7 @@ var render = function() {
               _c("div", { staticClass: "row" }, [
                 _c(
                   "div",
-                  { staticClass: "input-field col s12 m12 no-vertical-margin" },
+                  { staticClass: "input-field col s8 m8 no-vertical-margin" },
                   [
                     _c("input", {
                       directives: [
@@ -43185,6 +43310,47 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
+                  { staticClass: "input-field col s4 m4 no-vertical-margin" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newProductCode,
+                          expression: "newProductCode"
+                        }
+                      ],
+                      attrs: {
+                        placeholder: "",
+                        id: "product_code",
+                        type: "text",
+                        "data-length": "10",
+                        maxlength: "10"
+                      },
+                      domProps: { value: _vm.newProductCode },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.newProductCode = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text product_code_helper",
+                      attrs: { "data-success": "Código de producto validado." }
+                    }),
+                    _c("br")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
                   { staticClass: "input-field col s12 m12 no-vertical-margin" },
                   [
                     _c("input", {
@@ -43220,7 +43386,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text product_description_helper",
@@ -43271,6 +43437,19 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
         _vm._v("  Producto *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "product_code" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
+        _vm._v("  Código de producto")
       ]
     )
   },
@@ -43521,6 +43700,7 @@ var render = function() {
         attrs: {
           "product-id": _vm.productId.toString(),
           "product-name": _vm.productName,
+          "product-code": _vm.productCode,
           "product-description": _vm.productDescription
         }
       })
@@ -43581,7 +43761,7 @@ var render = function() {
               _c("div", { staticClass: "row" }, [
                 _c(
                   "div",
-                  { staticClass: "input-field col s12 m12 no-vertical-margin" },
+                  { staticClass: "input-field col s8 m8 no-vertical-margin" },
                   [
                     _c("input", {
                       directives: [
@@ -43630,6 +43810,50 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
+                  { staticClass: "input-field col s4 m4 no-vertical-margin" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateProductCode,
+                          expression: "updateProductCode"
+                        }
+                      ],
+                      attrs: {
+                        placeholder: "",
+                        id: "update_product_code",
+                        type: "text",
+                        "data-length": "50",
+                        maxlength: "50",
+                        required: ""
+                      },
+                      domProps: { value: _vm.updateProductCode },
+                      on: {
+                        input: [
+                          function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.updateProductCode = $event.target.value
+                          },
+                          _vm.emitProductCode
+                        ]
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text product_code_helper",
+                      attrs: { "data-success": "Nombre validado." }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
                   { staticClass: "input-field col s12 m6 no-vertical-margin" },
                   [
                     _c("input", {
@@ -43668,7 +43892,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text product_description_helper",
@@ -43737,6 +43961,19 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
         _vm._v("  Producto *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_product_code" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
+        _vm._v("  Código de producto *")
       ]
     )
   },
@@ -44809,6 +45046,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("input", {
+              staticClass: "autocomplete",
               staticStyle: {
                 "border-bottom": "none!important",
                 "box-shadow": "none!important",
@@ -44942,6 +45180,7 @@ var render = function() {
                                     expression: "article.article_quantity"
                                   }
                                 ],
+                                staticClass: "validate",
                                 attrs: { type: "number", min: "1" },
                                 domProps: { value: article.article_quantity },
                                 on: {
@@ -44983,8 +45222,10 @@ var render = function() {
                                     expression: "article.article_unit_price"
                                   }
                                 ],
+                                staticClass: "validate",
                                 attrs: {
                                   type: "number",
+                                  min: "0.01",
                                   step: "0.01",
                                   pattern: "^\\d*(\\.\\d{0,2})?$"
                                 },
@@ -45016,6 +45257,25 @@ var render = function() {
                                 )
                               )
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "selectable red-text",
+                              on: {
+                                click: function($event) {
+                                  _vm.removeArticle(index)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v("cancel")
+                              ])
+                            ]
+                          )
                         ])
                       ])
                     }),
@@ -45043,10 +45303,16 @@ var render = function() {
               _vm._m(1),
               _c("br"),
               _vm._v(" "),
-              _vm._m(2),
+              _c("span", [
+                _c("b", [_vm._v("Fecha:")]),
+                _vm._v(" " + _vm._s(_vm.date))
+              ]),
               _c("br"),
               _vm._v(" "),
-              _vm._m(3),
+              _c("span", [
+                _c("b", [_vm._v("Venta realizada por:")]),
+                _vm._v(" " + _vm._s(_vm.worker.name))
+              ]),
               _c("br"),
               _vm._v(" "),
               _c(
@@ -45149,6 +45415,14 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "input-field col s8" }, [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.clientName,
+                                  expression: "clientName"
+                                }
+                              ],
                               class: {
                                 valid: _vm.validClientName,
                                 invalid: _vm.invalidClientName
@@ -45164,13 +45438,13 @@ var render = function() {
                               },
                               domProps: { value: _vm.clientName },
                               on: {
+                                blur: _vm.validateReceiptClientName,
                                 input: function($event) {
-                                  _vm.$emit(
-                                    "update:clientName",
-                                    $event.target.value
-                                  )
-                                },
-                                blur: _vm.validateReceiptClientName
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.clientName = $event.target.value
+                                }
                               }
                             }),
                             _vm._v(" "),
@@ -45181,6 +45455,14 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "input-field col s8" }, [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.clientEmail,
+                                  expression: "clientEmail"
+                                }
+                              ],
                               class: {
                                 valid: _vm.validClientEmail,
                                 invalid: _vm.invalidClientEmail
@@ -45195,13 +45477,13 @@ var render = function() {
                               },
                               domProps: { value: _vm.clientEmail },
                               on: {
+                                blur: _vm.validateReceiptClientEmail,
                                 input: function($event) {
-                                  _vm.$emit(
-                                    "update:clientEmail",
-                                    $event.target.value
-                                  )
-                                },
-                                blur: _vm.validateReceiptClientEmail
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.clientEmail = $event.target.value
+                                }
                               }
                             }),
                             _vm._v(" "),
@@ -45212,6 +45494,14 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "input-field col s4" }, [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.clientPhone,
+                                  expression: "clientPhone"
+                                }
+                              ],
                               class: {
                                 valid: _vm.validClientPhone,
                                 invalid: _vm.invalidClientPhone
@@ -45227,13 +45517,13 @@ var render = function() {
                               },
                               domProps: { value: _vm.clientPhone },
                               on: {
+                                blur: _vm.validateReceiptClientPhone,
                                 input: function($event) {
-                                  _vm.$emit(
-                                    "update:clientPhone",
-                                    $event.target.value
-                                  )
-                                },
-                                blur: _vm.validateReceiptClientPhone
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.clientPhone = $event.target.value
+                                }
                               }
                             }),
                             _vm._v(" "),
@@ -45246,30 +45536,76 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(4),
+                  _vm._m(2),
                   _vm._v(" "),
-                  _vm._m(5),
+                  _c("div", { staticClass: "col m8 switch" }, [
+                    _c("label", [
+                      _vm._v(
+                        "\n                          Venta facturada\n                          "
+                      ),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.vatChargeToggle,
+                            expression: "vatChargeToggle"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.vatChargeToggle)
+                            ? _vm._i(_vm.vatChargeToggle, null) > -1
+                            : _vm.vatChargeToggle
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.vatChargeToggle,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  (_vm.vatChargeToggle = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.vatChargeToggle = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.vatChargeToggle = $$c
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "lever" })
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col m6" }, [
                     _c("br"),
                     _c("span", [
                       _c("b", [
-                        _vm._v("Subtotal: " + _vm._s(_vm.subtotal_amount))
+                        _vm._v("Subtotal: $" + _vm._s(_vm.subtotalAmount))
                       ])
                     ]),
                     _vm._v(" "),
                     _c("br"),
                     _c("span", [
-                      _c("b", [_vm._v("IVA: " + _vm._s(_vm.iva_amount))])
+                      _c("b", [_vm._v("IVA: $" + _vm._s(_vm.vatAmount))])
                     ]),
                     _vm._v(" "),
                     _c("br"),
                     _c("span", [
-                      _c("b", [_vm._v("Total: " + _vm._s(_vm.total_amount))])
+                      _c("b", [_vm._v("Total: $" + _vm._s(_vm.totalAmount))])
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(6)
+                  _vm._m(3)
                 ]
               )
             ])
@@ -45330,7 +45666,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(7)
+          _vm._m(4)
         ]
       ),
       _vm._v(" "),
@@ -45363,7 +45699,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(8)
+          _vm._m(5)
         ]
       )
     ],
@@ -45381,13 +45717,15 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticStyle: { width: "10%" } }, [_vm._v("Tipo")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "50%" } }, [_vm._v("Descripción")]),
+        _c("th", { staticStyle: { width: "45%" } }, [_vm._v("Descripción")]),
         _vm._v(" "),
         _c("th", { staticStyle: { width: "15%" } }, [
           _vm._v("Precio Unitario")
         ]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "15%" } }, [_vm._v("Importe")])
+        _c("th", { staticStyle: { width: "15%" } }, [_vm._v("Importe")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { width: "5%" } })
       ])
     ])
   },
@@ -45397,21 +45735,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "grey-text" }, [
       _c("b", [_vm._v("Información de venta")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", [_c("b", [_vm._v("Fecha:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", [
-      _c("b", [_vm._v("Venta realizada por:")]),
-      _vm._v(" Gustavo")
     ])
   },
   function() {
@@ -45449,21 +45772,6 @@ var staticRenderFns = [
         _c("label", [_vm._v("Forma de pago")])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col m8 switch" }, [
-      _c("label", [
-        _vm._v(
-          "\n                          Venta facturada\n                          "
-        ),
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v(" "),
-        _c("span", { staticClass: "lever" })
-      ])
-    ])
   },
   function() {
     var _vm = this
@@ -45647,7 +45955,7 @@ var render = function() {
               _c("div", { staticClass: "row" }, [
                 _c(
                   "div",
-                  { staticClass: "input-field col s12 m12 no-vertical-margin" },
+                  { staticClass: "input-field col s8 m8 no-vertical-margin" },
                   [
                     _c("input", {
                       directives: [
@@ -45694,6 +46002,47 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
+                  { staticClass: "input-field col s4 m4 no-vertical-margin" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newServiceCode,
+                          expression: "newServiceCode"
+                        }
+                      ],
+                      attrs: {
+                        placeholder: "",
+                        id: "service_code",
+                        type: "text",
+                        "data-length": "50",
+                        maxlength: "50"
+                      },
+                      domProps: { value: _vm.newServiceCode },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.newServiceCode = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text service_code_helper",
+                      attrs: { "data-success": "Código de servicio validado." }
+                    }),
+                    _c("br")
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
                   { staticClass: "input-field col s12 m12 no-vertical-margin" },
                   [
                     _c("input", {
@@ -45729,7 +46078,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text service_description_helper",
@@ -45780,6 +46129,19 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
         _vm._v("  Servicio *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "service_code" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
+        _vm._v("  Código de servicio *")
       ]
     )
   },
@@ -46030,6 +46392,7 @@ var render = function() {
         attrs: {
           "service-id": _vm.serviceId.toString(),
           "service-name": _vm.serviceName,
+          "service-code": _vm.serviceCode,
           "service-description": _vm.serviceDescription
         }
       })
@@ -46090,7 +46453,7 @@ var render = function() {
               _c("div", { staticClass: "row" }, [
                 _c(
                   "div",
-                  { staticClass: "input-field col s12 m12 no-vertical-margin" },
+                  { staticClass: "input-field col s8 m8 no-vertical-margin" },
                   [
                     _c("input", {
                       directives: [
@@ -46139,6 +46502,50 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
+                  { staticClass: "input-field col s4 m4 no-vertical-margin" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.updateServiceCode,
+                          expression: "updateServiceCode"
+                        }
+                      ],
+                      attrs: {
+                        placeholder: "",
+                        id: "update_service_code",
+                        type: "text",
+                        "data-length": "50",
+                        maxlength: "50",
+                        required: ""
+                      },
+                      domProps: { value: _vm.updateServiceCode },
+                      on: {
+                        input: [
+                          function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.updateServiceCode = $event.target.value
+                          },
+                          _vm.emitServiceCode
+                        ]
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "helper-text service_code_helper",
+                      attrs: { "data-success": "Código validado." }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
                   { staticClass: "input-field col s12 m6 no-vertical-margin" },
                   [
                     _c("input", {
@@ -46177,7 +46584,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _vm._m(2),
                     _vm._v(" "),
                     _c("span", {
                       staticClass: "helper-text service_description_helper",
@@ -46246,6 +46653,19 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
         _vm._v("  Servicio *")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "valign-wrapper", attrs: { for: "update_service_code" } },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("layers")]),
+        _vm._v("  Código de servicio *")
       ]
     )
   },

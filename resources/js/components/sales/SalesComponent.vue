@@ -17,26 +17,28 @@
                             <tr>
                                 <th style="width:10%;">Cantidad</th>
                                 <th style="width:10%;">Tipo</th>
-                                <th style="width:50%;">Descripción</th>
+                                <th style="width:45%;">Descripción</th>
                                 <th style="width:15%;">Precio Unitario</th>
                                 <th style="width:15%;">Importe</th>
+                                <th style="width:5%;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(article, index) in articles">
                                 <td>
                                     <div class="input-field custom-sale-field">
-                                        <input v-model="article.article_quantity" type="number" min="1">
+                                        <input v-model="article.article_quantity" class="validate" type="number" min="1">
                                     </div>
                                 </td>
                                 <td>{{setArticleType(article.article_type)}}</td>
                                 <td>{{article.article_description}}</td>
                                 <td>
                                     <div class="input-field custom-sale-field">
-                                        <input v-model="article.article_unit_price" type="number" step="0.01" pattern="^\d*(\.\d{0,2})?$" >
+                                        <input v-model="article.article_unit_price" class="validate" type="number" min="0.01" step="0.01" pattern="^\d*(\.\d{0,2})?$" >
                                     </div>
                                 </td>
                                 <td>${{getArticleImport(article.article_quantity, article.article_unit_price)}}</td>
+                                <td><a class="selectable red-text" v-on:click="removeArticle(index)"><i class="material-icons">cancel</i></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -47,8 +49,8 @@
             <div class="row">
                 <div class="col m12">
                     <span class="grey-text"><b>Información de venta</b></span><br>
-                    <span><b>Fecha:</b></span><br>
-                    <span><b>Venta realizada por:</b> Gustavo</span><br>
+                    <span><b>Fecha:</b> {{date}}</span><br>
+                    <span><b>Venta realizada por:</b> {{worker.name}}</span><br>
                     <div class="row" style="padding-top:12px !important;">
                         <div class="col m12">
                             <div class="row">
@@ -69,15 +71,15 @@
                                             <label for="client_id">No. de cliente</label>
                                         </div>
                                         <div class="input-field col s8">
-                                            <input placeholder="" :value="clientName" @input="$emit('update:clientName', $event.target.value)" id="receipt_client_name" type="text" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" data-length="50" maxlength="50" required>
+                                            <input placeholder="" v-model="clientName" id="receipt_client_name" type="text" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientName" v-bind:class="{'valid': validClientName, 'invalid': invalidClientName}" data-length="50" maxlength="50" required>
                                             <label for="client_name">Nombre</label>
                                         </div>
                                         <div class="input-field col s8">
-                                            <input placeholder="" :value="clientEmail" @input="$emit('update:clientEmail', $event.target.value)" id="receipt_client_email" type="email" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" data-length="40" maxlength="40">
+                                            <input placeholder="" v-model="clientEmail" id="receipt_client_email" type="email" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientEmail" v-bind:class="{'valid': validClientEmail, 'invalid': invalidClientEmail}" data-length="40" maxlength="40">
                                             <label for="client_email">E-mail</label>
                                         </div>
                                         <div class="input-field col s4">
-                                            <input placeholder="" :value="clientPhone" @input="$emit('update:clientPhone', $event.target.value)" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" data-length="10" minlength="10" maxlength="10">
+                                            <input placeholder="" v-model="clientPhone" id="receipt_client_phone" type="tel" :disabled="newClientToggle == false" v-on:blur="validateReceiptClientPhone" v-bind:class="{'valid': validClientPhone, 'invalid': invalidClientPhone}" data-length="10" minlength="10" maxlength="10">
                                             <label for="client_phone">Teléfono</label>
                                         </div>
                                     </form>
@@ -94,14 +96,14 @@
                         <div class="col m8 switch">
                             <label>
                               Venta facturada
-                              <input type="checkbox">
+                              <input type="checkbox" v-model="vatChargeToggle">
                               <span class="lever"></span>
                             </label>
                         </div>
                         <div class="col m6">
-                            <br><span><b>Subtotal: {{subtotal_amount}}</b></span>
-                            <br><span><b>IVA: {{iva_amount}}</b></span>
-                            <br><span><b>Total: {{total_amount}}</b></span>
+                            <br><span><b>Subtotal: ${{subtotalAmount}}</b></span>
+                            <br><span><b>IVA: ${{vatAmount}}</b></span>
+                            <br><span><b>Total: ${{totalAmount}}</b></span>
                         </div>
                         <div class="col m6 right-align">
                             <button class="btn waves-effect waves-light btn-large">Realizar venta</button>
@@ -192,19 +194,67 @@
                 validClientEmail: false,
                 invalidClientEmail: false,
                 newClientToggle: false,
-                iva_amount: 0,
-                total_amount:0,
+                vatChargeToggle: false,
                 articles: []
             }
         },
 
         computed: {
-            subtotal_amount: function (){
-                var subtotal=0;
+            subtotalAmount: function() {
+                var x=0;
+                var subtotal;
                 this.articles.forEach(article => {
-                    subtotal+this.getArticleImport(article.article_quantity, article.article_unit_price);
+                    subtotal=article.article_quantity*article.article_unit_price;
+                    x=x+subtotal;
                 });
-                return subtotal;
+                return parseFloat(Math.round(x * 100) / 100).toFixed(2);
+                
+            },
+
+            vatAmount: function() {
+                if(this.vatChargeToggle){
+                    return parseFloat(Math.round(this.subtotalAmount*0.16 * 100) / 100).toFixed(2);
+                }
+                else{
+                    return parseFloat(Math.round(0 * 100) / 100).toFixed(2);
+                }
+            },
+
+            totalAmount: function() {
+                return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
+            },
+
+            date: function() {
+                var d = new Date();
+
+                switch (d.getMonth()) {
+                    case 0:
+                        return "Enero"+d.getDate()+", "+d.getFullYear();
+                    case 1:
+                        return "Febrero"+d.getDate()+", "+d.getFullYear();
+                    case 2:
+                        return "Marzo"+d.getDate()+", "+d.getFullYear();
+                    case 3:
+                        return "Abril"+d.getDate()+", "+d.getFullYear();
+                    case 4:
+                        return "Mayo"+d.getDate()+", "+d.getFullYear();
+                    case 5:
+                        return "Junio"+d.getDate()+", "+d.getFullYear();
+                    case 6:
+                        return "Julio "+d.getDate()+", "+d.getFullYear();
+                    case 7:
+                        return "Agosto"+d.getDate()+", "+d.getFullYear();
+                    case 8:
+                        return "Septiembre"+d.getDate()+", "+d.getFullYear();
+                    case 9:
+                        return "Octubre"+d.getDate()+", "+d.getFullYear();
+                    case 10:
+                        return "Noviembre"+d.getDate()+", "+d.getFullYear();
+                    case 11:
+                        return "Diciembre"+d.getDate()+", "+d.getFullYear();
+                    default:
+                        break;
+                }
             }
         },
 
@@ -280,7 +330,7 @@
                     $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
                 }
                 else{
-                    validateReceiptClientNamethis.validClientPhone = true;
+                    this.validClientPhone = true;
                     this.invalidClientPhone = false;
                 }
             },
@@ -327,6 +377,10 @@
             getArticleImport: function(article_quantity, article_unit_price) {
                 return article_quantity * article_unit_price;
             },
+
+            removeArticle: function(index) {
+                this.articles.splice(index,1);
+            }
         }
     }
 </script>

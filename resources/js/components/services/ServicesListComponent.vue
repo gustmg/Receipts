@@ -22,7 +22,7 @@
 			</h5>
 			<h5 v-show="services.length == 0 && this.$parent.searchService == ''" class="center grey-text">No hay servicios registrados.</h5>
 		</div>
-		<update-service-modal-component :service-id="serviceId.toString()" :service-name="serviceName" :service-description="serviceDescription"></update-service-modal-component>
+		<update-service-modal-component :service-id="serviceId.toString()" :service-name="serviceName" :service-code="serviceCode" :service-description="serviceDescription"></update-service-modal-component>
 	</div>
 </template>
 <style>
@@ -61,6 +61,7 @@
 				serviceIndex: null,
 				serviceId: '',
 				serviceName: '',
+				serviceCode: '',
 				serviceDescription: ''
 			}
 		},
@@ -70,6 +71,7 @@
 				this.serviceIndex = index;
 				this.serviceId=service.service_id;
 				this.serviceName=service.service_name;
+				this.serviceCode=service.service_code;
 				this.serviceDescription=service.service_description;
 				$('#update_service_name,#update_service_description').characterCounter();
 				$('#updateServiceModal').modal({

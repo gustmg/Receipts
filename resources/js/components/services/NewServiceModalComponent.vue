@@ -6,10 +6,15 @@
                 <form id="newServiceForm" class="col s12 no-padding" method="POST" action="services">
                     <input type="hidden" name="_token" :value="csrf">
                     <div class="row">
-                        <div class="input-field col s12 m12 no-vertical-margin">
+                        <div class="input-field col s8 m8 no-vertical-margin">
                             <input placeholder="" id="service_name" type="text" v-model="newServiceName" v-on:blur="validateServiceName" v-bind:class="{'valid': validServiceName, 'invalid': invalidServiceName}" data-length="50" maxlength="50" required>
                             <label for="service_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Servicio *</label>
                             <span class="helper-text service_name_helper" data-success="Servicio validado."></span><br>
+                        </div>
+                        <div class="input-field col s4 m4 no-vertical-margin">
+                            <input placeholder="" id="service_code" type="text" v-model="newServiceCode" data-length="50" maxlength="50">
+                            <label for="service_code" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Código de servicio *</label>
+                            <span class="helper-text service_code_helper" data-success="Código de servicio validado."></span><br>
                         </div>
                         <div class="input-field col s12 m12 no-vertical-margin">
                             <input placeholder="" id="service_description" type="text" v-model="newServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" data-length="50" maxlength="50" required>
@@ -55,6 +60,7 @@
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 newServiceName: null,
+                newServiceCode: null,
                 newServiceDescription: null,
                 validServiceName: false,
                 invalidServiceName: false,
@@ -76,11 +82,13 @@
                 var newService = {
                     service_id: '',
                     service_name: this.newServiceName,
+                    service_code: this.newServiceCode,
                     service_description: this.newServiceDescription
                 };
 
                 axios.post('http://localhost:8000/services',{
                     service_name: this.newServiceName,
+                    service_code: this.newServiceCode,
                     service_description: this.newServiceDescription
                 })
                 .then((res)=>{newService.service_id = res.data.service_id})
@@ -119,6 +127,7 @@
 
             resetNewServiceInputs: function (e) {
                 this.newServiceName= null;
+                this.newServiceCode= null;
                 this.newServiceDescription= null;
                 this.validServiceName= false;
                 this.invalidServiceName= false;

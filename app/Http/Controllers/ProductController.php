@@ -34,6 +34,7 @@ class ProductController extends Controller
 
             $product=new Product;
             $product->product_name=$request->product_name;
+            $product->product_code=$request->product_code;
             $product->product_description=$request->product_description;
             $product->save();
 
@@ -61,6 +62,7 @@ class ProductController extends Controller
 
             $product=Product::find($id);
             $product->product_name=$request->product_name;
+            $product->product_code=$request->product_code;
             $product->product_description=$request->product_description;
             $product->save();
 

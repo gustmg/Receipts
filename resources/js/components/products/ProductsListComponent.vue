@@ -22,7 +22,7 @@
 			</h5>
 			<h5 v-show="products.length == 0 && this.$parent.searchProduct == ''" class="center grey-text">No hay productos registrados.</h5>
 		</div>
-		<update-product-modal-component :product-id="productId.toString()" :product-name="productName" :product-description="productDescription"></update-product-modal-component>
+		<update-product-modal-component :product-id="productId.toString()" :product-name="productName" :product-code="productCode" :product-description="productDescription"></update-product-modal-component>
 	</div>
 </template>
 <style>
@@ -61,6 +61,7 @@
 				productIndex: null,
 				productId: '',
 				productName: '',
+				productCode: '',
 				productDescription: ''
 			}
 		},
@@ -70,13 +71,14 @@
 				this.productIndex = index;
 				this.productId=product.product_id;
 				this.productName=product.product_name;
+				this.productCode=product.product_code;
 				this.productDescription=product.product_description;
-				$('#update_product_name,#update_product_description').characterCounter();
+				$('#update_product_name,#update_product_code,#update_product_description').characterCounter();
 				$('#updateProductModal').modal({
 					dismissible: false,
 					onOpenStart: function() {
 						$('.label_update_product_name').addClass('active');
-						if(product.product_phone != null){
+						if(product.product_description != null){
 							$('.label_update_product_description').addClass('active');
 						}
 					},
