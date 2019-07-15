@@ -40,7 +40,7 @@
 									<input type="checkbox" v-model="newClientToggle" v-on:click="newClientToggleHandler">
 									<span class="lever"></span>
 								</label>
-								<button v-on:click="showClientsList" class="btn waves-effect waves-light" :disabled="newClientToggle == true">Buscar cliente</button>
+								<button v-on:click="showClientsList" class="mdc-button mdc-button--outlined" :disabled="newClientToggle == true">Buscar cliente</button>
 							</div><br>
 						</div>
 						<div class="col m12">

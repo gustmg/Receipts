@@ -5,11 +5,9 @@
                 <div class="col m6">
                     <sale-search-bar-component :search-value.sync="searchProduct"></sale-search-bar-component>
                 </div>
-                <div class="col m3 center-align" style="padding-top:16px !important;">
-                    <button v-on:click="showProductsList" class="btn waves-effect waves-light">Lista de productos</button>
-                </div>
-                <div class="col m3 center-align" style="padding-top:16px !important;">
-                    <button v-on:click="showServicesList" class="btn waves-effect waves-light">Lista de servicios</button>
+                <div class="col m6 center-align" style="padding-top:18px !important;">
+                    <button v-on:click="showProductsList" class="mdc-button mdc-button--outlined">Lista de productos</button>&nbsp;&nbsp;
+                    <button v-on:click="showServicesList" class="mdc-button mdc-button--outlined">Lista de servicios</button>
                 </div>
                 <div class="col m12 card">
                     <table class="centered">
@@ -49,6 +47,7 @@
             <div class="row">
                 <div class="col m12">
                     <span class="grey-text"><b>Información de venta</b></span><br>
+                    <span><b>Folio:</b> {{lastSaleId}}</span><br>
                     <span><b>Fecha:</b> {{date}}</span><br>
                     <span><b>Venta realizada por:</b> {{worker.name}}</span><br>
                     <div class="row" style="padding-top:12px !important;">
@@ -61,7 +60,7 @@
                                             <input type="checkbox" v-model="newClientToggle" v-on:click="newClientToggleHandler">
                                             <span class="lever"></span>
                                         </label>
-                                        <button v-on:click="showClientsList" class="btn waves-effect waves-light" :disabled="newClientToggle == true">Buscar cliente</button>
+                                        <button v-on:click="showClientsList" class="mdc-button mdc-button--outlined" :disabled="newClientToggle == true">Buscar cliente</button>
                                     </div><br>
                                 </div>
                                 <div class="col m12">
@@ -106,7 +105,7 @@
                             <br><span><b>Total: ${{totalAmount}}</b></span>
                         </div>
                         <div class="col m6 right-align">
-                            <button class="btn waves-effect waves-light btn-large">Realizar venta</button>
+                            <button class="mdc-button mdc-button--outlined" v-bind:disabled="validateForm">Realizar venta</button>
                         </div>
                     </div>
                 </div>
@@ -161,6 +160,10 @@
         },
 
         props: {
+            sales: {
+                type: Array
+            },
+            
             products: {
                 type: Array
             },
@@ -200,6 +203,28 @@
         },
 
         computed: {
+            validateForm: function(e) {
+                if(this.newClientToggle){
+                    if(this.articles.length==0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail){
+                        return true;
+                    }
+                }
+                else{
+                    if(this.articles.length==0 || this.clientName==null){
+                        return true;
+                    }
+                }
+            },
+
+            lastSaleId: function() {
+                if(this.sales.length > 0){
+                    return this.sales[this.sales.length - 1].sale_id + 1;
+                }
+                else{
+                    return 1;
+                }
+            },
+
             subtotalAmount: function() {
                 var x=0;
                 var subtotal;
