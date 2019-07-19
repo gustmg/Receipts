@@ -4638,16 +4638,29 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    validateForm: function validateForm(e) {
+    validateForm: function validateForm() {
       if (this.newClientToggle) {
         if (this.articles.length == 0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail) {
+          return true;
+        } else if (this.articles.length > 0 && this.validateUnitPrices != 0) {
           return true;
         }
       } else {
         if (this.articles.length == 0 || this.clientName == null) {
           return true;
+        } else if (this.articles.length > 0 && this.validateUnitPrices != 0) {
+          return true;
         }
       }
+    },
+    validateUnitPrices: function validateUnitPrices() {
+      var amount_zero_prices = 0;
+      this.articles.forEach(function (article) {
+        if (article.article_unit_price == 0) {
+          amount_zero_prices = amount_zero_prices + 1;
+        }
+      });
+      return amount_zero_prices;
     },
     lastSaleId: function lastSaleId() {
       if (this.sales.length > 0) {

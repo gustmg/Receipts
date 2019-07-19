@@ -27,16 +27,6 @@ class SaleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,7 +34,29 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->ajax()){
+            $sale=new Receipt;
+            $sale->sale_worker_id=Auth::id();
+            $sale->sale_client_id=$request->sale_client_id;
+            $sale->sale_payment_form_id=$request->sale_payment_form_id;
+            $sale->sale_total_amount=$request->sale_total_amount;
+            $sale->save();
+
+            $connector = new WindowsPrintConnector("EC-PM-80250");
+            $printer = new Printer($connector);
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text("TECTRO\n");
+            $printer -> text("Centro de servicios informáticos\n");
+            $printer -> text("Calle Encino 1-A, Col. Viveros Santa Cruz\n");
+            $printer -> text("Puebla, Pue.\n");
+            $printer -> cut();
+            $printer -> close();
+
+            return response()->json([
+                "message" => "Venta creada correctamente.",
+                
+            ],200);
+        }
     }
 
     /**

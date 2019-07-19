@@ -203,9 +203,12 @@
         },
 
         computed: {
-            validateForm: function(e) {
+            validateForm: function() {
                 if(this.newClientToggle){
                     if(this.articles.length==0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail){
+                        return true;
+                    }
+                    else if(this.articles.length>0 && this.validateUnitPrices != 0){
                         return true;
                     }
                 }
@@ -213,7 +216,20 @@
                     if(this.articles.length==0 || this.clientName==null){
                         return true;
                     }
+                    else if(this.articles.length>0 && this.validateUnitPrices != 0){
+                        return true;
+                    }
                 }
+            },
+
+            validateUnitPrices: function() {
+                var amount_zero_prices=0;
+                this.articles.forEach(article => {
+                    if(article.article_unit_price==0){
+                        amount_zero_prices=amount_zero_prices+1;
+                    }
+                });
+                return amount_zero_prices;
             },
 
             lastSaleId: function() {
