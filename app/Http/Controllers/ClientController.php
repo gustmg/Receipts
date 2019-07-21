@@ -44,20 +44,20 @@ class ClientController extends Controller
         $printer -> text("________________________________________________\n");
         $printer -> text("CANT    DESCRIPCION           PU         IMPORTE \n");
         $printer -> text("________________________________________________\n");
-        $printer -> text(addSpacesRight("1",8)
-                        .addSpacesRight("SSD120GBAD",14)
-                        .addSpacesLeft("$250.00",14)
-                        .addSpacesLeft("$250.00", 12));
+        $printer -> text(ClientController::addSpacesRight("1",8)
+                        .ClientController::addSpacesRight("SSD120GBAD",14)
+                        .ClientController::addSpacesLeft("$250.00",14)
+                        .ClientController::addSpacesLeft("$250.00", 12));
         $printer -> text("SSD Adata 120GB SATA 3 500MB/s \n");
-        $printer -> text(addSpacesRight("3",8)
-                        .addSpacesRight("SSD120GBAD",14)
-                        .addSpacesLeft("$50.00",14)
-                        .addSpacesLeft("$150.00", 12));
+        $printer -> text(ClientController::addSpacesRight("3",8)
+                        .ClientController::addSpacesRight("SSD120GBAD",14)
+                        .ClientController::addSpacesLeft("$50.00",14)
+                        .ClientController::addSpacesLeft("$150.00", 12));
         $printer -> text("SSD Adata 120GB SATA 3 500MB/s \n");
-        $printer -> text(addSpacesRight("5",8)
-                        .addSpacesRight("SSD120GBAD",14)
-                        .addSpacesLeft("$2,000.00",14)
-                        .addSpacesLeft("$10,000.00", 12));
+        $printer -> text(ClientController::addSpacesRight("5",8)
+                        .ClientController::addSpacesRight("SSD120GBAD",14)
+                        .ClientController::addSpacesLeft("$2,000.00",14)
+                        .ClientController::addSpacesLeft("$10,000.00", 12));
         $printer -> text("SSD Adata 120GB SATA 3 500MB/s \n");
         $printer -> text("_______________________________________________\n");
         $printer -> setJustification(Printer::JUSTIFY_RIGHT);
