@@ -41,13 +41,23 @@ class ClientController extends Controller
         $printer -> text("Fecha: Julio 19, 2019 \n");
         $printer -> text("Cliente: Gustavo Mitre Gallardo\n");
         $printer -> text("No. de cliente: 0001\n");
-        $printer -> feed(1);
         $printer -> text("________________________________________________\n");
-        $printer -> text("CANT   DESCRIPCION         PU           IMPORTE\n");
-        $printer -> text("_______________________________________________\n");
-        $printer -> text("  1    SSD120GBAD      $18,250.00    $18,250.00\n");
+        $printer -> text("CANT    DESCRIPCION           PU         IMPORTE \n");
+        $printer -> text("________________________________________________\n");
+        $printer -> text(addSpacesRight("1",8)
+                        .addSpacesRight("SSD120GBAD",14)
+                        .addSpacesLeft("$250.00",14)
+                        .addSpacesLeft("$250.00", 12));
         $printer -> text("SSD Adata 120GB SATA 3 500MB/s \n");
-        $printer -> text("  10    SSD120GBAD      $250.00    $250.00\n");
+        $printer -> text(addSpacesRight("3",8)
+                        .addSpacesRight("SSD120GBAD",14)
+                        .addSpacesLeft("$50.00",14)
+                        .addSpacesLeft("$150.00", 12));
+        $printer -> text("SSD Adata 120GB SATA 3 500MB/s \n");
+        $printer -> text(addSpacesRight("5",8)
+                        .addSpacesRight("SSD120GBAD",14)
+                        .addSpacesLeft("$2,000.00",14)
+                        .addSpacesLeft("$10,000.00", 12));
         $printer -> text("SSD Adata 120GB SATA 3 500MB/s \n");
         $printer -> text("_______________________________________________\n");
         $printer -> setJustification(Printer::JUSTIFY_RIGHT);
@@ -66,6 +76,26 @@ class ClientController extends Controller
         $printer -> cut();
         $printer -> close();
         return View::make('clients.index',['clients'=>$clients]);
+    }
+
+    function addSpacesRight($string, $valid_string_length) {
+        if (strlen($string) < $valid_string_length) {
+            $spaces = $valid_string_length - strlen($string);
+            for ($index1 = 1; $index1 <= $spaces; $index1++) {
+                $string = $string . ' ';
+            }
+        }
+        return $string;
+    }
+
+    function addSpacesLeft($string, $valid_string_length) {
+        if (strlen($string) < $valid_string_length) {
+            $spaces = $valid_string_length - strlen($string);
+            for ($index1 = 1; $index1 <= $spaces; $index1++) {
+                $string = ' '.$string;
+            }
+        }
+        return $string;
     }
 
     /**
