@@ -26,3 +26,6 @@ Route::resource('services', 'ServiceController')->middleware('auth');
 Route::resource('devices', 'DeviceController')->middleware('auth');
 Route::resource('accessories', 'AccessoryController')->middleware('auth');
 Route::resource('products', 'ProductController')->middleware('auth');
+Route::resource('sales_products', 'SaleProductController')->middleware('auth');
+Route::resource('sales_services', 'SaleServiceController')->middleware('auth');
+Route::resource('print', 'PrinterController')->middleware('auth');

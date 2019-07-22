@@ -66,7 +66,7 @@
                                 <div class="col m12">
                                     <form class="row">
                                         <div class="input-field col s4">
-                                            <input placeholder="" :value="clientId" @input="$emit('update:clientId', $event.target.value)" id="receipt_client_id" type="text" disabled>
+                                            <input placeholder="" v-model="clientId" id="receipt_client_id" type="text" disabled>
                                             <label for="client_id">No. de cliente</label>
                                         </div>
                                         <div class="input-field col s8">
@@ -86,9 +86,9 @@
                             </div>
                         </div>
                         <div class="input-field col s12 m8" style="margin-top:0 !important;">
-                            <select class="icons">
-                                <option value="" data-icon="svg/baseline-attach_money-24px.svg">Efectivo</option>
-                                <option value="" data-icon="svg/baseline-payment-24px.svg">Tarjeta de crédito / débito</option>
+                            <select v-model="paymentForm" class="icons">
+                                <option value="1" data-icon="svg/baseline-attach_money-24px.svg">Efectivo</option>
+                                <option value="2" data-icon="svg/baseline-payment-24px.svg">Tarjeta de crédito / débito</option>
                             </select>
                             <label>Forma de pago</label>
                         </div>
@@ -105,7 +105,7 @@
                             <br><span><b>Total: ${{totalAmount}}</b></span>
                         </div>
                         <div class="col m6 right-align">
-                            <button class="mdc-button mdc-button--outlined" v-bind:disabled="validateForm">Realizar venta</button>
+                            <button class="mdc-button mdc-button--outlined" v-on:click="saveSale" v-bind:disabled="validateForm">Realizar venta</button>
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
             <div class="modal-content">
                 <!-- <client-search-bar-component></client-search-bar-component> -->
                 <ul class="collection with-header">
-                    <a class="collection-item selectable service-element" v-on:click="selectArticle(service.service_name, 1)" v-for="(service, index) in services">{{service.service_name}}</a>
+                    <a class="collection-item selectable service-element" v-on:click="selectArticle(service, 1)" v-for="(service, index) in services">{{service.service_name}}</a>
                 </ul>
             </div>
             <div class="modal-footer">
@@ -127,7 +127,7 @@
             <div class="modal-content">
                 <!-- <client-search-bar-component></client-search-bar-component> -->
                 <ul class="collection with-header">
-                    <a class="collection-item selectable product-element" v-on:click="selectArticle(product.product_name, 0)" v-for="(product, index) in products">{{product.product_name}}</a>
+                    <a class="collection-item selectable product-element" v-on:click="selectArticle(product, 0)" v-for="(product, index) in products">{{product.product_name}}</a>
                 </ul>
             </div>
             <div class="modal-footer">
@@ -184,6 +184,7 @@
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                lastClientId: this.clients[this.clients.length - 1].client_id + 1,
                 searchProduct: '',
                 componentKey: 0,
                 clientId: 0,
@@ -198,6 +199,7 @@
                 invalidClientEmail: false,
                 newClientToggle: false,
                 vatChargeToggle: false,
+                paymentForm: "1",
                 articles: []
             }
         },
@@ -403,12 +405,24 @@
                 }
             },
 
-            selectArticle: function(article_description, article_type) {
+            selectArticle: function(article, article_type) {
                 var newArticle = {
+                    article_id: 0,
                     article_quantity: 1,
                     article_type: article_type,
-                    article_description: article_description,
+                    article_description: null,
+                    article_code:null,
                     article_unit_price: 0
+                }
+                if(article_type == 1){
+                    newArticle.article_id=article.service_id;
+                    newArticle.article_description=article.service_description;
+                    newArticle.article_code=article.service_code;
+                }
+                else{
+                    newArticle.article_id=article.product_id;
+                    newArticle.article_description=article.product_description;
+                    newArticle.article_code=article.product_code;
                 }
                 this.articles.push(newArticle);
                 $('#servicesCompactListModal').modal('close');
@@ -421,6 +435,103 @@
 
             removeArticle: function(index) {
                 this.articles.splice(index,1);
+            },
+
+            saveSale: function(){
+                var newSale = {
+                    sale_client_id : 0,
+                    sale_payment_form_id : this.paymentForm,
+                    sale_total_amount : this.totalAmount
+                };
+
+                if(this.newClientToggle){
+                    this.saveClient();
+                }
+
+                axios.post('http://localhost:8000/sales',{
+                    sale_client_id: this.clientId,
+                    sale_payment_form_id: newSale.sale_payment_form_id,
+                    sale_total_amount: newSale.sale_total_amount
+                })
+                .then((res)=>{
+                    this.saveSaleArticles(res.data.sale_id);
+                    // console.log("Venta guardada!");
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+
+                // this.$parent.receipts.push(newReceipt);
+                // this.$parent.forceRerender();
+                $('#newReceiptModal').modal('close');
+            },
+
+            saveClient: function() {
+                axios.post('http://localhost:8000/clients',{
+                    client_name: this.clientName,
+                    client_phone: this.clientPhone,
+                    client_email: this.clientEmail
+                })
+                .then((res)=>{
+                    this.clientId=res.data.client_id;
+                    // console.log("Cliente registrado con id: "+this.clientId);
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
+            },
+
+            saveSaleArticles: function (sale_id) {
+                this.articles.forEach(article => {
+                    if(article.article_type == 1){
+                        axios.post('http://localhost:8000/sales_services',{
+                            sale_id: sale_id,
+                            service_id: article.article_id,
+                            service_quantity: article.article_quantity,
+                            service_unit_price: article.article_unit_price,
+                            service_description: article.article_description,
+                            service_code: article.article_code
+                        })
+                        .then((res)=>{
+                            // console.log("Equipo registrado");
+                            
+                        })
+                        .catch(function(err){
+                            console.log(err);
+                        });
+                    }
+                    else{
+                        axios.post('http://localhost:8000/sales_products',{
+                            sale_id: sale_id,
+                            product_id: article.article_id,
+                            product_quantity: article.article_quantity,
+                            product_unit_price: article.article_unit_price,
+                            product_description: article.article_description,
+                            product_code: article.article_code,
+                        })
+                        .then((res)=>{
+                            console.log("Venta de productos registrados correctamente");   
+                        })
+                        .catch(function(err){
+                            console.log(err);
+                        });
+                    }
+                    
+                });
+                this.printSale(sale_id);
+            },
+
+            printSale: function(sale_id) {
+                axios.post('http://localhost:8000/print',{
+                    sale_id: sale_id,
+                    tax: this.vatChargeToggle
+                })
+                .then((res)=>{
+                    console.log(res.data.sale);   
+                })
+                .catch(function(err){
+                    console.log(err);
+                });
             }
         }
     }

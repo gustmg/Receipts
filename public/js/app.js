@@ -4620,6 +4620,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      lastClientId: this.clients[this.clients.length - 1].client_id + 1,
       searchProduct: '',
       componentKey: 0,
       clientId: 0,
@@ -4634,6 +4635,7 @@ __webpack_require__.r(__webpack_exports__);
       invalidClientEmail: false,
       newClientToggle: false,
       vatChargeToggle: false,
+      paymentForm: "1",
       articles: []
     };
   },
@@ -4822,13 +4824,26 @@ __webpack_require__.r(__webpack_exports__);
         return "Servicio";
       }
     },
-    selectArticle: function selectArticle(article_description, article_type) {
+    selectArticle: function selectArticle(article, article_type) {
       var newArticle = {
+        article_id: 0,
         article_quantity: 1,
         article_type: article_type,
-        article_description: article_description,
+        article_description: null,
+        article_code: null,
         article_unit_price: 0
       };
+
+      if (article_type == 1) {
+        newArticle.article_id = article.service_id;
+        newArticle.article_description = article.service_description;
+        newArticle.article_code = article.service_code;
+      } else {
+        newArticle.article_id = article.product_id;
+        newArticle.article_description = article.product_description;
+        newArticle.article_code = article.product_code;
+      }
+
       this.articles.push(newArticle);
       $('#servicesCompactListModal').modal('close');
       $('#productsCompactListModal').modal('close');
@@ -4838,6 +4853,87 @@ __webpack_require__.r(__webpack_exports__);
     },
     removeArticle: function removeArticle(index) {
       this.articles.splice(index, 1);
+    },
+    saveSale: function saveSale() {
+      var _this = this;
+
+      var newSale = {
+        sale_client_id: 0,
+        sale_payment_form_id: this.paymentForm,
+        sale_total_amount: this.totalAmount
+      };
+
+      if (this.newClientToggle) {
+        this.saveClient();
+      }
+
+      axios.post('http://localhost:8000/sales', {
+        sale_client_id: this.clientId,
+        sale_payment_form_id: newSale.sale_payment_form_id,
+        sale_total_amount: newSale.sale_total_amount
+      }).then(function (res) {
+        _this.saveSaleArticles(res.data.sale_id); // console.log("Venta guardada!");
+
+      }).catch(function (err) {
+        console.log(err);
+      }); // this.$parent.receipts.push(newReceipt);
+      // this.$parent.forceRerender();
+
+      $('#newReceiptModal').modal('close');
+    },
+    saveClient: function saveClient() {
+      var _this2 = this;
+
+      axios.post('http://localhost:8000/clients', {
+        client_name: this.clientName,
+        client_phone: this.clientPhone,
+        client_email: this.clientEmail
+      }).then(function (res) {
+        _this2.clientId = res.data.client_id; // console.log("Cliente registrado con id: "+this.clientId);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    saveSaleArticles: function saveSaleArticles(sale_id) {
+      this.articles.forEach(function (article) {
+        if (article.article_type == 1) {
+          axios.post('http://localhost:8000/sales_services', {
+            sale_id: sale_id,
+            service_id: article.article_id,
+            service_quantity: article.article_quantity,
+            service_unit_price: article.article_unit_price,
+            service_description: article.article_description,
+            service_code: article.article_code
+          }).then(function (res) {// console.log("Equipo registrado");
+          }).catch(function (err) {
+            console.log(err);
+          });
+        } else {
+          axios.post('http://localhost:8000/sales_products', {
+            sale_id: sale_id,
+            product_id: article.article_id,
+            product_quantity: article.article_quantity,
+            product_unit_price: article.article_unit_price,
+            product_description: article.article_description,
+            product_code: article.article_code
+          }).then(function (res) {
+            console.log("Venta de productos registrados correctamente");
+          }).catch(function (err) {
+            console.log(err);
+          });
+        }
+      });
+      this.printSale(sale_id);
+    },
+    printSale: function printSale(sale_id) {
+      axios.post('http://localhost:8000/print', {
+        sale_id: sale_id,
+        tax: this.vatChargeToggle
+      }).then(function (res) {
+        console.log(res.data.sale);
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
   }
 });
@@ -45911,6 +46007,14 @@ var render = function() {
                         _c("form", { staticClass: "row" }, [
                           _c("div", { staticClass: "input-field col s4" }, [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.clientId,
+                                  expression: "clientId"
+                                }
+                              ],
                               attrs: {
                                 placeholder: "",
                                 id: "receipt_client_id",
@@ -45920,10 +46024,10 @@ var render = function() {
                               domProps: { value: _vm.clientId },
                               on: {
                                 input: function($event) {
-                                  _vm.$emit(
-                                    "update:clientId",
-                                    $event.target.value
-                                  )
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.clientId = $event.target.value
                                 }
                               }
                             }),
@@ -46056,7 +46160,70 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(2),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "input-field col s12 m8",
+                      staticStyle: { "margin-top": "0 !important" }
+                    },
+                    [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.paymentForm,
+                              expression: "paymentForm"
+                            }
+                          ],
+                          staticClass: "icons",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.paymentForm = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: {
+                                value: "1",
+                                "data-icon":
+                                  "svg/baseline-attach_money-24px.svg"
+                              }
+                            },
+                            [_vm._v("Efectivo")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "option",
+                            {
+                              attrs: {
+                                value: "2",
+                                "data-icon": "svg/baseline-payment-24px.svg"
+                              }
+                            },
+                            [_vm._v("Tarjeta de crédito / débito")]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Forma de pago")])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "col m8 switch" }, [
                     _c("label", [
@@ -46130,7 +46297,8 @@ var render = function() {
                       "button",
                       {
                         staticClass: "mdc-button mdc-button--outlined",
-                        attrs: { disabled: _vm.validateForm }
+                        attrs: { disabled: _vm.validateForm },
+                        on: { click: _vm.saveSale }
                       },
                       [_vm._v("Realizar venta")]
                     )
@@ -46184,7 +46352,7 @@ var render = function() {
                     staticClass: "collection-item selectable service-element",
                     on: {
                       click: function($event) {
-                        _vm.selectArticle(service.service_name, 1)
+                        _vm.selectArticle(service, 1)
                       }
                     }
                   },
@@ -46195,7 +46363,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(3)
+          _vm._m(2)
         ]
       ),
       _vm._v(" "),
@@ -46217,7 +46385,7 @@ var render = function() {
                     staticClass: "collection-item selectable product-element",
                     on: {
                       click: function($event) {
-                        _vm.selectArticle(product.product_name, 0)
+                        _vm.selectArticle(product, 0)
                       }
                     }
                   },
@@ -46228,7 +46396,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(4)
+          _vm._m(3)
         ]
       )
     ],
@@ -46265,42 +46433,6 @@ var staticRenderFns = [
     return _c("span", { staticClass: "grey-text" }, [
       _c("b", [_vm._v("Información de venta")])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "input-field col s12 m8",
-        staticStyle: { "margin-top": "0 !important" }
-      },
-      [
-        _c("select", { staticClass: "icons" }, [
-          _c(
-            "option",
-            {
-              attrs: {
-                value: "",
-                "data-icon": "svg/baseline-attach_money-24px.svg"
-              }
-            },
-            [_vm._v("Efectivo")]
-          ),
-          _vm._v(" "),
-          _c(
-            "option",
-            {
-              attrs: { value: "", "data-icon": "svg/baseline-payment-24px.svg" }
-            },
-            [_vm._v("Tarjeta de crédito / débito")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("label", [_vm._v("Forma de pago")])
-      ]
-    )
   },
   function() {
     var _vm = this

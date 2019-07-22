@@ -13,4 +13,9 @@ class Service extends Model
     {
     	return $this->hasMany('App\Revision');
     }
+
+    public function sales()
+    {
+        return $this->belongsToMany('App\Sale', 'sales_services', 'service_id', 'sale_id');
+    }
 }
