@@ -458,7 +458,10 @@
                 .then((res)=>{
                     this.saveSaleArticles(res.data.sale_id);
                     // console.log("Venta guardada!");
+<<<<<<< HEAD
                     // window.location.reload();
+=======
+>>>>>>> parent of a4f0389... Update 1.1
                 })
                 .catch(function(err){
                     console.log(err);
