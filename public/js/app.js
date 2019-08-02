@@ -3331,6 +3331,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   props: {
@@ -4874,6 +4880,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this.saveSaleArticles(res.data.sale_id); // console.log("Venta guardada!");
 
+
+        window.location.reload();
       }).catch(function (err) {
         console.log(err);
       }); // this.$parent.receipts.push(newReceipt);
@@ -5238,6 +5246,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -10109,7 +10123,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.product-title{\n\tpadding-top:8px !important;\n}\n.product-card{\n\theight:150px !important;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -10242,7 +10256,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.service-title{\n\tpadding-top:8px !important;\n}\n.service-card{\n\theight:150px !important;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -44232,7 +44246,8 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "card hoverable hoverable-card selectable",
+                staticClass:
+                  "card product-card hoverable hoverable-card selectable",
                 on: {
                   click: function($event) {
                     _vm.updateProduct(product, index)
@@ -44241,20 +44256,24 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "card-content center-align" }, [
-                  _c("span", { staticClass: "card-title" }, [
-                    _c(
-                      "i",
-                      { staticClass: "material-icons inline-icon-large" },
-                      [_vm._v("layers")]
-                    ),
-                    _c("br"),
-                    _vm._v(" "),
-                    product.product_name
-                      ? _c("b", [_vm._v(_vm._s(product.product_name))])
-                      : _vm._e()
-                  ]),
+                  _c(
+                    "span",
+                    { staticClass: "card-title product-title truncate" },
+                    [
+                      _c(
+                        "i",
+                        { staticClass: "material-icons inline-icon-large" },
+                        [_vm._v("layers")]
+                      ),
+                      _c("br"),
+                      _vm._v(" "),
+                      product.product_name
+                        ? _c("b", [_vm._v(_vm._s(product.product_name))])
+                        : _vm._e()
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("p", [
+                  _c("p", { staticClass: "truncate" }, [
                     _c(
                       "i",
                       { staticClass: "material-icons inline-icon-small" },
@@ -46956,7 +46975,8 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "card hoverable hoverable-card selectable",
+                staticClass:
+                  "card service-card hoverable hoverable-card selectable",
                 on: {
                   click: function($event) {
                     _vm.updateService(service, index)
@@ -46965,20 +46985,24 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "card-content center-align" }, [
-                  _c("span", { staticClass: "card-title" }, [
-                    _c(
-                      "i",
-                      { staticClass: "material-icons inline-icon-large" },
-                      [_vm._v("layers")]
-                    ),
-                    _c("br"),
-                    _vm._v(" "),
-                    service.service_name
-                      ? _c("b", [_vm._v(_vm._s(service.service_name))])
-                      : _vm._e()
-                  ]),
+                  _c(
+                    "span",
+                    { staticClass: "card-title service-title truncate" },
+                    [
+                      _c(
+                        "i",
+                        { staticClass: "material-icons inline-icon-large" },
+                        [_vm._v("layers")]
+                      ),
+                      _c("br"),
+                      _vm._v(" "),
+                      service.service_name
+                        ? _c("b", [_vm._v(_vm._s(service.service_name))])
+                        : _vm._e()
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("p", [
+                  _c("p", { staticClass: "truncate" }, [
                     _c(
                       "i",
                       { staticClass: "material-icons inline-icon-small" },

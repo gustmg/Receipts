@@ -1,13 +1,13 @@
 <template>
 	<div class="row">
 		<div class="col s12 m3" v-show="products.length > 0" v-for="(product, index) in filteredProducts">
-			<div v-on:click="updateProduct(product, index)" class="card hoverable hoverable-card selectable">
+			<div v-on:click="updateProduct(product, index)" class="card product-card hoverable hoverable-card selectable">
 		        <div class="card-content center-align">
-					<span class="card-title">
+					<span class="card-title product-title truncate">
 						<i class="material-icons inline-icon-large">layers</i><br>
 						<b v-if="product.product_name">{{product.product_name}}</b>
 					</span>
-					<p><i class="material-icons inline-icon-small">settings</i>
+					<p class="truncate"><i class="material-icons inline-icon-small">settings</i>
 						<span v-if="product.product_description">{{product.product_description}}</span>
 						<span v-else class="grey-text">Servicio sin descripción</span>
 					</p>
@@ -26,6 +26,12 @@
 	</div>
 </template>
 <style>
+	.product-title{
+		padding-top:8px !important;
+	}
+	.product-card{
+		height:150px !important;	
+	}
 	.inline-icon-large {
 	   vertical-align: bottom;
 	   font-size: 48px !important;

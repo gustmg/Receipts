@@ -456,6 +456,7 @@
                 .then((res)=>{
                     this.saveSaleArticles(res.data.sale_id);
                     // console.log("Venta guardada!");
+                    window.location.reload();
                 })
                 .catch(function(err){
                     console.log(err);
