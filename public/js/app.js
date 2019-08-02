@@ -4684,7 +4684,7 @@ __webpack_require__.r(__webpack_exports__);
         subtotal = article.article_quantity * article.article_unit_price;
         x = x + subtotal;
       });
-      return parseFloat(Math.round(x * 100) / 100).toFixed(2);
+      return x;
     },
     vatAmount: function vatAmount() {
       if (this.vatChargeToggle) {
@@ -4742,6 +4742,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    getFormatedNumber: function getFormatedNumber(number) {
+      var int_amount = parseInt(number);
+      var decimal_amount = (number % 1).toFixed(2).slice(1);
+      return int_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + decimal_amount;
+    },
     setTwoNumberDecimal: function setTwoNumberDecimal() {
       this.value = parseFloat(this.value).toFixed(2);
     },
@@ -4854,9 +4859,6 @@ __webpack_require__.r(__webpack_exports__);
       $('#servicesCompactListModal').modal('close');
       $('#productsCompactListModal').modal('close');
     },
-    getArticleImport: function getArticleImport(article_quantity, article_unit_price) {
-      return article_quantity * article_unit_price;
-    },
     removeArticle: function removeArticle(index) {
       this.articles.splice(index, 1);
     },
@@ -4879,9 +4881,8 @@ __webpack_require__.r(__webpack_exports__);
         sale_total_amount: newSale.sale_total_amount
       }).then(function (res) {
         _this.saveSaleArticles(res.data.sale_id); // console.log("Venta guardada!");
+        // window.location.reload();
 
-
-        window.location.reload();
       }).catch(function (err) {
         console.log(err);
       }); // this.$parent.receipts.push(newReceipt);
@@ -45880,9 +45881,9 @@ var render = function() {
                           _vm._v(
                             "$" +
                               _vm._s(
-                                _vm.getArticleImport(
-                                  article.article_quantity,
-                                  article.article_unit_price
+                                _vm.getFormatedNumber(
+                                  article.article_quantity *
+                                    article.article_unit_price
                                 )
                               )
                           )
@@ -46296,18 +46297,31 @@ var render = function() {
                     _c("br"),
                     _c("span", [
                       _c("b", [
-                        _vm._v("Subtotal: $" + _vm._s(_vm.subtotalAmount))
+                        _vm._v(
+                          "Subtotal: $" +
+                            _vm._s(_vm.getFormatedNumber(_vm.subtotalAmount))
+                        )
                       ])
                     ]),
                     _vm._v(" "),
                     _c("br"),
                     _c("span", [
-                      _c("b", [_vm._v("IVA: $" + _vm._s(_vm.vatAmount))])
+                      _c("b", [
+                        _vm._v(
+                          "IVA: $" +
+                            _vm._s(_vm.getFormatedNumber(_vm.vatAmount))
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("br"),
                     _c("span", [
-                      _c("b", [_vm._v("Total: $" + _vm._s(_vm.totalAmount))])
+                      _c("b", [
+                        _vm._v(
+                          "Total: $" +
+                            _vm._s(_vm.getFormatedNumber(_vm.totalAmount))
+                        )
+                      ])
                     ])
                   ]),
                   _vm._v(" "),

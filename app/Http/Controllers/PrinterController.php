@@ -73,33 +73,33 @@ class PrinterController extends Controller
                 $printer -> text("________________________________________________\n");
                 foreach ($sale->products as $key => $product) {
                     $product_import=$product->pivot->product_unit_price*$product->pivot->product_quantity;
-                    $product_import=number_format((float)$product_import, 2, '.', '');
+                    $total_amount=$total_amount+$product_import;
+                    $product_import=number_format((float)$product_import, 2, '.', ',');
                     $printer -> text(PrinterController::addSpacesRight($product->pivot->product_quantity,8)
                                     .PrinterController::addSpacesRight($product->product_code,14)
-                                    .PrinterController::addSpacesLeft("$".$product->pivot->product_unit_price,14)
+                                    .PrinterController::addSpacesLeft("$".number_format($product->pivot->product_unit_price, 2, '.', ','),14)
                                     .PrinterController::addSpacesLeft("$".$product_import, 12));
                     $printer -> text($product->product_description."\n");
                     $printer -> feed(1);
-                    $total_amount=$total_amount+$product_import;
                 }
                 foreach ($sale->services as $key => $service) {
                     $service_import=$service->pivot->service_unit_price*$service->pivot->service_quantity;
-                    $service_import=number_format((float)$service_import, 2, '.', '');
+                    $total_amount=$total_amount+$service_import;
+                    $service_import=number_format((float)$service_import, 2, '.', ',');
                     $printer -> text(PrinterController::addSpacesRight($service->pivot->service_quantity,8)
                     .PrinterController::addSpacesRight($service->service_code,14)
-                    .PrinterController::addSpacesLeft("$".$service->pivot->service_unit_price,14)
+                    .PrinterController::addSpacesLeft("$".number_format($service->pivot->service_unit_price, 2, '.',','),14)
                     .PrinterController::addSpacesLeft("$".$service_import, 12));
                     $printer -> text($service->service_description."\n");
                     $printer -> feed(1);
-                    $total_amount=$total_amount+$service_import;
                 }
                 $printer -> text("________________________________________________\n");
                 $printer -> setJustification(Printer::JUSTIFY_RIGHT);
-                $total_amount=number_format((float)$total_amount, 2, '.', '');
+                $iva=$total_amount*0.16;
+                $total_amount=number_format((float)$total_amount, 2, '.', ',');
                 if($request->tax){
                     $printer -> text("Subtotal: $".$total_amount."\n");
-                    $iva=$total_amount*0.16;
-                    $iva=number_format((float)$iva, 2, '.', '');
+                    $iva=number_format((float)$iva, 2, '.', ',');
                     $printer -> text("IVA: $".$iva."\n");
                     $printer -> text("Total: $".($total_amount+$iva)."\n");    
                 }

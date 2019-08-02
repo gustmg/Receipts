@@ -35,7 +35,7 @@
                                         <input v-model="article.article_unit_price" class="validate" type="number" min="0.01" step="0.01" pattern="^\d*(\.\d{0,2})?$" >
                                     </div>
                                 </td>
-                                <td>${{getArticleImport(article.article_quantity, article.article_unit_price)}}</td>
+                                <td>${{getFormatedNumber(article.article_quantity*article.article_unit_price)}}</td>
                                 <td><a class="selectable red-text" v-on:click="removeArticle(index)"><i class="material-icons">cancel</i></a></td>
                             </tr>
                         </tbody>
@@ -100,9 +100,9 @@
                             </label>
                         </div>
                         <div class="col m6">
-                            <br><span><b>Subtotal: ${{subtotalAmount}}</b></span>
-                            <br><span><b>IVA: ${{vatAmount}}</b></span>
-                            <br><span><b>Total: ${{totalAmount}}</b></span>
+                            <br><span><b>Subtotal: ${{getFormatedNumber(subtotalAmount)}}</b></span>
+                            <br><span><b>IVA: ${{getFormatedNumber(vatAmount)}}</b></span>
+                            <br><span><b>Total: ${{getFormatedNumber(totalAmount)}}</b></span>
                         </div>
                         <div class="col m6 right-align">
                             <button class="mdc-button mdc-button--outlined" v-on:click="saveSale" v-bind:disabled="validateForm">Realizar venta</button>
@@ -250,8 +250,8 @@
                     subtotal=article.article_quantity*article.article_unit_price;
                     x=x+subtotal;
                 });
-                return parseFloat(Math.round(x * 100) / 100).toFixed(2);
                 
+                return x;
             },
 
             vatAmount: function() {
@@ -302,6 +302,12 @@
         },
 
         methods: {
+            getFormatedNumber: function(number) {
+                var int_amount=parseInt(number);
+                var decimal_amount=(number%1).toFixed(2).slice(1);
+                return int_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + decimal_amount;
+            },
+
             setTwoNumberDecimal: function() {
                 this.value = parseFloat(this.value).toFixed(2);
             },
@@ -429,10 +435,6 @@
                 $('#productsCompactListModal').modal('close');
             },
 
-            getArticleImport: function(article_quantity, article_unit_price) {
-                return article_quantity * article_unit_price;
-            },
-
             removeArticle: function(index) {
                 this.articles.splice(index,1);
             },
@@ -456,7 +458,7 @@
                 .then((res)=>{
                     this.saveSaleArticles(res.data.sale_id);
                     // console.log("Venta guardada!");
-                    window.location.reload();
+                    // window.location.reload();
                 })
                 .catch(function(err){
                     console.log(err);
