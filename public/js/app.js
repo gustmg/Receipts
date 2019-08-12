@@ -2091,7 +2091,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     clientPhone: {
       type: String
-    }
+    },
+    searchValueClient: String
+  },
+  data: function data() {
+    return {
+      searchClient: ''
+    };
   },
   methods: {
     showClientsList: function showClientsList() {
@@ -2106,6 +2112,15 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('update:clientEmail', this.clients[index].client_email);
       this.$emit('update:clientPhone', this.clients[index].client_phone);
       $('#clientsCompactListModal').modal('close');
+    }
+  },
+  computed: {
+    filteredClients: function filteredClients() {
+      var _this = this;
+
+      return this.clients.filter(function (client) {
+        return client.client_name.toLowerCase().indexOf(_this.searchClient.toLowerCase()) >= 0; // || product.product_phone.indexOf(this.searchProduct) >= 0
+      });
     }
   }
 });
@@ -3256,7 +3271,7 @@ __webpack_require__.r(__webpack_exports__);
     products: {
       type: Array
     },
-    searchValue: String
+    searchValueProduct: String
   },
   data: function data() {
     return {
@@ -4437,9 +4452,527 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************************************************************************************************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Laravel\\Receipts\\resources\\js\\components\\sales\\SalesComponent.vue: Unexpected token (461:0)\n\n\u001b[0m \u001b[90m 459 | \u001b[39m                    \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39msaveSaleArticles(res\u001b[33m.\u001b[39mdata\u001b[33m.\u001b[39msale_id)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 460 | \u001b[39m                    \u001b[90m// console.log(\"Venta guardada!\");\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 461 | \u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<\u001b[39m \u001b[33mHEAD\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m     | \u001b[39m\u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 462 | \u001b[39m                    \u001b[90m// window.location.reload();\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 463 | \u001b[39m\u001b[33m===\u001b[39m\u001b[33m===\u001b[39m\u001b[33m=\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 464 | \u001b[39m\u001b[33m>>>\u001b[39m\u001b[33m>>>\u001b[39m\u001b[33m>\u001b[39m parent of a4f0389\u001b[33m...\u001b[39m \u001b[33mUpdate\u001b[39m \u001b[35m1.1\u001b[39m\u001b[0m\n    at Parser.raise (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:3834:17)\n    at Parser.unexpected (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5142:16)\n    at Parser.parseExprAtom (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:6279:20)\n    at Parser.parseExprSubscripts (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5848:23)\n    at Parser.parseMaybeUnary (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5828:21)\n    at Parser.parseExprOps (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5717:23)\n    at Parser.parseMaybeConditional (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5690:23)\n    at Parser.parseMaybeAssign (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5635:21)\n    at Parser.parseExpression (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5587:23)\n    at Parser.parseStatementContent (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7321:23)\n    at Parser.parseStatement (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7199:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7757:25)\n    at Parser.parseBlockBody (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7744:10)\n    at Parser.parseBlock (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7733:10)\n    at Parser.parseFunctionBody (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:6865:24)\n    at Parser.parseArrowExpression (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:6818:10)\n    at Parser.parseParenAndDistinguishExpression (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:6448:12)\n    at Parser.parseExprAtom (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:6211:21)\n    at Parser.parseExprSubscripts (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5848:23)\n    at Parser.parseMaybeUnary (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5828:21)\n    at Parser.parseExprOps (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5717:23)\n    at Parser.parseMaybeConditional (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5690:23)\n    at Parser.parseMaybeAssign (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5635:21)\n    at Parser.parseExprListItem (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:6930:18)\n    at Parser.parseCallExpressionArguments (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:6051:22)\n    at Parser.parseSubscript (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5949:29)\n    at Parser.parseSubscripts (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5868:19)\n    at Parser.parseExprSubscripts (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5858:17)\n    at Parser.parseMaybeUnary (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5828:21)\n    at Parser.parseExprOps (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5717:23)\n    at Parser.parseMaybeConditional (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5690:23)\n    at Parser.parseMaybeAssign (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5635:21)\n    at Parser.parseExpression (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:5587:23)\n    at Parser.parseStatementContent (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7321:23)\n    at Parser.parseStatement (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7199:17)\n    at Parser.parseBlockOrModuleBlockBody (C:\\Laravel\\Receipts\\node_modules\\@babel\\parser\\lib\\index.js:7757:25)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems);
+    });
+  },
+  props: {
+    sales: {
+      type: Array
+    },
+    products: {
+      type: Array
+    },
+    services: {
+      type: Array
+    },
+    clients: {
+      type: Array
+    },
+    worker: {
+      type: Object
+    },
+    searchValueProduct: String,
+    searchValueService: String
+  },
+  data: function data() {
+    return {
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      lastClientId: this.clients[this.clients.length - 1].client_id + 1,
+      searchSale: '',
+      searchProduct: '',
+      searchService: '',
+      componentKey: 0,
+      clientId: 0,
+      clientName: null,
+      clientEmail: null,
+      clientPhone: null,
+      validClientName: false,
+      invalidClientName: false,
+      validClientPhone: false,
+      invalidClientPhone: false,
+      validClientEmail: false,
+      invalidClientEmail: false,
+      newClientToggle: false,
+      vatChargeToggle: false,
+      paymentForm: "1",
+      articles: []
+    };
+  },
+  computed: {
+    filteredProducts: function filteredProducts() {
+      var _this = this;
+
+      return this.products.filter(function (product) {
+        return product.product_name.toLowerCase().indexOf(_this.searchProduct.toLowerCase()) >= 0; // || product.product_phone.indexOf(this.searchProduct) >= 0
+      });
+    },
+    filteredServices: function filteredServices() {
+      var _this2 = this;
+
+      return this.services.filter(function (service) {
+        return service.service_name.toLowerCase().indexOf(_this2.searchService.toLowerCase()) >= 0; // || product.product_phone.indexOf(this.searchProduct) >= 0
+      });
+    },
+    validateForm: function validateForm() {
+      if (this.newClientToggle) {
+        if (this.articles.length == 0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail) {
+          return true;
+        } else if (this.articles.length > 0 && this.validateUnitPrices != 0) {
+          return true;
+        }
+      } else {
+        if (this.articles.length == 0 || this.clientName == null) {
+          return true;
+        } else if (this.articles.length > 0 && this.validateUnitPrices != 0) {
+          return true;
+        }
+      }
+    },
+    validateUnitPrices: function validateUnitPrices() {
+      var amount_zero_prices = 0;
+      this.articles.forEach(function (article) {
+        if (article.article_unit_price == 0) {
+          amount_zero_prices = amount_zero_prices + 1;
+        }
+      });
+      return amount_zero_prices;
+    },
+    lastSaleId: function lastSaleId() {
+      if (this.sales.length > 0) {
+        return this.sales[this.sales.length - 1].sale_id + 1;
+      } else {
+        return 1;
+      }
+    },
+    subtotalAmount: function subtotalAmount() {
+      var x = 0;
+      var subtotal;
+      this.articles.forEach(function (article) {
+        subtotal = article.article_quantity * article.article_unit_price;
+        x = x + subtotal;
+      });
+      return x;
+    },
+    vatAmount: function vatAmount() {
+      if (this.vatChargeToggle) {
+        return parseFloat(Math.round(this.subtotalAmount * 0.16 * 100) / 100).toFixed(2);
+      } else {
+        return parseFloat(Math.round(0 * 100) / 100).toFixed(2);
+      }
+    },
+    totalAmount: function totalAmount() {
+      return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
+    },
+    date: function date() {
+      var d = new Date();
+
+      switch (d.getMonth()) {
+        case 0:
+          return "Enero" + d.getDate() + ", " + d.getFullYear();
+
+        case 1:
+          return "Febrero" + d.getDate() + ", " + d.getFullYear();
+
+        case 2:
+          return "Marzo" + d.getDate() + ", " + d.getFullYear();
+
+        case 3:
+          return "Abril" + d.getDate() + ", " + d.getFullYear();
+
+        case 4:
+          return "Mayo" + d.getDate() + ", " + d.getFullYear();
+
+        case 5:
+          return "Junio" + d.getDate() + ", " + d.getFullYear();
+
+        case 6:
+          return "Julio " + d.getDate() + ", " + d.getFullYear();
+
+        case 7:
+          return "Agosto" + d.getDate() + ", " + d.getFullYear();
+
+        case 8:
+          return "Septiembre" + d.getDate() + ", " + d.getFullYear();
+
+        case 9:
+          return "Octubre" + d.getDate() + ", " + d.getFullYear();
+
+        case 10:
+          return "Noviembre" + d.getDate() + ", " + d.getFullYear();
+
+        case 11:
+          return "Diciembre" + d.getDate() + ", " + d.getFullYear();
+
+        default:
+          break;
+      }
+    }
+  },
+  methods: {
+    getFormatedNumber: function getFormatedNumber(number) {
+      var int_amount = parseInt(number);
+      var decimal_amount = (number % 1).toFixed(2).slice(1);
+      return int_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + decimal_amount;
+    },
+    setTwoNumberDecimal: function setTwoNumberDecimal() {
+      this.value = parseFloat(this.value).toFixed(2);
+    },
+    showClientsList: function showClientsList() {
+      $('#clientsCompactListModal').modal({
+        dismissible: false
+      });
+      $('#clientsCompactListModal').modal('open');
+    },
+    showProductsList: function showProductsList() {
+      $('#productsCompactListModal').modal({
+        dismissible: false
+      });
+      $('#productsCompactListModal').modal('open');
+    },
+    showServicesList: function showServicesList() {
+      $('#servicesCompactListModal').modal({
+        dismissible: false
+      });
+      $('#servicesCompactListModal').modal('open');
+    },
+    newClientToggleHandler: function newClientToggleHandler() {
+      if (!this.newClientToggle) {
+        this.clientId = this.lastClientId;
+        this.clientName = null;
+        this.clientEmail = null;
+        this.clientPhone = null;
+      } else {
+        this.clientId = 0;
+        this.clientName = null;
+        this.clientEmail = null;
+        this.clientPhone = null;
+      }
+
+      this.validClientName = false;
+      this.invalidClientName = false;
+      this.validClientPhone = false;
+      this.invalidClientPhone = false;
+      this.validClientEmail = false;
+      this.invalidClientEmail = false;
+    },
+    validateReceiptClientName: function validateReceiptClientName(e) {
+      if (!this.clientName) {
+        this.validClientName = false;
+        this.invalidClientName = true;
+        $('.receipt_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
+      } else {
+        this.validClientName = true;
+        this.invalidClientName = false;
+      }
+    },
+    validateReceiptClientPhone: function validateReceiptClientPhone(e) {
+      var PHONE_REGEXP = /^[0-9]*$/gm;
+
+      if (this.clientPhone == null || this.clientPhone.length == 0) {
+        this.validClientPhone = false;
+        this.invalidClientPhone = false;
+      } else if (!PHONE_REGEXP.test(this.clientPhone) || this.clientPhone.length < 10) {
+        this.validClientPhone = false;
+        this.invalidClientPhone = true;
+        $('.receipt_phone_helper').attr('data-error', 'Número telefónico no válido.');
+      } else {
+        this.validClientPhone = true;
+        this.invalidClientPhone = false;
+      }
+    },
+    validateReceiptClientEmail: function validateReceiptClientEmail(e) {
+      var MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      if (this.clientEmail == null || this.clientEmail.length == 0) {
+        this.validClientEmail = false;
+        this.invalidClientEmail = false;
+      } else if (!MAIL_REGEXP.test(this.clientEmail)) {
+        this.validClientEmail = false;
+        this.invalidClientEmail = true;
+        $('.receipt_email_helper').attr('data-error', 'Correo electrónico no válido.');
+      } else {
+        this.validClientEmail = true;
+        this.invalidClientEmail = false;
+      }
+    },
+    setArticleType: function setArticleType(article_type) {
+      if (article_type == 0) {
+        return "Producto";
+      } else {
+        return "Servicio";
+      }
+    },
+    selectArticle: function selectArticle(article, article_type) {
+      var newArticle = {
+        article_id: 0,
+        article_quantity: 1,
+        article_type: article_type,
+        article_description: null,
+        article_code: null,
+        article_unit_price: 0
+      };
+
+      if (article_type == 1) {
+        newArticle.article_id = article.service_id;
+        newArticle.article_description = article.service_description;
+        newArticle.article_code = article.service_code;
+      } else {
+        newArticle.article_id = article.product_id;
+        newArticle.article_description = article.product_description;
+        newArticle.article_code = article.product_code;
+      }
+
+      this.articles.push(newArticle);
+      $('#servicesCompactListModal').modal('close');
+      $('#productsCompactListModal').modal('close');
+    },
+    removeArticle: function removeArticle(index) {
+      this.articles.splice(index, 1);
+    },
+    saveSale: function saveSale() {
+      var _this3 = this;
+
+      var newSale = {
+        sale_client_id: 0,
+        sale_payment_form_id: this.paymentForm,
+        sale_total_amount: this.totalAmount
+      };
+
+      if (this.newClientToggle) {
+        this.saveClient();
+      }
+
+      axios.post('http://localhost:8000/sales', {
+        sale_client_id: this.clientId,
+        sale_payment_form_id: newSale.sale_payment_form_id,
+        sale_total_amount: newSale.sale_total_amount
+      }).then(function (res) {
+        _this3.saveSaleArticles(res.data.sale_id); // console.log("Venta guardada!");
+        // window.location.reload();
+
+      }).catch(function (err) {
+        console.log(err);
+      }); // this.$parent.receipts.push(newReceipt);
+      // this.$parent.forceRerender();
+
+      $('#newReceiptModal').modal('close');
+    },
+    saveClient: function saveClient() {
+      var _this4 = this;
+
+      axios.post('http://localhost:8000/clients', {
+        client_name: this.clientName,
+        client_phone: this.clientPhone,
+        client_email: this.clientEmail
+      }).then(function (res) {
+        _this4.clientId = res.data.client_id; // console.log("Cliente registrado con id: "+this.clientId);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    saveSaleArticles: function saveSaleArticles(sale_id) {
+      this.articles.forEach(function (article) {
+        if (article.article_type == 1) {
+          axios.post('http://localhost:8000/sales_services', {
+            sale_id: sale_id,
+            service_id: article.article_id,
+            service_quantity: article.article_quantity,
+            service_unit_price: article.article_unit_price,
+            service_description: article.article_description,
+            service_code: article.article_code
+          }).then(function (res) {// console.log("Equipo registrado");
+          }).catch(function (err) {
+            console.log(err);
+          });
+        } else {
+          axios.post('http://localhost:8000/sales_products', {
+            sale_id: sale_id,
+            product_id: article.article_id,
+            product_quantity: article.article_quantity,
+            product_unit_price: article.article_unit_price,
+            product_description: article.article_description,
+            product_code: article.article_code
+          }).then(function (res) {
+            console.log("Venta de productos registrados correctamente");
+          }).catch(function (err) {
+            console.log(err);
+          });
+        }
+      });
+      this.printSale(sale_id);
+    },
+    printSale: function printSale(sale_id) {
+      axios.post('http://localhost:8000/print', {
+        sale_id: sale_id,
+        tax: this.vatChargeToggle
+      }).then(function (res) {
+        console.log(res.data.sale);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -41931,7 +42464,7 @@ var render = function() {
               domProps: { value: _vm.search },
               on: {
                 input: function($event) {
-                  _vm.$emit("update:searchValue", $event.target.value)
+                  _vm.$emit("update:searchValueClient", $event.target.value)
                 }
               }
             })
@@ -41970,27 +42503,41 @@ var render = function() {
       attrs: { id: "clientsCompactListModal" }
     },
     [
-      _c("div", { staticClass: "modal-content" }, [
-        _c(
-          "ul",
-          { staticClass: "collection with-header" },
-          _vm._l(_vm.clients, function(client, index) {
-            return _c(
-              "a",
-              {
-                staticClass: "collection-item selectable client-element",
-                on: {
-                  click: function($event) {
-                    _vm.selectClient(index)
-                  }
-                }
-              },
-              [_vm._v(_vm._s(client.client_name))]
-            )
+      _c(
+        "div",
+        { staticClass: "modal-content" },
+        [
+          _c("client-search-bar-component", {
+            attrs: { "search-value-client": _vm.searchClient },
+            on: {
+              "update:searchValueClient": function($event) {
+                _vm.searchClient = $event
+              }
+            }
           }),
-          0
-        )
-      ]),
+          _vm._v(" "),
+          _c(
+            "ul",
+            { staticClass: "collection with-header" },
+            _vm._l(_vm.filteredClients, function(client, index) {
+              return _c(
+                "a",
+                {
+                  staticClass: "collection-item selectable client-element",
+                  on: {
+                    click: function($event) {
+                      _vm.selectClient(index)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(client.client_name))]
+              )
+            }),
+            0
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _vm._m(0)
     ]
@@ -43634,7 +44181,7 @@ var render = function() {
               domProps: { value: _vm.search },
               on: {
                 input: function($event) {
-                  _vm.$emit("update:searchValue", $event.target.value)
+                  _vm.$emit("update:searchValueProduct", $event.target.value)
                 }
               }
             })
@@ -43671,9 +44218,9 @@ var render = function() {
     { staticClass: "row" },
     [
       _c("product-search-bar-component", {
-        attrs: { "search-value": _vm.searchProduct },
+        attrs: { "search-value-product": _vm.searchProduct },
         on: {
-          "update:searchValue": function($event) {
+          "update:searchValueProduct": function($event) {
             _vm.searchProduct = $event
           }
         }
@@ -45233,10 +45780,10 @@ var render = function() {
                 { staticClass: "col m6" },
                 [
                   _c("sale-search-bar-component", {
-                    attrs: { "search-value": _vm.searchProduct },
+                    attrs: { "search-value": _vm.searchSale },
                     on: {
                       "update:searchValue": function($event) {
-                        _vm.searchProduct = $event
+                        _vm.searchSale = $event
                       }
                     }
                   })
@@ -45857,27 +46404,41 @@ var render = function() {
           attrs: { id: "servicesCompactListModal" }
         },
         [
-          _c("div", { staticClass: "modal-content" }, [
-            _c(
-              "ul",
-              { staticClass: "collection with-header" },
-              _vm._l(_vm.services, function(service, index) {
-                return _c(
-                  "a",
-                  {
-                    staticClass: "collection-item selectable service-element",
-                    on: {
-                      click: function($event) {
-                        _vm.selectArticle(service, 1)
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(service.service_name))]
-                )
+          _c(
+            "div",
+            { staticClass: "modal-content" },
+            [
+              _c("service-search-bar-component", {
+                attrs: { "search-value-service": _vm.searchService },
+                on: {
+                  "update:searchValueService": function($event) {
+                    _vm.searchService = $event
+                  }
+                }
               }),
-              0
-            )
-          ]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "collection with-header" },
+                _vm._l(_vm.filteredServices, function(service, index) {
+                  return _c(
+                    "a",
+                    {
+                      staticClass: "collection-item selectable service-element",
+                      on: {
+                        click: function($event) {
+                          _vm.selectArticle(service, 1)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(service.service_name))]
+                  )
+                }),
+                0
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           _vm._m(2)
         ]
@@ -45890,27 +46451,41 @@ var render = function() {
           attrs: { id: "productsCompactListModal" }
         },
         [
-          _c("div", { staticClass: "modal-content" }, [
-            _c(
-              "ul",
-              { staticClass: "collection with-header" },
-              _vm._l(_vm.products, function(product, index) {
-                return _c(
-                  "a",
-                  {
-                    staticClass: "collection-item selectable product-element",
-                    on: {
-                      click: function($event) {
-                        _vm.selectArticle(product, 0)
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(product.product_name))]
-                )
+          _c(
+            "div",
+            { staticClass: "modal-content" },
+            [
+              _c("product-search-bar-component", {
+                attrs: { "search-value-product": _vm.searchProduct },
+                on: {
+                  "update:searchValueProduct": function($event) {
+                    _vm.searchProduct = $event
+                  }
+                }
               }),
-              0
-            )
-          ]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "collection with-header" },
+                _vm._l(_vm.filteredProducts, function(product, index) {
+                  return _c(
+                    "a",
+                    {
+                      staticClass: "collection-item selectable product-element",
+                      on: {
+                        click: function($event) {
+                          _vm.selectArticle(product, 0)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(product.product_name))]
+                  )
+                }),
+                0
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           _vm._m(3)
         ]
@@ -46371,7 +46946,7 @@ var render = function() {
               domProps: { value: _vm.search },
               on: {
                 input: function($event) {
-                  _vm.$emit("update:searchValue", $event.target.value)
+                  _vm.$emit("update:searchValueService", $event.target.value)
                 }
               }
             })
@@ -60346,14 +60921,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************************!*\
   !*** ./resources/js/components/sales/SalesComponent.vue ***!
   \**********************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=template&id=705720c2& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2&");
 /* harmony import */ var _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _SalesComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _SalesComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -60385,7 +60961,7 @@ component.options.__file = "resources/js/components/sales/SalesComponent.vue"
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

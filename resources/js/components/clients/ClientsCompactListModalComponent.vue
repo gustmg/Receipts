@@ -1,9 +1,9 @@
 <template>
 	<div id="clientsCompactListModal" class="modal clientsCompactListModal">
 		<div class="modal-content">
-            <!-- <client-search-bar-component></client-search-bar-component> -->
+            <client-search-bar-component :search-value-client.sync="searchClient"></client-search-bar-component>
             <ul class="collection with-header">
-                <a class="collection-item selectable client-element" v-on:click="selectClient(index)" v-for="(client, index) in clients">{{client.client_name}}</a>
+                <a class="collection-item selectable client-element" v-on:click="selectClient(index)" v-for="(client, index) in filteredClients">{{client.client_name}}</a>
             </ul>
 		</div>
 		<div class="modal-footer">
@@ -45,6 +45,14 @@
 
 			clientPhone: {
 				type: String
+			},
+
+			searchValueClient:String
+		},
+
+		data() {
+			return {
+				searchClient: ''
 			}
 		},
 
@@ -63,6 +71,15 @@
 				this.$emit('update:clientPhone', this.clients[index].client_phone);
 				$('#clientsCompactListModal').modal('close');
 			}
-	    }
+		},
+		
+		computed: {
+			filteredClients: function() {
+				return this.clients.filter((client)=>{
+					return client.client_name.toLowerCase().indexOf(this.searchClient.toLowerCase()) >= 0;
+					// || product.product_phone.indexOf(this.searchProduct) >= 0
+				});   		
+			},
+		}
 	}
 </script>

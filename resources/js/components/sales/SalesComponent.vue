@@ -3,7 +3,7 @@
         <div class="col m8" style="padding-left:24px !important;">
             <div class="row" style="margin-bottom:0px; !important;">
                 <div class="col m6">
-                    <sale-search-bar-component :search-value.sync="searchProduct"></sale-search-bar-component>
+                    <sale-search-bar-component :search-value.sync="searchSale"></sale-search-bar-component>
                 </div>
                 <div class="col m6 center-align" style="padding-top:18px !important;">
                     <button v-on:click="showProductsList" class="mdc-button mdc-button--outlined">Lista de productos</button>&nbsp;&nbsp;
@@ -114,9 +114,9 @@
         <clients-compact-list-modal-component :clients="clients" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail"></clients-compact-list-modal-component>
         <div id="servicesCompactListModal" class="modal servicesCompactListModal">
             <div class="modal-content">
-                <!-- <client-search-bar-component></client-search-bar-component> -->
+                <service-search-bar-component :search-value-service.sync="searchService"></service-search-bar-component>
                 <ul class="collection with-header">
-                    <a class="collection-item selectable service-element" v-on:click="selectArticle(service, 1)" v-for="(service, index) in services">{{service.service_name}}</a>
+                    <a class="collection-item selectable service-element" v-on:click="selectArticle(service, 1)" v-for="(service, index) in filteredServices">{{service.service_name}}</a>
                 </ul>
             </div>
             <div class="modal-footer">
@@ -125,9 +125,9 @@
         </div>
         <div id="productsCompactListModal" class="modal productsCompactListModal">
             <div class="modal-content">
-                <!-- <client-search-bar-component></client-search-bar-component> -->
+                <product-search-bar-component :search-value-product.sync="searchProduct"></product-search-bar-component>
                 <ul class="collection with-header">
-                    <a class="collection-item selectable product-element" v-on:click="selectArticle(product, 0)" v-for="(product, index) in products">{{product.product_name}}</a>
+                    <a class="collection-item selectable product-element" v-on:click="selectArticle(product, 0)" v-for="(product, index) in filteredProducts">{{product.product_name}}</a>
                 </ul>
             </div>
             <div class="modal-footer">
@@ -179,13 +179,18 @@
             worker: {
                 type: Object
             },
+
+            searchValueProduct:String,
+            searchValueService:String
         },
 
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 lastClientId: this.clients[this.clients.length - 1].client_id + 1,
+                searchSale: '',
                 searchProduct: '',
+                searchService: '',
                 componentKey: 0,
                 clientId: 0,
                 clientName: null,
@@ -205,6 +210,20 @@
         },
 
         computed: {
+            filteredProducts: function() {
+                return this.products.filter((product)=>{
+                    return product.product_name.toLowerCase().indexOf(this.searchProduct.toLowerCase()) >= 0;
+                    // || product.product_phone.indexOf(this.searchProduct) >= 0
+                });   		
+            },
+
+            filteredServices: function() {
+                return this.services.filter((service)=>{
+                    return service.service_name.toLowerCase().indexOf(this.searchService.toLowerCase()) >= 0;
+                    // || product.product_phone.indexOf(this.searchProduct) >= 0
+                });   		
+            },
+
             validateForm: function() {
                 if(this.newClientToggle){
                     if(this.articles.length==0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail){
@@ -458,10 +477,7 @@
                 .then((res)=>{
                     this.saveSaleArticles(res.data.sale_id);
                     // console.log("Venta guardada!");
-<<<<<<< HEAD
                     // window.location.reload();
-=======
->>>>>>> parent of a4f0389... Update 1.1
                 })
                 .catch(function(err){
                     console.log(err);
