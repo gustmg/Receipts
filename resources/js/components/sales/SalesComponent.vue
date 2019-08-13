@@ -541,6 +541,7 @@
                     
                 });
                 this.printSale(sale_id);
+                // this.printSale(sale_id);
             },
 
             printSale: function(sale_id) {

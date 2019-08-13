@@ -3346,6 +3346,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   props: {
@@ -4959,7 +4961,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
-      this.printSale(sale_id);
+      this.printSale(sale_id); // this.printSale(sale_id);
     },
     printSale: function printSale(sale_id) {
       axios.post('http://localhost:8000/print', {
@@ -5274,6 +5276,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -10145,7 +10150,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.product-card{\n\theight: 150px !important;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -10278,7 +10283,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.service-card{\n\theight: 150px !important;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -44282,7 +44287,8 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "card hoverable hoverable-card selectable",
+                staticClass:
+                  "card product-card hoverable hoverable-card selectable",
                 on: {
                   click: function($event) {
                     _vm.updateProduct(product, index)
@@ -44291,7 +44297,7 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "card-content center-align" }, [
-                  _c("span", { staticClass: "card-title" }, [
+                  _c("span", { staticClass: "card-title truncate" }, [
                     _c(
                       "i",
                       { staticClass: "material-icons inline-icon-large" },
@@ -44304,7 +44310,7 @@ var render = function() {
                       : _vm._e()
                   ]),
                   _vm._v(" "),
-                  _c("p", [
+                  _c("p", { staticClass: "truncate" }, [
                     _c(
                       "i",
                       { staticClass: "material-icons inline-icon-small" },
@@ -47047,7 +47053,8 @@ var render = function() {
             _c(
               "div",
               {
-                staticClass: "card hoverable hoverable-card selectable",
+                staticClass:
+                  "card service-card hoverable hoverable-card selectable",
                 on: {
                   click: function($event) {
                     _vm.updateService(service, index)
@@ -47056,7 +47063,7 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "card-content center-align" }, [
-                  _c("span", { staticClass: "card-title" }, [
+                  _c("span", { staticClass: "card-title truncate" }, [
                     _c(
                       "i",
                       { staticClass: "material-icons inline-icon-large" },
@@ -47069,7 +47076,7 @@ var render = function() {
                       : _vm._e()
                   ]),
                   _vm._v(" "),
-                  _c("p", [
+                  _c("p", { staticClass: "truncate" }, [
                     _c(
                       "i",
                       { staticClass: "material-icons inline-icon-small" },
@@ -60921,15 +60928,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************************!*\
   !*** ./resources/js/components/sales/SalesComponent.vue ***!
   \**********************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SalesComponent_vue_vue_type_template_id_705720c2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=template&id=705720c2& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=template&id=705720c2&");
 /* harmony import */ var _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _SalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _SalesComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=style&index=0&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _SalesComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SalesComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/sales/SalesComponent.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -60961,7 +60967,7 @@ component.options.__file = "resources/js/components/sales/SalesComponent.vue"
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/sales/SalesComponent.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
