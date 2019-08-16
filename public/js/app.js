@@ -2106,11 +2106,11 @@ __webpack_require__.r(__webpack_exports__);
       });
       $('#clientsCompactListModal').modal('open');
     },
-    selectClient: function selectClient(index) {
-      this.$emit('update:clientId', this.clients[index].client_id);
-      this.$emit('update:clientName', this.clients[index].client_name);
-      this.$emit('update:clientEmail', this.clients[index].client_email);
-      this.$emit('update:clientPhone', this.clients[index].client_phone);
+    selectClient: function selectClient(client) {
+      this.$emit('update:clientId', client.client_id);
+      this.$emit('update:clientName', client.client_name);
+      this.$emit('update:clientEmail', client.client_email);
+      this.$emit('update:clientPhone', client.client_phone);
       $('#clientsCompactListModal').modal('close');
     }
   },
@@ -42527,10 +42527,11 @@ var render = function() {
               return _c(
                 "a",
                 {
+                  key: client.client_id,
                   staticClass: "collection-item selectable client-element",
                   on: {
                     click: function($event) {
-                      _vm.selectClient(index)
+                      _vm.selectClient(client)
                     }
                   }
                 },

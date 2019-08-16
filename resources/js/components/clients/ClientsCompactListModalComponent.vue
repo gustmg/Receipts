@@ -3,7 +3,7 @@
 		<div class="modal-content">
             <client-search-bar-component :search-value-client.sync="searchClient"></client-search-bar-component>
             <ul class="collection with-header">
-                <a class="collection-item selectable client-element" v-on:click="selectClient(index)" v-for="(client, index) in filteredClients">{{client.client_name}}</a>
+                <a class="collection-item selectable client-element" v-on:click="selectClient(client)" v-for="(client, index) in filteredClients" v-bind:key="client.client_id">{{client.client_name}}</a>
             </ul>
 		</div>
 		<div class="modal-footer">
@@ -64,11 +64,11 @@
 				$('#clientsCompactListModal').modal('open');
 			},
 
-			selectClient: function (index) {
-				this.$emit('update:clientId', this.clients[index].client_id);
-				this.$emit('update:clientName', this.clients[index].client_name);
-				this.$emit('update:clientEmail', this.clients[index].client_email);
-				this.$emit('update:clientPhone', this.clients[index].client_phone);
+			selectClient: function (client) {
+				this.$emit('update:clientId', client.client_id);
+				this.$emit('update:clientName', client.client_name);
+				this.$emit('update:clientEmail', client.client_email);
+				this.$emit('update:clientPhone', client.client_phone);
 				$('#clientsCompactListModal').modal('close');
 			}
 		},
