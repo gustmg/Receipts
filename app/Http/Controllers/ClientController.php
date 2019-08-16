@@ -15,7 +15,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients=Client::all();    
+        $clients=Client::all(); 
         return View::make('clients.index',['clients'=>$clients]);
     }
 

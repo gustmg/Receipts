@@ -112,7 +112,7 @@
             </div>
         </div>
         <clients-compact-list-modal-component :clients="clients" :client-id.sync="clientId" :client-name.sync="clientName" :client-phone.sync="clientPhone" :client-email.sync="clientEmail"></clients-compact-list-modal-component>
-        <div id="servicesCompactListModal" class="modal servicesCompactListModal">
+        <div id="servicesCompactListModal" class="modal modal-fixed-footer servicesCompactListModal">
             <div class="modal-content">
                 <service-search-bar-component :search-value-service.sync="searchService"></service-search-bar-component>
                 <ul class="collection with-header">
@@ -123,7 +123,7 @@
                 <button class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
             </div>
         </div>
-        <div id="productsCompactListModal" class="modal productsCompactListModal">
+        <div id="productsCompactListModal" class="modal modal-fixed-footer productsCompactListModal">
             <div class="modal-content">
                 <product-search-bar-component :search-value-product.sync="searchProduct"></product-search-bar-component>
                 <ul class="collection with-header">
@@ -157,6 +157,7 @@
               var elems = document.querySelectorAll('select');
               var instances = M.FormSelect.init(elems);
             });
+            console.log(this.lastClientId);
         },
 
         props: {
@@ -187,7 +188,6 @@
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                lastClientId: this.clients[this.clients.length - 1].client_id + 1,
                 searchSale: '',
                 searchProduct: '',
                 searchService: '',
@@ -262,6 +262,14 @@
                 }
             },
 
+            lastClientId: function() {
+                var client_id_list=[];
+                this.clients.forEach(client => {
+                    client_id_list.push(client.client_id);
+                });
+                return Math.max(...client_id_list);
+            },
+
             subtotalAmount: function() {
                 var x=0;
                 var subtotal;
@@ -332,29 +340,20 @@
             },
 
             showClientsList: function () {
-                $('#clientsCompactListModal').modal({
-                    dismissible: false
-                });
                 $('#clientsCompactListModal').modal('open');
             },
 
             showProductsList: function () {
-                $('#productsCompactListModal').modal({
-                    dismissible: false
-                });
                 $('#productsCompactListModal').modal('open');
             },
 
             showServicesList: function () {
-                $('#servicesCompactListModal').modal({
-                    dismissible: false
-                });
                 $('#servicesCompactListModal').modal('open');
             },
 
             newClientToggleHandler: function () {
                 if(!this.newClientToggle){
-                    this.clientId=this.lastClientId;
+                    this.clientId=this.lastClientId+1;
                     this.clientName=null;
                     this.clientEmail=null;
                     this.clientPhone=null;
@@ -541,7 +540,7 @@
                     
                 });
                 this.printSale(sale_id);
-                // this.printSale(sale_id);
+                this.printSale(sale_id);
             },
 
             printSale: function(sale_id) {

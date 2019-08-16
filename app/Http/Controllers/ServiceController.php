@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service;
 use View;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -15,7 +16,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services=Service::all();
+        $services=DB::table('services')->orderBy('service_name','asc')->get();
         return View::make('services.index',['services'=>$services]);
     }
 

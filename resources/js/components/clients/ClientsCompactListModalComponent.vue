@@ -1,5 +1,5 @@
 <template>
-	<div id="clientsCompactListModal" class="modal clientsCompactListModal">
+	<div id="clientsCompactListModal" class="modal modal-fixed-footer clientsCompactListModal">
 		<div class="modal-content">
             <client-search-bar-component :search-value-client.sync="searchClient"></client-search-bar-component>
             <ul class="collection with-header">

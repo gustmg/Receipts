@@ -4616,6 +4616,7 @@ __webpack_require__.r(__webpack_exports__);
       var elems = document.querySelectorAll('select');
       var instances = M.FormSelect.init(elems);
     });
+    console.log(this.lastClientId);
   },
   props: {
     sales: {
@@ -4639,7 +4640,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      lastClientId: this.clients[this.clients.length - 1].client_id + 1,
       searchSale: '',
       searchProduct: '',
       searchService: '',
@@ -4705,6 +4705,13 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return 1;
       }
+    },
+    lastClientId: function lastClientId() {
+      var client_id_list = [];
+      this.clients.forEach(function (client) {
+        client_id_list.push(client.client_id);
+      });
+      return Math.max.apply(Math, client_id_list);
     },
     subtotalAmount: function subtotalAmount() {
       var x = 0;
@@ -4780,26 +4787,17 @@ __webpack_require__.r(__webpack_exports__);
       this.value = parseFloat(this.value).toFixed(2);
     },
     showClientsList: function showClientsList() {
-      $('#clientsCompactListModal').modal({
-        dismissible: false
-      });
       $('#clientsCompactListModal').modal('open');
     },
     showProductsList: function showProductsList() {
-      $('#productsCompactListModal').modal({
-        dismissible: false
-      });
       $('#productsCompactListModal').modal('open');
     },
     showServicesList: function showServicesList() {
-      $('#servicesCompactListModal').modal({
-        dismissible: false
-      });
       $('#servicesCompactListModal').modal('open');
     },
     newClientToggleHandler: function newClientToggleHandler() {
       if (!this.newClientToggle) {
-        this.clientId = this.lastClientId;
+        this.clientId = this.lastClientId + 1;
         this.clientName = null;
         this.clientEmail = null;
         this.clientPhone = null;
@@ -4961,7 +4959,8 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
-      this.printSale(sale_id); // this.printSale(sale_id);
+      this.printSale(sale_id);
+      this.printSale(sale_id);
     },
     printSale: function printSale(sale_id) {
       axios.post('http://localhost:8000/print', {
@@ -42504,7 +42503,7 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "modal clientsCompactListModal",
+      staticClass: "modal modal-fixed-footer clientsCompactListModal",
       attrs: { id: "clientsCompactListModal" }
     },
     [
@@ -46406,7 +46405,7 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "modal servicesCompactListModal",
+          staticClass: "modal modal-fixed-footer servicesCompactListModal",
           attrs: { id: "servicesCompactListModal" }
         },
         [
@@ -46453,7 +46452,7 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "modal productsCompactListModal",
+          staticClass: "modal modal-fixed-footer productsCompactListModal",
           attrs: { id: "productsCompactListModal" }
         },
         [

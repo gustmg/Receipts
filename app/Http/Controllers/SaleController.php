@@ -9,11 +9,8 @@ use App\Product;
 use App\Client;
 use View;
 use Auth;
-use Mike42\Escpos\Printer;
-use Mike42\Escpos\EscposImage;
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
-use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Illuminate\Support\Facades\DB;
+
 
 class SaleController extends Controller
 {
@@ -25,9 +22,9 @@ class SaleController extends Controller
     public function index()
     {
         $sales=Sale::all();
-        $services=Service::all();
-        $products=Product::all();
-        $clients=Client::all();
+        $services=DB::table('services')->orderBy('service_name','asc')->get();
+        $products=DB::table('products')->orderBy('product_name','asc')->get();
+        $clients=DB::table('clients')->orderBy('client_name','asc')->get();
         return View::make('sales.index', ['sales'=>$sales, 'services'=>$services, 'products'=>$products, 'clients'=>$clients]);
     }
 
