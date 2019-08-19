@@ -94,15 +94,49 @@ class PrinterController extends Controller
             }
             $printer -> setJustification(Printer::JUSTIFY_RIGHT);
             $subtotal_amount_formated=number_format($subtotal_amount,2,'.',',');
-            if($request->tax){
-                $tax_formated=number_format(($subtotal_amount*0.16),2,'.',',');
-                $total_amount_formated=number_format($subtotal_amount+($subtotal_amount*0.16),2,'.',',');
-                $printer -> text("Subtotal: $".$subtotal_amount_formated."\n");
-                $printer -> text("IVA: $".$tax_formated."\n");
-                $printer -> text("Total: $".$total_amount_formated."\n");    
+            if($sale->sale_payment_form_id==2){
+                if($request->tax){
+                    if($subtotal_amount + ($subtotal_amount*0.16) >= 1000){
+                        $tax_formated=number_format(($subtotal_amount*0.16),2,'.',',');
+                        $credit_card_charge_formated=number_format($request->credit_card_charge,2,'.',',');
+                        $total_amount_formated=number_format($subtotal_amount+($subtotal_amount*0.16)+$request->credit_card_charge,2,'.',',');
+                        $printer -> text("Subtotal: $".$subtotal_amount_formated."\n");
+                        $printer -> text("IVA: $".$tax_formated."\n");
+                        $printer -> text("Comisión Tarjeta: $".$credit_card_charge_formated."\n");
+                        $printer -> text("Total: $".$total_amount_formated."\n");
+                    }
+                    else{
+                        $tax_formated=number_format(($subtotal_amount*0.16),2,'.',',');
+                        $total_amount_formated=number_format($subtotal_amount+($subtotal_amount*0.16),2,'.',',');
+                        $printer -> text("Subtotal: $".$subtotal_amount_formated."\n");
+                        $printer -> text("IVA: $".$tax_formated."\n");
+                        $printer -> text("Total: $".$total_amount_formated."\n");
+                    }
+                }
+                else{
+                    if($subtotal_amount >= 1000){
+                        $credit_card_charge_formated=number_format($request->credit_card_charge,2,'.',',');
+                        $total_amount_formated=number_format($subtotal_amount+$request->credit_card_charge,2,'.',',');
+                        $printer -> text("Subtotal: $".$subtotal_amount_formated."\n");
+                        $printer -> text("Comisión Tarjeta: $".$credit_card_charge_formated."\n");
+                        $printer -> text("Total: $".$total_amount_formated."\n");
+                    }
+                    else{
+                        $printer -> text("Total: $".$subtotal_amount_formated."\n");
+                    }
+                }
             }
             else{
-                $printer -> text("Total: $".$subtotal_amount_formated."\n");
+                if($request->tax){
+                    $tax_formated=number_format(($subtotal_amount*0.16),2,'.',',');
+                    $total_amount_formated=number_format($subtotal_amount+($subtotal_amount*0.16),2,'.',',');
+                    $printer -> text("Subtotal: $".$subtotal_amount_formated."\n");
+                    $printer -> text("IVA: $".$tax_formated."\n");
+                    $printer -> text("Total: $".$total_amount_formated."\n");
+                }
+                else{
+                    $printer -> text("Total: $".$subtotal_amount_formated."\n");
+                }
             }
             $printer -> text("________________________________________________\n");
             $printer -> setJustification(Printer::JUSTIFY_CENTER);

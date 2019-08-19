@@ -49,7 +49,7 @@
                     <span class="grey-text"><b>Información de venta</b></span><br>
                     <span><b>Folio:</b> {{lastSaleId}}</span><br>
                     <span><b>Fecha:</b> {{date}}</span><br>
-                    <span><b>Venta realizada por:</b> {{worker.name}}</span><br>
+                    <!-- <span><b>Venta realizada por:</b> {{worker.name}}</span><br> -->
                     <div class="row" style="padding-top:12px !important;">
                         <div class="col m12">
                             <div class="row">
@@ -99,12 +99,13 @@
                               <span class="lever"></span>
                             </label>
                         </div>
-                        <div class="col m6">
+                        <div class="col m7">
                             <br><span><b>Subtotal: ${{getFormatedNumber(subtotalAmount)}}</b></span>
                             <br><span><b>IVA: ${{getFormatedNumber(vatAmount)}}</b></span>
+                            <br v-show="paymentForm=='2'"><span v-show="paymentForm=='2'"><b>Comisión tarjeta: ${{getFormatedNumber(creditCardCharge)}}</b></span>
                             <br><span><b>Total: ${{getFormatedNumber(totalAmount)}}</b></span>
                         </div>
-                        <div class="col m6 right-align">
+                        <div class="col m5 right-align">
                             <button class="mdc-button mdc-button--outlined" v-on:click="saveSale" v-bind:disabled="validateForm">Realizar venta</button>
                         </div>
                     </div>
@@ -157,7 +158,6 @@
               var elems = document.querySelectorAll('select');
               var instances = M.FormSelect.init(elems);
             });
-            console.log(this.lastClientId);
         },
 
         props: {
@@ -291,7 +291,7 @@
             },
 
             totalAmount: function() {
-                return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
+                return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
             },
 
             date: function() {
@@ -324,6 +324,20 @@
                         return "Diciembre"+d.getDate()+", "+d.getFullYear();
                     default:
                         break;
+                }
+            },
+
+            creditCardCharge: function() {
+                if(Number(this.subtotalAmount) + Number(this.vatAmount) >= 1000){
+                    if(this.vatChargeToggle){
+                        return (Number(this.subtotalAmount) + Number(this.vatAmount)) * 0.03;
+                    }
+                    else{
+                        return this.subtotalAmount * 0.03;
+                    }
+                }
+                else{
+                    return 0;
                 }
             }
         },
@@ -531,7 +545,7 @@
                             product_code: article.article_code,
                         })
                         .then((res)=>{
-                            console.log("Venta de productos registrados correctamente");   
+                            // console.log("Venta de productos registrados correctamente");   
                         })
                         .catch(function(err){
                             console.log(err);
@@ -546,10 +560,11 @@
             printSale: function(sale_id) {
                 axios.post('http://localhost:8000/print',{
                     sale_id: sale_id,
-                    tax: this.vatChargeToggle
+                    tax: this.vatChargeToggle,
+                    credit_card_charge: this.creditCardCharge
                 })
                 .then((res)=>{
-                    console.log(res.data.sale);   
+                    // console.log(res.data.sale);
                 })
                 .catch(function(err){
                     console.log(err);

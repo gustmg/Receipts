@@ -4610,13 +4610,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     document.addEventListener('DOMContentLoaded', function () {
       var elems = document.querySelectorAll('select');
       var instances = M.FormSelect.init(elems);
     });
-    console.log(this.lastClientId);
   },
   props: {
     sales: {
@@ -4730,7 +4730,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     totalAmount: function totalAmount() {
-      return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
+      return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
     },
     date: function date() {
       var d = new Date();
@@ -4774,6 +4774,17 @@ __webpack_require__.r(__webpack_exports__);
 
         default:
           break;
+      }
+    },
+    creditCardCharge: function creditCardCharge() {
+      if (Number(this.subtotalAmount) + Number(this.vatAmount) >= 1000) {
+        if (this.vatChargeToggle) {
+          return (Number(this.subtotalAmount) + Number(this.vatAmount)) * 0.03;
+        } else {
+          return this.subtotalAmount * 0.03;
+        }
+      } else {
+        return 0;
       }
     }
   },
@@ -4952,8 +4963,7 @@ __webpack_require__.r(__webpack_exports__);
             product_unit_price: article.article_unit_price,
             product_description: article.article_description,
             product_code: article.article_code
-          }).then(function (res) {
-            console.log("Venta de productos registrados correctamente");
+          }).then(function (res) {// console.log("Venta de productos registrados correctamente");   
           }).catch(function (err) {
             console.log(err);
           });
@@ -4965,9 +4975,9 @@ __webpack_require__.r(__webpack_exports__);
     printSale: function printSale(sale_id) {
       axios.post('http://localhost:8000/print', {
         sale_id: sale_id,
-        tax: this.vatChargeToggle
-      }).then(function (res) {
-        console.log(res.data.sale);
+        tax: this.vatChargeToggle,
+        credit_card_charge: this.creditCardCharge
+      }).then(function (res) {// console.log(res.data.sale);
       }).catch(function (err) {
         console.log(err);
       });
@@ -45981,12 +45991,6 @@ var render = function() {
               ]),
               _c("br"),
               _vm._v(" "),
-              _c("span", [
-                _c("b", [_vm._v("Venta realizada por:")]),
-                _vm._v(" " + _vm._s(_vm.worker.name))
-              ]),
-              _c("br"),
-              _vm._v(" "),
               _c(
                 "div",
                 {
@@ -46329,7 +46333,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col m6" }, [
+                  _c("div", { staticClass: "col m7" }, [
                     _c("br"),
                     _c("span", [
                       _c("b", [
@@ -46350,6 +46354,40 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
+                    _c("br", {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.paymentForm == "2",
+                          expression: "paymentForm=='2'"
+                        }
+                      ]
+                    }),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.paymentForm == "2",
+                            expression: "paymentForm=='2'"
+                          }
+                        ]
+                      },
+                      [
+                        _c("b", [
+                          _vm._v(
+                            "Comisión tarjeta: $" +
+                              _vm._s(
+                                _vm.getFormatedNumber(_vm.creditCardCharge)
+                              )
+                          )
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
                     _c("br"),
                     _c("span", [
                       _c("b", [
@@ -46361,7 +46399,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col m6 right-align" }, [
+                  _c("div", { staticClass: "col m5 right-align" }, [
                     _c(
                       "button",
                       {
