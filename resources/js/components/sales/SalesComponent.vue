@@ -291,7 +291,9 @@
             },
 
             totalAmount: function() {
-                return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
+                // TO DO: Make conditional  for credit card charge 
+                // return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
+                return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
             },
 
             date: function() {
@@ -299,29 +301,29 @@
 
                 switch (d.getMonth()) {
                     case 0:
-                        return "Enero"+d.getDate()+", "+d.getFullYear();
+                        return "Enero "+d.getDate()+", "+d.getFullYear();
                     case 1:
-                        return "Febrero"+d.getDate()+", "+d.getFullYear();
+                        return "Febrero "+d.getDate()+", "+d.getFullYear();
                     case 2:
-                        return "Marzo"+d.getDate()+", "+d.getFullYear();
+                        return "Marzo "+d.getDate()+", "+d.getFullYear();
                     case 3:
-                        return "Abril"+d.getDate()+", "+d.getFullYear();
+                        return "Abril "+d.getDate()+", "+d.getFullYear();
                     case 4:
-                        return "Mayo"+d.getDate()+", "+d.getFullYear();
+                        return "Mayo "+d.getDate()+", "+d.getFullYear();
                     case 5:
-                        return "Junio"+d.getDate()+", "+d.getFullYear();
+                        return "Junio "+d.getDate()+", "+d.getFullYear();
                     case 6:
                         return "Julio "+d.getDate()+", "+d.getFullYear();
                     case 7:
-                        return "Agosto"+d.getDate()+", "+d.getFullYear();
+                        return "Agosto "+d.getDate()+", "+d.getFullYear();
                     case 8:
-                        return "Septiembre"+d.getDate()+", "+d.getFullYear();
+                        return "Septiembre "+d.getDate()+", "+d.getFullYear();
                     case 9:
-                        return "Octubre"+d.getDate()+", "+d.getFullYear();
+                        return "Octubre "+d.getDate()+", "+d.getFullYear();
                     case 10:
-                        return "Noviembre"+d.getDate()+", "+d.getFullYear();
+                        return "Noviembre "+d.getDate()+", "+d.getFullYear();
                     case 11:
-                        return "Diciembre"+d.getDate()+", "+d.getFullYear();
+                        return "Diciembre "+d.getDate()+", "+d.getFullYear();
                     default:
                         break;
                 }
@@ -330,7 +332,7 @@
             creditCardCharge: function() {
                 if(Number(this.subtotalAmount) + Number(this.vatAmount) >= 1000){
                     if(this.vatChargeToggle){
-                        return (Number(this.subtotalAmount) + Number(this.vatAmount)) * 0.03;
+                        return (Number(this.subtotalAmount) + Number(this.vatAmount)) * 0.025;
                     }
                     else{
                         return this.subtotalAmount * 0.03;

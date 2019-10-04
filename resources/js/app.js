@@ -63,6 +63,8 @@ Vue.component('new-accessory-button-component', require('./components/accessorie
 Vue.component('sales-component', require('./components/sales/SalesComponent.vue').default);
 Vue.component('sale-search-bar-component', require('./components/sales/SaleSearchBarComponent.vue').default);
 
+Vue.component('reports-component', require('./components/reports/ReportsComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

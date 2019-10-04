@@ -4410,6 +4410,74 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/reports/ReportsComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/reports/ReportsComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    sales: {
+      type: Array
+    }
+  },
+  methods: {
+    formatDate: function formatDate(date) {
+      var newDate = new Date(date);
+      return newDate.getDate() + '/' + (newDate.getMonth() + 1) + '/' + newDate.getFullYear() + ' a las ' + newDate.getHours() + ':' + newDate.getMinutes() + ' Hrs';
+    },
+    downloadReport: function downloadReport() {
+      axios.get('http://localhost:8000/sales/export/').then(function (res) {// console.log(res);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    data: function data() {
+      return {
+        csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      };
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=script&lang=js& ***!
@@ -4730,47 +4798,49 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     totalAmount: function totalAmount() {
-      return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
+      // TO DO: Make conditional  for credit card charge 
+      // return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
+      return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
     },
     date: function date() {
       var d = new Date();
 
       switch (d.getMonth()) {
         case 0:
-          return "Enero" + d.getDate() + ", " + d.getFullYear();
+          return "Enero " + d.getDate() + ", " + d.getFullYear();
 
         case 1:
-          return "Febrero" + d.getDate() + ", " + d.getFullYear();
+          return "Febrero " + d.getDate() + ", " + d.getFullYear();
 
         case 2:
-          return "Marzo" + d.getDate() + ", " + d.getFullYear();
+          return "Marzo " + d.getDate() + ", " + d.getFullYear();
 
         case 3:
-          return "Abril" + d.getDate() + ", " + d.getFullYear();
+          return "Abril " + d.getDate() + ", " + d.getFullYear();
 
         case 4:
-          return "Mayo" + d.getDate() + ", " + d.getFullYear();
+          return "Mayo " + d.getDate() + ", " + d.getFullYear();
 
         case 5:
-          return "Junio" + d.getDate() + ", " + d.getFullYear();
+          return "Junio " + d.getDate() + ", " + d.getFullYear();
 
         case 6:
           return "Julio " + d.getDate() + ", " + d.getFullYear();
 
         case 7:
-          return "Agosto" + d.getDate() + ", " + d.getFullYear();
+          return "Agosto " + d.getDate() + ", " + d.getFullYear();
 
         case 8:
-          return "Septiembre" + d.getDate() + ", " + d.getFullYear();
+          return "Septiembre " + d.getDate() + ", " + d.getFullYear();
 
         case 9:
-          return "Octubre" + d.getDate() + ", " + d.getFullYear();
+          return "Octubre " + d.getDate() + ", " + d.getFullYear();
 
         case 10:
-          return "Noviembre" + d.getDate() + ", " + d.getFullYear();
+          return "Noviembre " + d.getDate() + ", " + d.getFullYear();
 
         case 11:
-          return "Diciembre" + d.getDate() + ", " + d.getFullYear();
+          return "Diciembre " + d.getDate() + ", " + d.getFullYear();
 
         default:
           break;
@@ -4779,7 +4849,7 @@ __webpack_require__.r(__webpack_exports__);
     creditCardCharge: function creditCardCharge() {
       if (Number(this.subtotalAmount) + Number(this.vatAmount) >= 1000) {
         if (this.vatChargeToggle) {
-          return (Number(this.subtotalAmount) + Number(this.vatAmount)) * 0.03;
+          return (Number(this.subtotalAmount) + Number(this.vatAmount)) * 0.025;
         } else {
           return this.subtotalAmount * 0.03;
         }
@@ -45699,6 +45769,95 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/reports/ReportsComponent.vue?vue&type=template&id=4c9910b9&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/reports/ReportsComponent.vue?vue&type=template&id=4c9910b9& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row", staticStyle: { "margin-bottom": "0px" } },
+    [
+      _c("div", { staticClass: "col s12", attrs: { align: "center" } }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col s12" }, [
+            _c("h5", [_vm._v("Hola")]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.downloadReport()
+                  }
+                }
+              },
+              [_vm._v("Descargar")]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("table", { staticClass: "centered highlight" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.sales, function(sale, index) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(sale.sale_id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.formatDate(sale.created_at)))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(sale.client.client_name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(sale.payment_form.payment_form_name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$" + _vm._s(sale.sale_total_amount))])
+              ])
+            }),
+            0
+          )
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Folio")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Fecha")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cliente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Forma de pago")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Monto total")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/sales/SaleSearchBarComponent.vue?vue&type=template&id=307250e7& ***!
@@ -58795,6 +58954,7 @@ Vue.component('new-accessory-modal-component', __webpack_require__(/*! ./compone
 Vue.component('new-accessory-button-component', __webpack_require__(/*! ./components/accessories/NewAccessoryButtonComponent.vue */ "./resources/js/components/accessories/NewAccessoryButtonComponent.vue").default);
 Vue.component('sales-component', __webpack_require__(/*! ./components/sales/SalesComponent.vue */ "./resources/js/components/sales/SalesComponent.vue").default);
 Vue.component('sale-search-bar-component', __webpack_require__(/*! ./components/sales/SaleSearchBarComponent.vue */ "./resources/js/components/sales/SaleSearchBarComponent.vue").default);
+Vue.component('reports-component', __webpack_require__(/*! ./components/reports/ReportsComponent.vue */ "./resources/js/components/reports/ReportsComponent.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -60888,6 +61048,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateReceiptModalComponent_vue_vue_type_template_id_57d42b94___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/reports/ReportsComponent.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/reports/ReportsComponent.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReportsComponent_vue_vue_type_template_id_4c9910b9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReportsComponent.vue?vue&type=template&id=4c9910b9& */ "./resources/js/components/reports/ReportsComponent.vue?vue&type=template&id=4c9910b9&");
+/* harmony import */ var _ReportsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReportsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/reports/ReportsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ReportsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReportsComponent_vue_vue_type_template_id_4c9910b9___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReportsComponent_vue_vue_type_template_id_4c9910b9___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/reports/ReportsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/reports/ReportsComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/reports/ReportsComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReportsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/reports/ReportsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/reports/ReportsComponent.vue?vue&type=template&id=4c9910b9&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/reports/ReportsComponent.vue?vue&type=template&id=4c9910b9& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportsComponent_vue_vue_type_template_id_4c9910b9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReportsComponent.vue?vue&type=template&id=4c9910b9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/reports/ReportsComponent.vue?vue&type=template&id=4c9910b9&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportsComponent_vue_vue_type_template_id_4c9910b9___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReportsComponent_vue_vue_type_template_id_4c9910b9___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

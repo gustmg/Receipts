@@ -19,9 +19,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('sales/export/', 'SaleController@export');
 Route::resource('clients', 'ClientController')->middleware('auth');
 Route::resource('receipts', 'ReceiptController')->middleware('auth');
 Route::resource('sales', 'SaleController')->middleware('auth');
+Route::resource('reports', 'ReportController')->middleware('auth');
 Route::resource('services', 'ServiceController')->middleware('auth');
 Route::resource('devices', 'DeviceController')->middleware('auth');
 Route::resource('accessories', 'AccessoryController')->middleware('auth');

@@ -4,17 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Sale;
-use App\Service;
-use App\Product;
-use App\Client;
 use View;
 use Auth;
-use Excel;
 use Illuminate\Support\Facades\DB;
-use App\Exports\SalesExport;
 
-
-class SaleController extends Controller
+class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,11 +17,18 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $sales=Sale::all();
-        $services=DB::table('services')->orderBy('service_name','asc')->get();
-        $products=DB::table('products')->orderBy('product_name','asc')->get();
-        $clients=DB::table('clients')->orderBy('client_name','asc')->get();
-        return View::make('sales.index', ['sales'=>$sales, 'services'=>$services, 'products'=>$products, 'clients'=>$clients]);
+        $sales=Sale::with('client','payment_form')->orderBy('sale_id','desc')->get();
+        return View::make('reports.index', ['sales'=>$sales]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -38,19 +39,7 @@ class SaleController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->ajax()){
-            $sale=new Sale;
-            $sale->sale_worker_id=Auth::id();
-            $sale->sale_client_id=$request->sale_client_id;
-            $sale->sale_payment_form_id=$request->sale_payment_form_id;
-            $sale->sale_total_amount=$request->sale_total_amount;
-            $sale->save();
-
-            return response()->json([
-                "message" => "Venta creada correctamente.",
-                "sale_id" => $sale->sale_id,
-            ],200);
-        }
+        //
     }
 
     /**
@@ -96,10 +85,5 @@ class SaleController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function export() 
-    {
-        return Excel::download(new SalesExport, 'sales.xlsx');
     }
 }
