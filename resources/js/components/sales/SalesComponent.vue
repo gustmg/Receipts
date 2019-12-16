@@ -556,7 +556,6 @@
                     
                 });
                 this.printSale(sale_id);
-                this.printSale(sale_id);
             },
 
             printSale: function(sale_id) {
@@ -567,6 +566,7 @@
                 })
                 .then((res)=>{
                     // console.log(res.data.sale);
+                    location.reload();
                 })
                 .catch(function(err){
                     console.log(err);

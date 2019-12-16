@@ -5040,14 +5040,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       this.printSale(sale_id);
-      this.printSale(sale_id);
     },
     printSale: function printSale(sale_id) {
       axios.post('http://localhost:8000/print', {
         sale_id: sale_id,
         tax: this.vatChargeToggle,
         credit_card_charge: this.creditCardCharge
-      }).then(function (res) {// console.log(res.data.sale);
+      }).then(function (res) {
+        // console.log(res.data.sale);
+        location.reload();
       }).catch(function (err) {
         console.log(err);
       });

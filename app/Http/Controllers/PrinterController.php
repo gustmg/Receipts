@@ -61,6 +61,8 @@ class PrinterController extends Controller
             $printer -> feed(1);
             $printer -> text("Calle Encino 1-A, Col. Viveros Santa Cruz\nPuebla, Pue.\n");
             $printer -> feed(1);
+            $printer -> text("ESTE TICKET NO ES UN COMPROBANTE FISCAL\n");
+            $printer -> feed(1);
             $printer -> text("NOTA DE VENTA #".$sale->sale_id."\n");
             $printer -> feed(1);
             $printer -> setJustification(Printer::JUSTIFY_LEFT);
