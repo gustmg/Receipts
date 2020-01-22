@@ -135,9 +135,10 @@
 	}
 </style>
 <script>
+	import EventBus from '../../event-bus';
 	export default {
 	    mounted() {
-	        console.log('New receipt modal mounted.');
+			console.log('New receipt modal mounted.');
 		},
 		
 		props:{
@@ -183,7 +184,8 @@
 				invalidClientPhone: false,
 				validClientEmail: false,
 				invalidClientEmail: false,
-				newClientToggle: false
+				newClientToggle: false,
+				printReceiptId: 0
 	    	}
 		},
 
@@ -253,23 +255,32 @@
 	    			receipt_client_id: this.clientId,
 	    		})
 	    		.then((res)=>{
-					// newReceipt.receipt_id = res.data.receipt_id;
+					// this.printReceiptId=res.data.receipt_id;
 					// newReceipt.receipt_date = res.data.receipt_date;
 					// newReceipt.receipt_worker_id = res.data.receipt_worker_id;
 					// newReceipt.receipt_client_id = res.data.receipt_client_id;
-					
 					this.saveDevices(res.data.receipt_id);
-					
+					setTimeout(function(){
+						axios.post('http://localhost:8000/print_receipt',{
+							receipt_id: res.data.receipt_id,
+						})
+						.then((res)=>{
+							// console.log(res.data.sale);
+							// location.reload();
+						})
+						.catch(function(err){
+							console.log(err.response);
+						});
+					},3000);
 				})
 	    		.catch(function(err){
 	    			console.log(err);
 	    		});
-
 	    		// this.$parent.receipts.push(newReceipt);
 	    		// this.$parent.forceRerender();
-	    		$('#newReceiptModal').modal('close');
+				$('#newReceiptModal').modal('close');
 			},
-			
+
 			saveClient: function() {
 				axios.post('http://localhost:8000/clients',{
 					client_name: this.clientName,

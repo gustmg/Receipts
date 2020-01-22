@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Accessory;
+use App\Receipt;
 
 class AccessoryController extends Controller
 {

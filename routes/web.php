@@ -31,3 +31,4 @@ Route::resource('products', 'ProductController')->middleware('auth');
 Route::resource('sales_products', 'SaleProductController')->middleware('auth');
 Route::resource('sales_services', 'SaleServiceController')->middleware('auth');
 Route::resource('print', 'PrinterController')->middleware('auth');
+Route::resource('print_receipt', 'ReceiptPrinterController')->middleware('auth');

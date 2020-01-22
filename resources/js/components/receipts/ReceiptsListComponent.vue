@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div class="col s12 m3" v-show="receipts.length > 0" v-for="(receipt, index) in filteredReceipts">
-			<div v-on:click="updateReceipt(receipt, index)" class="card hoverable hoverable-card selectable">
+			<div v-on:click="updateReceipt(receipt, index)" class="card hoverable hoverable-card selectable receipt-card">
 		        <div class="card-content">
 					<span><b>Recepción #{{receipt.receipt_id}}</b></span>
 					<span class="card-title">
@@ -12,7 +12,7 @@
 						<span v-else class="grey-text">Teléfono no registrado</span>
 					</p>
 					<span><b>Equipos:</b></span>
-					<devices-list-component :devices="receipt.device"></devices-list-component>
+					<devices-list-component :devices="receipt.devices"></devices-list-component>
 					<span><b>Registrada por:</b> {{receipt.user.name}}</span>
 		        </div>
 		    </div>
@@ -51,6 +51,10 @@
 
 	.selectable{
 		cursor: pointer;
+	}
+
+	.receipt-card{
+		height: 425px !important;
 	}
 </style>
 <script>

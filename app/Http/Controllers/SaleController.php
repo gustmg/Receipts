@@ -43,6 +43,7 @@ class SaleController extends Controller
             $sale->sale_worker_id=Auth::id();
             $sale->sale_client_id=$request->sale_client_id;
             $sale->sale_payment_form_id=$request->sale_payment_form_id;
+            $sale->sale_invoiced=$request->sale_invoiced;
             $sale->sale_total_amount=$request->sale_total_amount;
             $sale->save();
 

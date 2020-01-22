@@ -291,9 +291,12 @@
             },
 
             totalAmount: function() {
-                // TO DO: Make conditional  for credit card charge 
-                // return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
-                return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
+                if(this.paymentForm=="2"){
+                    return (parseFloat(this.subtotalAmount) + parseFloat(this.creditCardCharge) + parseFloat(this.vatAmount)).toFixed(2);
+                }
+                else{
+                    return (parseFloat(this.subtotalAmount) + parseFloat(this.vatAmount)).toFixed(2);
+                }
             },
 
             date: function() {
@@ -335,7 +338,7 @@
                         return (Number(this.subtotalAmount) + Number(this.vatAmount)) * 0.025;
                     }
                     else{
-                        return this.subtotalAmount * 0.03;
+                        return this.subtotalAmount * 0.025;
                     }
                 }
                 else{
@@ -477,6 +480,7 @@
                 var newSale = {
                     sale_client_id : 0,
                     sale_payment_form_id : this.paymentForm,
+                    sale_invoiced : this.vatChargeToggle,
                     sale_total_amount : this.totalAmount
                 };
 
@@ -487,6 +491,7 @@
                 axios.post('http://localhost:8000/sales',{
                     sale_client_id: this.clientId,
                     sale_payment_form_id: newSale.sale_payment_form_id,
+                    sale_invoiced: newSale.sale_invoiced,
                     sale_total_amount: newSale.sale_total_amount
                 })
                 .then((res)=>{
@@ -556,6 +561,7 @@
                     
                 });
                 this.printSale(sale_id);
+                location.reload();
             },
 
             printSale: function(sale_id) {
@@ -566,7 +572,7 @@
                 })
                 .then((res)=>{
                     // console.log(res.data.sale);
-                    location.reload();
+                    // location.reload();
                 })
                 .catch(function(err){
                     console.log(err);

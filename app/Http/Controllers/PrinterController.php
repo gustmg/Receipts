@@ -151,27 +151,7 @@ class PrinterController extends Controller
             $printer -> feed(1);
             $printer -> cut();
             $printer -> close();
-            //IMPRIME EJEMPLO
-            // var_dump("NOTA DE VENTA #".$sale->sale_id."\n");
-            // var_dump("Fecha:".$sale->created_at."\n");
-            // var_dump("Cliente: ".$sale->client->client_name."\n");
-            // var_dump("No. de cliente: ".$sale->client->client_id."\n");
-            // foreach ($sale->products as $key => $product) {
-            //     $product_import=$product->pivot->product_unit_price*$product->pivot->product_quantity;
-            //     var_dump('CANTIDAD:'.$product->pivot->product_quantity
-            //             .' CODIGO:'.$product->product_code
-            //             .' PU:'.$product->pivot->product_unit_price
-            //             .' IMPORTE:'.$product_import);
-            //     $total_amount=$total_amount+$product_import;
-            // }
-            // if($request->tax){
-            //     var_dump("Subtotal: $".$total_amount." \n");
-            //     var_dump("IVA: $".($total_amount*0.16)." \n");
-            //     var_dump("Total: $".($total_amount+($total_amount*0.16))."\n");  
-            // }
-            // else{
-            //     var_dump("Total: $".$total_amount." \n");
-            // }
+            
             return response()->json([
                 "message" => "Impresión realizada correctamente.",
                 "sale" => $sale,

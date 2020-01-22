@@ -14,7 +14,7 @@
 	    	newReceipt: function() {
 	    		$('#receipt_name,#receipt_phone,#receipt_email').characterCounter();
 	    		$('#newReceiptModal').modal({
-	    			dismissible: false
+	    			dismissible: true
 	    		});
 	    		$('#newReceiptModal').modal('open');
 	    	},

@@ -8,7 +8,7 @@ class Receipt extends Model
 {
     protected $table = 'receipts';
     protected $primaryKey = 'receipt_id';
-    protected $with = ['client', 'user', 'device'];
+    protected $with = ['client', 'user', 'devices'];
 
     public function client()
     {
@@ -20,7 +20,7 @@ class Receipt extends Model
     	return $this->belongsTo('App\User', 'receipt_worker_id');
     }
 
-    public function device()
+    public function devices()
     {
         return $this->hasMany('App\Device', 'device_receipt_id');
     }
