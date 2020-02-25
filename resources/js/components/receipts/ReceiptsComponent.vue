@@ -49,7 +49,7 @@
 
         mounted() {
             console.log('Receipts component mounted');
-            console.log(this.receipts);
+            // console.log(this.receipts);
         },
 
         computed: {

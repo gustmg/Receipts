@@ -79,11 +79,15 @@ class ReceiptPrinterController extends Controller
             $printer -> feed(1);
             $printer -> text("Calle Encino 1-A, Col. Viveros Santa Cruz\nPuebla, Pue.\n");            
             $printer -> feed(1);
+            if($request->reprint){
+                $printer -> text("TICKET REIMPRESO\n");
+            }
             $printer -> text("RECEPCION DE EQUIPO #".$receipt->receipt_id."\n");
             $printer -> feed(1);
             $printer -> setJustification(Printer::JUSTIFY_LEFT);
             $printer -> text("Fecha:".$receipt->created_at."\n");
             $printer -> text("Cliente: ".$receipt->client->client_name."\n");
+            $printer -> text("Teléfono: ".$receipt->client->client_phone."\n");
             $printer -> text("________________________________________________\n");
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
             $printer -> text("LISTA DE EQUIPOS\n");
@@ -95,26 +99,42 @@ class ReceiptPrinterController extends Controller
                 $printer -> text("FALLA REPORTADA O SERVICIO A REALIZAR: \n");
                 $printer -> text("- ".$device->device_trouble_description."\n");
                 $printer -> text("ACCESORIOS: \n");
-                foreach ($device->accessories as $key => $accessory) {
-                    if($accessory->accessory_serial_number){
-                        $printer -> text("- ".$accessory->accessory_name." (".$accessory->accessory_serial_number.")\n");
+                if(count($device->accessories) > 0){
+                    foreach ($device->accessories as $key => $accessory) {
+                        if($accessory->accessory_serial_number){
+                            $printer -> text("- ".$accessory->accessory_name." (".$accessory->accessory_serial_number.")\n");
+                        }
+                        else{
+                            $printer -> text("- ".$accessory->accessory_name." (S/N)\n");
+                        }
                     }
-                    else{
-                        $printer -> text("- ".$accessory->accessory_name." (S/N)\n");
-                    }
+                }
+                else{
+                    $printer -> text("- Ninguno\n");
                 }
             }
             $printer -> text("________________________________________________\n");
-            $printer -> text("* En equipos mojados, software y daños en electrónica no hay garantía debido a que el equipo se puede apagar o no responder correctamente\n");
-            $printer -> text("* Después de 20 días la empresa no se hace responsable por equipos olvidados ni se aceptan reclamaciones de ningún tipo.\n");
-            $printer -> text("* El cliente acepta los términos y condiciones especificadas en esta orden de recepción de equipo.\n");
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text("TERMINOS Y CONDICIONES:\n");
+            $printer -> setJustification(Printer::JUSTIFY_LEFT);
+            if($request->reprint){
+                $printer -> text("* El cliente acepta que recibe su equipo a satisfacción.\n\n\n\n\n\n");
+                $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> text("____________________________________\n");
+                $printer -> text("NOMBRE, FECHA Y FIRMA DEL CLIENTE\n");
+                $printer -> setJustification(Printer::JUSTIFY_LEFT);
+            }
+            else{
+                $printer -> text("* En equipos mojados, software y daños en electrónica no hay garantía debido a que el equipo se puede apagar o no responder correctamente\n");
+                $printer -> text("* Después de 20 días la empresa no se hace responsable por equipos olvidados ni se aceptan reclamaciones de ningún tipo.\n");
+                $printer -> text("* El cliente acepta los términos y condiciones especificadas en esta orden de recepción de equipo.\n");
+            }
             $printer -> text("________________________________________________\n");
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
             $printer -> text("CORREO:\ntectrotecnologico@gmail.com\nventas@tectro.com.mx\n");
             $printer -> feed(1);
             $printer -> text("Tel: 222 7 85 30 12    Whatsapp: 222 9 08 78 11\n");
             $printer -> feed(1);
-            $printer -> text("TERMINOS Y CONDICIONES:\n");
             $printer -> text("WWW.TECTRO.COM.MX\n");
             $printer -> feed(1);
             $printer -> cut();

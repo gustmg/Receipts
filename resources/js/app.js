@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+var _ = require('lodash');
 
 window.Vue = require('vue');
 

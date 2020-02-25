@@ -3745,7 +3745,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    console.log('New receipt modal mounted.');
+    console.log('New receipt modal mounted.'); // axios.post('http://localhost:8000/print_receipt',{
+    // 	receipt_id: 9,
+    // })
+    // .then((res)=>{
+    // 	// console.log(res.data.sale);
+    // 	// location.reload();
+    // })
+    // .catch(function(err){
+    // 	console.log(err.response);
+    // });
   },
   props: {
     devices: {
@@ -3803,40 +3812,40 @@ __webpack_require__.r(__webpack_exports__);
 
       switch (d.getMonth()) {
         case 0:
-          return "Enero" + d.getDate() + ", " + d.getFullYear();
+          return "Enero " + d.getDate() + ", " + d.getFullYear();
 
         case 1:
-          return "Febrero" + d.getDate() + ", " + d.getFullYear();
+          return "Febrero " + d.getDate() + ", " + d.getFullYear();
 
         case 2:
-          return "Marzo" + d.getDate() + ", " + d.getFullYear();
+          return "Marzo " + d.getDate() + ", " + d.getFullYear();
 
         case 3:
-          return "Abril" + d.getDate() + ", " + d.getFullYear();
+          return "Abril " + d.getDate() + ", " + d.getFullYear();
 
         case 4:
-          return "Mayo" + d.getDate() + ", " + d.getFullYear();
+          return "Mayo " + d.getDate() + ", " + d.getFullYear();
 
         case 5:
-          return "Junio" + d.getDate() + ", " + d.getFullYear();
+          return "Junio " + d.getDate() + ", " + d.getFullYear();
 
         case 6:
           return "Julio " + d.getDate() + ", " + d.getFullYear();
 
         case 7:
-          return "Agosto" + d.getDate() + ", " + d.getFullYear();
+          return "Agosto " + d.getDate() + ", " + d.getFullYear();
 
         case 8:
-          return "Septiembre" + d.getDate() + ", " + d.getFullYear();
+          return "Septiembre " + d.getDate() + ", " + d.getFullYear();
 
         case 9:
-          return "Octubre" + d.getDate() + ", " + d.getFullYear();
+          return "Octubre " + d.getDate() + ", " + d.getFullYear();
 
         case 10:
-          return "Noviembre" + d.getDate() + ", " + d.getFullYear();
+          return "Noviembre " + d.getDate() + ", " + d.getFullYear();
 
         case 11:
-          return "Diciembre" + d.getDate() + ", " + d.getFullYear();
+          return "Diciembre " + d.getDate() + ", " + d.getFullYear();
 
         default:
           break;
@@ -4088,8 +4097,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Receipts component mounted');
-    console.log(this.receipts);
+    console.log('Receipts component mounted'); // console.log(this.receipts);
   },
   computed: {
     lastReceiptId: function lastReceiptId() {
@@ -4183,6 +4191,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log("Receipts list component mounted");
@@ -4201,38 +4218,120 @@ __webpack_require__.r(__webpack_exports__);
       receiptEmail: ''
     };
   },
-  // methods: {
-  // 	updateReceipt: function(receipt, index) {
-  // 		this.receiptIndex = index;
-  // 		this.receiptId=receipt.receipt_id;
-  // 		this.receiptName=receipt.receipt_name;
-  // 		this.receiptPhone=receipt.receipt_phone;
-  // 		this.receiptEmail=receipt.receipt_email;
-  // 		$('#update_receipt_name,#update_receipt_phone,#update_receipt_email').characterCounter();
-  // 		$('#updateReceiptModal').modal({
-  // 			dismissible: false,
-  // 			onOpenStart: function() {
-  // 				$('.label_update_receipt_name').addClass('active');
-  // 				if(receipt.receipt_phone != null){
-  // 					$('.label_update_receipt_phone').addClass('active');
-  // 				}
-  // 				if(receipt.receipt_email != null){
-  // 					$('.label_update_receipt_email').addClass('active');
-  // 				}
-  // 			},
-  // 			onCloseEnd: function() {
-  // 				//TO-DO: Rmeove al validations and clear the form
-  // 			}
-  // 		});
-  // 		$('#updateReceiptModal').modal('open');
-  // 	}
-  // },
+  methods: {
+    reprintReceipt: function reprintReceipt(receipt_id) {
+      axios.post('http://localhost:8000/print_receipt', {
+        receipt_id: receipt_id,
+        reprint: 1
+      }).then(function (res) {// console.log(res.data.sale);
+        // location.reload();
+      }).catch(function (err) {// console.log(err.response);
+      });
+    },
+    formatDate: function formatDate(date) {
+      var formated_date = new Date(date);
+      var day = formated_date.getDay();
+      var date = formated_date.getDate();
+      var month = formated_date.getMonth();
+      var year = formated_date.getFullYear();
+      var month_name;
+      var day_name;
+
+      switch (month) {
+        case 0:
+          month_name = "Enero";
+          break;
+
+        case 1:
+          month_name = "Febrero";
+          break;
+
+        case 2:
+          month_name = "Marzo";
+          break;
+
+        case 3:
+          month_name = "Abril";
+          break;
+
+        case 4:
+          month_name = "Mayo";
+          break;
+
+        case 5:
+          month_name = "Junio";
+          break;
+
+        case 6:
+          month_name = "Julio";
+          break;
+
+        case 7:
+          month_name = "Agosto";
+          break;
+
+        case 8:
+          month_name = "Septiembre";
+          break;
+
+        case 9:
+          month_name = "Octubre";
+          break;
+
+        case 10:
+          month_name = "Noviembre";
+          break;
+
+        case 11:
+          month_name = "Diciembre";
+          break;
+      }
+
+      switch (day) {
+        case 0:
+          day_name = "Domingo";
+          break;
+
+        case 1:
+          day_name = "Lunes";
+          break;
+
+        case 2:
+          day_name = "Martes";
+          break;
+
+        case 3:
+          day_name = "Miércoles";
+          break;
+
+        case 4:
+          day_name = "Jueves";
+          break;
+
+        case 5:
+          day_name = "Viernes";
+          break;
+
+        case 6:
+          day_name = "Sábado";
+          break;
+      }
+
+      return day_name + ', ' + date + ' de ' + month_name + ' de ' + year;
+    }
+  },
   computed: {
     filteredReceipts: function filteredReceipts() {
       var _this = this;
 
       return this.receipts.filter(function (receipt) {
         return receipt.client.client_name.toLowerCase().indexOf(_this.$parent.searchReceipt.toLowerCase()) >= 0; // || receipt.receipt_id.indexOf(this.searchReceipt) >= 0;
+      });
+    },
+    groupedReceipts: function groupedReceipts() {
+      return _.groupBy(this.filteredReceipts, function (receipt) {
+        var date = new Date(receipt.created_at);
+        return date.getFullYear() + ' ' + (date.getMonth() + 1) + ' ' + date.getDate();
       });
     }
   }
@@ -6014,7 +6113,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.inline-icon-medium {\n\t\tvertical-align: bottom;\n\t\tfont-size: 32px !important;\n}\n.device-desc{\n\tmargin-left:24px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n.receipt-card{\n\theight: 425px !important;\n}\n", ""]);
+exports.push([module.i, "\n.date-header{\n\tpadding-bottom: 12px !important;\n\tborder-bottom: 2px solid #1565c0;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.inline-icon-medium {\n\tvertical-align: bottom;\n\tfont-size: 32px !important;\n}\n.device-desc{\n\tmargin-left:24px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n.receipt-card{\n\theight: 500px !important;\n\tborder: 1px solid #cfd8dc;\n}\n", ""]);
 
 // exports
 
@@ -16853,7 +16952,7 @@ return jQuery;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.14';
+  var VERSION = '4.17.15';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -41180,7 +41279,7 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "row" },
-    _vm._l(_vm.filteredReceipts, function(receipt, index) {
+    _vm._l(_vm.groupedReceipts, function(receiptGroup, index) {
       return _c(
         "div",
         {
@@ -41192,66 +41291,98 @@ var render = function() {
               expression: "receipts.length > 0"
             }
           ],
-          staticClass: "col s12 m3"
+          staticClass: "col s12"
         },
         [
           _c(
             "div",
-            {
-              staticClass:
-                "card hoverable hoverable-card selectable receipt-card",
-              on: {
-                click: function($event) {
-                  _vm.updateReceipt(receipt, index)
-                }
-              }
-            },
+            { staticClass: "row" },
             [
-              _c(
-                "div",
-                { staticClass: "card-content" },
-                [
-                  _c("span", [
-                    _c("b", [
-                      _vm._v("Recepción #" + _vm._s(receipt.receipt_id))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "card-title" }, [
-                    receipt.client.client_name
-                      ? _c("b", [_vm._v(_vm._s(receipt.client.client_name))])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c("p", [
-                    receipt.client.client_phone
-                      ? _c("span", [
+              _c("h6", { staticClass: "col s12 date-header" }, [
+                _c("b", [
+                  _vm._v(_vm._s(_vm.formatDate(receiptGroup[0].receipt_date)))
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._l(receiptGroup, function(receipt, index) {
+                return _c("div", { staticClass: "col m3" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "card hoverable hoverable-card selectable receipt-card"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "card-content" },
+                        [
+                          _c("span", [
+                            _c("b", [
+                              _vm._v("Recepción #" + _vm._s(receipt.receipt_id))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "card-title" }, [
+                            receipt.client.client_name
+                              ? _c("b", [
+                                  _vm._v(_vm._s(receipt.client.client_name))
+                                ])
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("p", [
+                            receipt.client.client_phone
+                              ? _c("span", [
+                                  _c(
+                                    "i",
+                                    {
+                                      staticClass:
+                                        "material-icons inline-icon-small"
+                                    },
+                                    [_vm._v("phone")]
+                                  ),
+                                  _vm._v(
+                                    " " + _vm._s(receipt.client.client_phone)
+                                  )
+                                ])
+                              : _c("span", { staticClass: "grey-text" }, [
+                                  _vm._v("Teléfono no registrado")
+                                ])
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(0, true),
+                          _vm._v(" "),
+                          _c("devices-list-component", {
+                            attrs: { devices: receipt.devices }
+                          }),
+                          _vm._v(" "),
+                          _c("span", [
+                            _c("b", [_vm._v("Registrada por:")]),
+                            _vm._v(" " + _vm._s(receipt.user.name))
+                          ]),
+                          _vm._v(" "),
                           _c(
-                            "i",
-                            { staticClass: "material-icons inline-icon-small" },
-                            [_vm._v("phone")]
-                          ),
-                          _vm._v(" " + _vm._s(receipt.client.client_phone))
-                        ])
-                      : _c("span", { staticClass: "grey-text" }, [
-                          _vm._v("Teléfono no registrado")
-                        ])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(0, true),
-                  _vm._v(" "),
-                  _c("devices-list-component", {
-                    attrs: { devices: receipt.devices }
-                  }),
-                  _vm._v(" "),
-                  _c("span", [
-                    _c("b", [_vm._v("Registrada por:")]),
-                    _vm._v(" " + _vm._s(receipt.user.name))
-                  ])
-                ],
-                1
-              )
-            ]
+                            "a",
+                            {
+                              staticClass: "waves-effect waves-light btn blue",
+                              on: {
+                                click: function($event) {
+                                  _vm.reprintReceipt(receipt.receipt_id)
+                                }
+                              }
+                            },
+                            [_vm._v("Reimprimir ticket")]
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  )
+                ])
+              })
+            ],
+            2
           )
         ]
       )
@@ -54912,6 +55043,8 @@ module.exports = function(module) {
  * building robust, powerful web applications using Vue and Laravel.
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**

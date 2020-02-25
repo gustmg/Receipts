@@ -139,6 +139,17 @@
 	export default {
 	    mounted() {
 			console.log('New receipt modal mounted.');
+			
+			// axios.post('http://localhost:8000/print_receipt',{
+			// 	receipt_id: 9,
+			// })
+			// .then((res)=>{
+			// 	// console.log(res.data.sale);
+			// 	// location.reload();
+			// })
+			// .catch(function(err){
+			// 	console.log(err.response);
+			// });
 		},
 		
 		props:{
@@ -208,29 +219,29 @@
 
 				switch (d.getMonth()) {
 					case 0:
-						return "Enero"+d.getDate()+", "+d.getFullYear();
+						return "Enero "+d.getDate()+", "+d.getFullYear();
 					case 1:
-						return "Febrero"+d.getDate()+", "+d.getFullYear();
+						return "Febrero "+d.getDate()+", "+d.getFullYear();
 					case 2:
-						return "Marzo"+d.getDate()+", "+d.getFullYear();
+						return "Marzo "+d.getDate()+", "+d.getFullYear();
 					case 3:
-						return "Abril"+d.getDate()+", "+d.getFullYear();
+						return "Abril "+d.getDate()+", "+d.getFullYear();
 					case 4:
-						return "Mayo"+d.getDate()+", "+d.getFullYear();
+						return "Mayo "+d.getDate()+", "+d.getFullYear();
 					case 5:
-						return "Junio"+d.getDate()+", "+d.getFullYear();
+						return "Junio "+d.getDate()+", "+d.getFullYear();
 					case 6:
 						return "Julio "+d.getDate()+", "+d.getFullYear();
 					case 7:
-						return "Agosto"+d.getDate()+", "+d.getFullYear();
+						return "Agosto "+d.getDate()+", "+d.getFullYear();
 					case 8:
-						return "Septiembre"+d.getDate()+", "+d.getFullYear();
+						return "Septiembre "+d.getDate()+", "+d.getFullYear();
 					case 9:
-						return "Octubre"+d.getDate()+", "+d.getFullYear();
+						return "Octubre "+d.getDate()+", "+d.getFullYear();
 					case 10:
-						return "Noviembre"+d.getDate()+", "+d.getFullYear();
+						return "Noviembre "+d.getDate()+", "+d.getFullYear();
 					case 11:
-						return "Diciembre"+d.getDate()+", "+d.getFullYear();
+						return "Diciembre "+d.getDate()+", "+d.getFullYear();
 					default:
 						break;
 				}
