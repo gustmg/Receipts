@@ -6831,8 +6831,8 @@ __webpack_require__.r(__webpack_exports__);
             console.log(err);
           });
         }
-      }); // this.printSale(sale_id);
-
+      });
+      this.printSale(sale_id);
       location.reload();
     },
     printSale: function printSale(sale_id) {

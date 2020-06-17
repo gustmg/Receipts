@@ -592,7 +592,7 @@
                     }
                     
                 });
-                // this.printSale(sale_id);
+                this.printSale(sale_id);
                 location.reload();
             },
 

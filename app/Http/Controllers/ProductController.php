@@ -81,9 +81,6 @@ class ProductController extends Controller
             if(isset($request->product_cost)){
                 $product->product_cost=$request->product_cost;
             }
-            else if($request->product_cost == ''){
-                $product->product_cost=0;
-            }
             else{
                 $product->product_cost=$product->product_cost;
             }
