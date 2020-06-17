@@ -15,9 +15,10 @@
                             <tr>
                                 <th style="width:10%;">Cantidad</th>
                                 <th style="width:10%;">Tipo</th>
-                                <th style="width:45%;">Descripción</th>
+                                <th style="width:25%;">Descripción</th>
+                                <th style="width:25%;">Tipo de precio</th>
                                 <th style="width:15%;">Precio Unitario</th>
-                                <th style="width:15%;">Importe</th>
+                                <th style="width:10%;">Importe</th>
                                 <th style="width:5%;"></th>
                             </tr>
                         </thead>
@@ -29,11 +30,29 @@
                                     </div>
                                 </td>
                                 <td>{{setArticleType(article.article_type)}}</td>
-                                <td>{{article.article_description}}</td>
                                 <td>
-                                    <div class="input-field custom-sale-field">
-                                        <input v-model="article.article_unit_price" class="validate" type="number" min="0.01" step="0.01" pattern="^\d*(\.\d{0,2})?$" >
+                                    <span><b>{{article.article_name}}</b></span><br>
+                                    <span>{{article.article_description}}</span>
+                                </td>
+                                <td>
+                                    <div class="input-field col s12">
+                                        <select v-if="article.article_type == 0" class="browser-default">
+                                            <option v-on:click="article.article_unit_price=article.article_cost+(article.article_cost * article.product_base_price_percentage / 100)" value="1" selected>Público en general</option>
+                                            <option v-on:click="article.article_unit_price=article.article_cost+(article.article_cost * article.product_retail_price_percentage / 100)" value="2" >Menudeo</option>
+                                            <option v-on:click="article.article_unit_price=article.article_cost+(article.article_cost * article.product_wholesale_price_percentage / 100)" value="3" >Mayoreo</option>
+                                        </select>
+                                        <select v-else class="browser-default" disabled>
+                                            <option value="1" selected>Público en general</option>
+                                        </select>
                                     </div>
+                                </td>
+                                <td>
+                                    <FormulateInput
+                                        type="text"
+                                        validation="number"
+                                        v-model="article.article_unit_price"
+                                        v-on:blur="validateSalePrice(article.article_unit_price, article.article_cost)"
+                                    />
                                 </td>
                                 <td>${{getFormatedNumber(article.article_quantity*article.article_unit_price)}}</td>
                                 <td><a class="selectable red-text" v-on:click="removeArticle(index)"><i class="material-icons">cancel</i></a></td>
@@ -152,7 +171,13 @@
     }
 </style>
 <script>
+    import { parseCurrency } from 'vue-currency-input'
+    import { CurrencyDirective } from 'vue-currency-input'
     export default {
+        directives: {
+            currency: CurrencyDirective
+        },
+
         mounted() {
             document.addEventListener('DOMContentLoaded', function() {
               var elems = document.querySelectorAll('select');
@@ -459,13 +484,20 @@
                 }
                 if(article_type == 1){
                     newArticle.article_id=article.service_id;
+                    newArticle.article_name=article.service_name;
                     newArticle.article_description=article.service_description;
                     newArticle.article_code=article.service_code;
                 }
                 else{
                     newArticle.article_id=article.product_id;
+                    newArticle.article_name=article.product_name;
                     newArticle.article_description=article.product_description;
                     newArticle.article_code=article.product_code;
+                    newArticle.article_cost=article.product_cost;
+                    newArticle.product_base_price_percentage=article.product_base_price_percentage;
+                    newArticle.product_retail_price_percentage=article.product_retail_price_percentage;
+                    newArticle.product_wholesale_price_percentage=article.product_wholesale_price_percentage;
+                    newArticle.article_unit_price=article.product_cost+(article.product_cost * article.product_base_price_percentage / 100);
                 }
                 this.articles.push(newArticle);
                 $('#servicesCompactListModal').modal('close');
@@ -552,7 +584,7 @@
                             product_code: article.article_code,
                         })
                         .then((res)=>{
-                            // console.log("Venta de productos registrados correctamente");   
+                            console.log("Venta de productos registrados correctamente");   
                         })
                         .catch(function(err){
                             console.log(err);
@@ -560,7 +592,7 @@
                     }
                     
                 });
-                this.printSale(sale_id);
+                // this.printSale(sale_id);
                 location.reload();
             },
 
@@ -577,6 +609,12 @@
                 .catch(function(err){
                     console.log(err);
                 });
+            },
+
+            validateSalePrice: function (salePrice, cost) {
+                if(salePrice < cost && salePrice != ''){
+                    $('#warningProductCostModal').modal('open');
+                }
             }
         }
     }

@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call('AuthorizationStatusSeeder');
         $this->call('ServiceStatusSeeder');
         $this->call('PaymentFormSeeder');
+        $this->call('WarehouseSeeder');
     }
 }

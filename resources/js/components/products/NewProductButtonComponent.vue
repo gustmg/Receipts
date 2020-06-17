@@ -4,18 +4,17 @@
     </button>    
 </template>
 <script>
+    import {mapMutations, mapActions} from "vuex";
     export default {
         mounted() {
             console.log('New product button component mounted');
         },
 
         methods: {
+            ...mapActions(['openModal']),
+
             newProduct: function() {
-                $('#product_name,#product_description').characterCounter();
-                $('#newProductModal').modal({
-                    dismissible: false
-                });
-                $('#newProductModal').modal('open');
+                this.openModal($('#newProductModal'));
             },
         }
     }

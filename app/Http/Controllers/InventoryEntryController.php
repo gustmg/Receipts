@@ -3,21 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\SaleProduct;
-use App\Product;
 use View;
-use Auth;
+use App\InventoryEntry;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use \NumberFormatter;
 
-class SaleProductController extends Controller
+class InventoryEntryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()){
+            $inventory_entries = InventoryEntry::where('inventory_entry_warehouse_id', 1)->orderBy('inventory_entry_id', 'DESC')->get();
+            return response()->json([
+                "inventory_entries" => $inventory_entries
+            ], 200);
+        }
+
+        return View::make('inventory_entries.index');
     }
 
     /**
@@ -39,19 +47,20 @@ class SaleProductController extends Controller
     public function store(Request $request)
     {
         if($request->ajax()){
-            $sale_product=new SaleProduct;
-            $sale_product->sale_id=$request->sale_id;
-            $sale_product->product_id=$request->product_id;
-            $sale_product->product_quantity=$request->product_quantity;
-            $sale_product->product_unit_price=$request->product_unit_price;
-            $sale_product->save();
+            $float_total_cost=str_replace(',','', $request->inventory_entry_total_cost);
 
-            $product=Product::find($request->product_id);
-            $product->product_stock -= $request->product_quantity;
-            $product->save();
+            $inventory_entry=new InventoryEntry;
+            $inventory_entry->inventory_entry_created_at=Carbon::now();
+            $inventory_entry->inventory_entry_total_cost=$float_total_cost;
+            $inventory_entry->inventory_entry_worker_id=Auth::id();
+            $inventory_entry->inventory_entry_warehouse_id=1;
+            
+            // var_dump($float_total_cost);
+            $inventory_entry->save();
 
             return response()->json([
-                "message" => "Venta de productos registrados correctamente.",
+                "message" => "Producto creado correctamente.",
+                "inventory_entry" => $inventory_entry
             ],200);
         }
     }

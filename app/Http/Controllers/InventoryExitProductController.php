@@ -3,21 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\SaleProduct;
+use App\InventoryExitProduct;
+use App\InventoryExit;
 use App\Product;
-use View;
-use Auth;
 
-class SaleProductController extends Controller
+class InventoryExitProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()){
+            $inventory_exits_products = InventoryExitProduct::all();
+            return response()->json([
+                "inventory_exits_products" => $inventory_exits_products
+            ], 200);
+        }
     }
 
     /**
@@ -39,19 +43,29 @@ class SaleProductController extends Controller
     public function store(Request $request)
     {
         if($request->ajax()){
-            $sale_product=new SaleProduct;
-            $sale_product->sale_id=$request->sale_id;
-            $sale_product->product_id=$request->product_id;
-            $sale_product->product_quantity=$request->product_quantity;
-            $sale_product->product_unit_price=$request->product_unit_price;
-            $sale_product->save();
+            $data=array();            
+            $inventory_exit_id=InventoryExit::all()->last()->inventory_exit_id;
+            $product = new Product();
 
-            $product=Product::find($request->product_id);
-            $product->product_stock -= $request->product_quantity;
-            $product->save();
+            foreach($request->products_exit_detail as $product_detail){               
+                $products_detail_decoded = json_decode(json_encode($product_detail));
+
+                $data[] = [
+                    'inventory_exit_id' => $inventory_exit_id,
+                    'product_id' => $products_detail_decoded->product_id,
+                    'product_exit_amount' => $products_detail_decoded->product_exit_amount,
+                    'product_exit_justification' => $products_detail_decoded->product_exit_justification
+                ];
+
+                $product=Product::find($products_detail_decoded->product_id);
+                $product->product_stock = $product->product_stock - $products_detail_decoded->product_exit_amount;
+                $product->save();
+            }
+
+            InventoryExitProduct::insert($data);
 
             return response()->json([
-                "message" => "Venta de productos registrados correctamente.",
+                "message" => "Detalles de salida de inventario agregados correctamente.",
             ],200);
         }
     }

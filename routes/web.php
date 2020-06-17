@@ -32,3 +32,7 @@ Route::resource('sales_products', 'SaleProductController')->middleware('auth');
 Route::resource('sales_services', 'SaleServiceController')->middleware('auth');
 Route::resource('print', 'PrinterController')->middleware('auth');
 Route::resource('print_receipt', 'ReceiptPrinterController')->middleware('auth');
+Route::resource('inventory_entries', 'InventoryEntryController')->middleware('auth');
+Route::resource('inventory_entries_products', 'InventoryEntryProductController')->middleware('auth');
+Route::resource('inventory_exits', 'InventoryExitController')->middleware('auth');
+Route::resource('inventory_exits_products', 'InventoryExitProductController')->middleware('auth');

@@ -1,17 +1,15 @@
 <template>
     <div class="row">
         <product-search-bar-component :search-value-product.sync="searchProduct"></product-search-bar-component>
-        <products-list-component :products="products" :key="componentKey"></products-list-component>
+        <products-table-component :key="componentKey"></products-table-component>
         <new-product-button-component></new-product-button-component>
         <new-product-modal-component></new-product-modal-component>
+        <warning-product-cost-modal-component></warning-product-cost-modal-component>
     </div>
 </template>
 <script>
     export default {
         props: {
-            products: {
-                type: Array
-            },
             searchValueProduct:String,
         },
 
@@ -20,10 +18,6 @@
                 searchProduct: '',
                 componentKey: 0
             }
-        },
-
-        mounted() {
-            console.log('Products component mounted');
         },
 
         methods: {

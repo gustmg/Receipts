@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SaleProduct extends Model
+class InventoryExitProduct extends Model
 {
-    protected $table = 'sales_products';    
+    protected $table = 'inventory_exits_products';
     public $timestamps = false;
 }

@@ -1,9 +1,10 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
+
+//Materialize
+@import '~materialize-css/sass/materialize';
+@import '../node_modules/@braid/vue-formulate/themes/snow/snow.scss';
 
 // Bootstrap
 $mdc-theme-primary: #fb8c00;
@@ -15,4 +16,17 @@ $mdc-theme-on-secondary: #442b2d;
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+#slide-out{
+    height: 100% !important;
+}
+
+.formulate-input-element{
+    max-width: 100% !important;
+}
+
+.formulate-input[data-classification="box"] .formulate-input-element-decorator{
+    width: 1.5em !important;
+    height: 1.5em !important;
 }

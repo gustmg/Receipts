@@ -1,41 +1,101 @@
 <template>
-	<div id="updateProductModal" class="modal updateProductModal">
+	<div id="updateProductModal" class="modal updateProductModal modal-fixed-footer">
 		<div class="modal-content">
-			<h5>Editar producto</h5><br>
-			<div class="row">
-				<form id="updateProductForm" class="col s12 no-padding" method="POST" action="products">
-					<input type="hidden" name="_token" :value="csrf">
-					<div class="row">
-						<div class="input-field col s8 m8 no-vertical-margin">
-							<input placeholder="" v-model="updateProductName" @input="emitProductName" v-on:blur="validateProductName" v-bind:class="{'valid': validProductName, 'invalid': invalidProductName}" id="update_product_name" type="text" data-length="50" maxlength="50" required>
-							<label for="update_product_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Producto *</label>
-							<span class="helper-text product_name_helper" data-success="Nombre validado."></span>
-				        </div>
-						<div class="input-field col s4 m4 no-vertical-margin">
-							<input placeholder="" v-model="updateProductCode" @input="emitProductCode" id="update_product_code" type="text" data-length="50" maxlength="50" required>
-							<label for="update_product_code" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Código de producto *</label>
-							<span class="helper-text product_code_helper" data-success="Nombre validado."></span>
-				        </div>
-				        <div class="input-field col s12 m6 no-vertical-margin">
-							<input placeholder="" v-model="updateProductDescription" @input="emitProductDescription" v-on:blur="validateProductDescription" v-bind:class="{'valid': validProductDescription, 'invalid': invalidProductDescription}" id="update_product_description" type="text" data-length="50" maxlength="50" required>
-							<label for="update_product_description" class="valign-wrapper"><i class="material-icons">settings</i>&nbsp;&nbsp;Descripción *</label>
-							<span class="helper-text product_description_helper" data-success="Descripción del producto validada."></span>
-				        </div>
-			        </div>
-				</form>
-			</div>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="left delete-button" v-on:click="openDeleteProductModal"><i class="material-icons black-text">delete</i></a>
-			<button v-on:click="resetUpdateProductInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
-			<button v-on:click="updateProduct" type="submit" class="modal-action btn waves-effect submit_button" >
-				<b>Guardar</b>
-			</button>
-		</div>
-		<delete-product-modal-component :product-id="productId.toString()"></delete-product-modal-component>
+            <div class="row no-margin-bottom">
+                <div class="col m12"><h6><b>Editar Producto</b></h6></div>
+            </div>
+            <FormulateForm class="row" name="updateProductForm" v-model="updateProductForm">
+                <input type="hidden" name="_token" :value="csrf">
+                <FormulateInput
+                    type="hidden"
+                    name="product_id"
+                    v-model="product_to_update.product_id"
+                />
+                <blockquote class="col s12"><b>Información principal</b></blockquote>                 
+                <FormulateInput
+                    @validation="invalidProductName = $event.hasErrors"
+                    type="text"
+                    name="product_name"
+                    label="Nombre *"
+                    validation="bail|required|min:5"
+                    class="col m12"
+                    v-model="product_to_update.product_name"
+                />
+                <FormulateInput
+                    type="text"
+                    name="product_description"
+                    label="Descripción"
+                    class="col m12"
+                    v-model="product_to_update.product_description"
+                />
+                <FormulateInput
+                    type="text"
+                    name="product_code"
+                    label="Código interno"
+                    class="col m6"
+                    v-model="product_to_update.product_code"
+                />
+                <FormulateInput
+                    @validation="invalidProductCost = $event.hasErrors"
+                    type="text"
+                    name="product_cost"
+                    label="Costo ($)"
+                    class="col m6"
+                    validation="bail|min:0, value"
+                    v-model="product_to_update.product_cost"
+                    v-on:blur="validateSalePrice(product_to_update.product_cost, product_to_update_prev_cost)"
+                    v-currency
+                />
+                <blockquote class="col s12"><b>Porcentajes de ganancia por tipo de venta</b></blockquote>
+                <FormulateInput
+                    @validation="invalidProductBasePricePercentage = $event.hasErrors"
+                    type="number"
+                    name="product_base_price_percentage"
+                    label="Público en general"
+                    class="col m4"
+                    help="Precio de venta estimado: $1230.00"
+                    validation="min:0, value"
+                    min="0"
+                    v-model="product_to_update.product_base_price_percentage"
+                />
+                <FormulateInput
+                    @validation="invalidProductRetailPricePercentage = $event.hasErrors"
+                    type="number"
+                    name="product_retail_price_percentage"
+                    label="Menudeo"
+                    class="col m4"
+                    help="Precio de venta estimado: $1230.00"
+                    validation="min:0, value"
+                    min="0"
+                    v-model="product_to_update.product_retail_price_percentage"
+                />
+                <FormulateInput
+                    @validation="invalidProductWholesalePricePercentage = $event.hasErrors"
+                    type="number"
+                    name="product_wholesale_price_percentage"
+                    label="Mayoreo"
+                    class="col m4"
+                    help="Precio de venta estimado: $1230.00"
+                    validation="min:0, value"
+                    min="0"
+                    v-model="product_to_update.product_wholesale_price_percentage"
+                />
+            </FormulateForm>
+        </div>
+        <div class="modal-footer">
+            <button v-on:click="resetUpdateProductForm" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+            <button v-on:click="saveProduct" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
+                <b>Editar</b>
+            </button>
+        </div>
 	</div>
 </template>
 <style type="text/css">
+    .updateProductModal{
+        width: 37%;
+        max-height: 80%;
+        height: 80%;
+    }
 	.delete-button{
 		margin-left: 10px;
 		margin-top: 10px;
@@ -54,117 +114,66 @@
 	}
 	.helper-text{
 		min-height: 0 !important;
-	}
+    }
+    .no-margin-bottom{
+        margin-bottom:0;
+    }
 </style>
 <script>
-	export default {
-		props: {
-			productId: String,
-			productName: String,
-			productCode: String,
-			productDescription: String
-		},
+    import {mapState, mapMutations, mapActions} from "vuex";
 
+	export default {
 	    mounted() {
 	        console.log('Update Product Modal Component Mounted');
 	    },
 
 	    data(){
 	    	return {
-	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-				updateProductName:'',
-				updateProductCode:'',
-	    		updateProductDescription:'',
-	    		validProductName: false,
-	    		invalidProductName: false,
-	    		activeProductName: false,
-	    		validProductDescription: false,
-	    		invalidProductDescription: false
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                updateProductForm: null,
+                invalidProductName: true,
+                invalidProductCost: false,
+                invalidProductBasePricePercentage: false,
+                invalidProductRetailPricePercentage: false,
+                invalidProductWholesalePricePercentage: false
 	    	}
-	    },
+        },
+        
+        computed:{
+            ...mapState(['product_to_update', 'product_to_update_prev_cost']),
 
-	    watch: {
-            productName(newVal) {
-                this.updateProductName = newVal;
-			},
-			productCode(newVal) {
-                this.updateProductCode = newVal;
+            validateForm: function (e) {
+                if(this.invalidProductName || this.invalidProductCost || this.invalidProductBasePricePercentage || this.invalidProductRetailPricePercentage || this.invalidProductWholesalePricePercentage){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             },
-            productDescription(newVal) {
-                this.updateProductDescription = newVal;
+
+            productCost: function(e) {
+                return this.$parseCurrency(this.updateProductForm.product_cost)
             }
         },
 
-
 	    methods: {
-	    	emitProductName(newInputValue) {
-	            this.$emit('product-name', newInputValue);
-			},
-			
-			emitProductCode(newInputValue) {
-	            this.$emit('product-code', newInputValue);
-	        },
-
-	        emitProductDescription(newInputValue) {
-	            this.$emit('product-description', newInputValue);
-	        },
-
-	    	updateProduct: function(){
-	    		axios.put('http://localhost:8000/products/'+this.productId,{
-					product_name: this.updateProductName,
-					product_code: this.updateProductCode,
-	    			product_description: this.updateProductDescription
-	    		})
-	    		.then(function(res){
-	    			console.log(res);
-	    		})
-	    		.catch(function(err){
-	    			console.log(err.response);
-	    		});
-				this.$parent.products[this.$parent.productIndex].product_name=this.updateProductName;
-				this.$parent.products[this.$parent.productIndex].product_code=this.updateProductCode;
-	    		this.$parent.products[this.$parent.productIndex].product_description=this.updateProductDescription;
-	    		this.$parent.$parent.forceRerender();
-	    		$('#updateProductModal').modal('close');
+            ...mapActions(['updateProduct', 'closeModal']),
+	    	saveProduct: function(){
+                this.updateProductForm.product_cost=this.productCost;
+                this.updateProduct(this.updateProductForm);
+                this.$formulate.reset('updateProductForm');
+                this.closeModal();
 	    	},
 
-	    	validateProductName: function(e) {
-	    		if(!this.updateProductName){
-	    			this.validProductName = false;
-	    			this.invalidProductName = true;
-	    			$('.product_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
-	    		}
-	    		else{
-	    			this.validProductName = true;
-	    			this.invalidProductName = false;
-	    		}
-    		},
+    		resetUpdateProductForm: function(e) {
+    			this.$formulate.reset('updateProductForm');
+            },
 
-    		validateProductDescription: function(e) {
-	    		if(!this.updateProductDescription){
-	    			this.validProductDescription = false;
-	    			this.invalidProductDescription = true;
-	    			$('.product_description_helper').attr('data-error', 'Este campo no puede quedar vacío.');
-	    		}
-	    		else{
-	    			this.validProductDescription = true;
-	    			this.invalidProductDescription = false;
-	    		}
-    		},
-
-    		resetUpdateProductInputs: function(e) {
-    			this.validProductName= false;
-    			this.invalidProductName=false;
-    			this.validProductDescription=false;
-    			this.invalidProductDescription=false;
-    		},
-
-    		openDeleteProductModal: function(e) {
-    			$('#deleteProductModal').modal({
-    				dismissible: false
-    			});
-    			$('#deleteProductModal').modal('open');
-    		}
+            validateSalePrice: function (salePrice, cost) {
+                if(salePrice < cost && salePrice != ''){
+                    $('#warningProductCostModal').modal('open');
+                }
+            }
 	    },
 	}
 </script>

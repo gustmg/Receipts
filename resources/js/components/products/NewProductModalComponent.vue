@@ -1,56 +1,56 @@
 <template>
-    <div id="newProductModal" class="modal newProductModal">
+    <div id="newProductModal" class="modal newProductModal modal-fixed-footer">
         <div class="modal-content">
-            <h5>Nuevo producto</h5><br>
             <div class="row">
-                <form id="newProductForm" class="col s12 no-padding" method="POST" action="products">
-                    <input type="hidden" name="_token" :value="csrf">
-                    <div class="row">
-                        <div class="input-field col s8 m8 no-vertical-margin">
-                            <input placeholder="" id="product_name" type="text" v-model="newProductName" v-on:blur="validateProductName" v-bind:class="{'valid': validProductName, 'invalid': invalidProductName}" data-length="50" maxlength="50" required>
-                            <label for="product_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Producto *</label>
-                            <span class="helper-text product_name_helper" data-success="Servicio validado."></span><br>
-                        </div>
-                        <div class="input-field col s4 m4 no-vertical-margin">
-                            <input placeholder="" id="product_code" type="text" v-model="newProductCode" data-length="10" maxlength="10">
-                            <label for="product_code" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Código de producto</label>
-                            <span class="helper-text product_code_helper" data-success="Código de producto validado."></span><br>
-                        </div>
-                        <div class="input-field col s12 m12 no-vertical-margin">
-                            <input placeholder="" id="product_description" type="text" v-model="newProductDescription" v-on:blur="validateProductDescription" v-bind:class="{'valid': validProductDescription, 'invalid': invalidProductDescription}" data-length="50" maxlength="50" required>
-                            <label for="product_description" class="valign-wrapper"><i class="material-icons">settings</i>&nbsp;&nbsp;Descripción *</label>
-                            <span class="helper-text product_description_helper" data-success="Descripción del producto validada."></span>
-                        </div>
-                    </div>
-                </form>
+                <div class="col m12"><h6><b>Nuevo Producto</b></h6></div>
             </div>
+            <FormulateForm class="row" name="newProductForm" v-model="newProductForm">
+                <input type="hidden" name="_token" :value="csrf">
+                <FormulateInput
+                    @validation="invalidProductName = $event.hasErrors"
+                    type="text"
+                    name="product_name"
+                    label="Nombre *"
+                    validation="bail|required|min:5"
+                    class="col m8"
+                />
+                <FormulateInput
+                    type="text"
+                    name="product_code"
+                    label="Código interno"
+                    class="col m4"
+                />
+                <FormulateInput
+                    type="text"
+                    name="product_description"
+                    label="Descripción"
+                    class="col m12"
+                />
+            </FormulateForm>
         </div>
         <div class="modal-footer">
-            <button v-on:click="resetNewProductInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+            <button v-on:click="resetNewProductForm" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
             <button v-on:click="saveProduct" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
                 <b>Registrar</b>
             </button>
         </div>
     </div>
 </template>
-<style>
-    .inline-icon-large {
-    vertical-align: bottom;
-    font-size: 48px !important;
+<style scoped>
+    .newProductModal{
+        width: 37%;
+        max-height: 80%;
+        height: 55%;
     }
-    .inline-icon-small {
-    vertical-align: bottom;
-    font-size: 20px !important;
+    .money{
+        height:84px;
     }
-    .helper-text{
-        min-height: 0 !important;
-    }
-    .no-vertical-margin{
-        margin-top: 0;
+    .no-margin-bottom{
         margin-bottom: 0;
     }
 </style>
 <script>
+    import {mapState, mapMutations, mapActions} from "vuex";
     export default {
         mounted() {
             console.log('New product modal component mounted');
@@ -59,82 +59,33 @@
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                newProductName: null,
-                newProductCode: null,
-                newProductDescription: null,
-                validProductName: false,
-                invalidProductName: false,
-                validProductDescription: false,
-                invalidProductDescription: false
+                newProductForm: null,
+                invalidProductName: true,
+                invalidProductCost: false,
             }
         },
 
         computed: {
             validateForm: function (e) {
-                if(!this.validProductName){
+                if(this.invalidProductName){
                     return true;
+                }
+                else{
+                    return false;
                 }
             }
         },
 
         methods: {
+            ...mapActions(['addProduct', 'closeModal']),
             saveProduct: function(){
-                var newProduct = {
-                    product_id: '',
-                    product_name: this.newProductName,
-                    product_code: this.newProductCode,
-                    product_description: this.newProductDescription
-                };
-
-                axios.post('http://localhost:8000/products',{
-                    product_name: this.newProductName,
-                    product_code: this.newProductCode,
-                    product_description: this.newProductDescription
-                })
-                .then((res)=>{newProduct.product_id = res.data.product_id})
-                .catch(function(err){
-                    console.log(err);
-                });
-
-                this.$parent.products.push(newProduct);
-                this.$parent.forceRerender();
-                $('#newProductModal').modal('close');
+                this.addProduct(this.newProductForm);
+                this.closeModal();
+                this.$formulate.reset('newProductForm');
             },
 
-            validateProductName: function(e) {
-                if(!this.newProductName){
-                    this.validProductName = false;
-                    this.invalidProductName = true;
-                    $('.product_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
-                }
-                else{
-                    this.validProductName = true;
-                    this.invalidProductName = false;
-                }
-            },
-
-            validateProductDescription: function(e) {
-                if(!this.newProductDescription){
-                    this.validProductDescription = false;
-                    this.invalidProductDescription = true;
-                    $('.product_description_helper').attr('data-error', 'Este campo no puede quedar vacío.');
-                }
-                else{
-                    this.validProductDescription = true;
-                    this.invalidProductDescription = false;
-                }
-            },
-
-            resetNewProductInputs: function (e) {
-                this.newProductName= null;
-                this.newProductCode= null;
-                this.newProductDescription= null;
-                this.validProductName= false;
-                this.invalidProductName= false;
-                this.validProductCode= false;
-                this.invalidProductCode= false;
-                this.validProductDescription= false;
-                this.invalidProductDescription= false;
+            resetNewProductForm: function (e) {
+                this.$formulate.reset('newProductForm');
             }
         }
     }
