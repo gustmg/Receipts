@@ -36,10 +36,10 @@
                                 </td>
                                 <td>
                                     <div class="input-field col s12">
-                                        <select v-if="article.article_type == 0" class="browser-default">
-                                            <option v-on:click="article.article_unit_price=article.article_cost+(article.article_cost * article.product_base_price_percentage / 100)" value="1" selected>Público en general</option>
-                                            <option v-on:click="article.article_unit_price=article.article_cost+(article.article_cost * article.product_retail_price_percentage / 100)" value="2" >Menudeo</option>
-                                            <option v-on:click="article.article_unit_price=article.article_cost+(article.article_cost * article.product_wholesale_price_percentage / 100)" value="3" >Mayoreo</option>
+                                        <select v-on:change="selectSalePrice($event, article)" v-if="article.article_type == 0" class="browser-default">
+                                            <option value="1" selected>Público en general</option>
+                                            <option value="2" >Menudeo</option>
+                                            <option value="3" >Mayoreo</option>
                                         </select>
                                         <select v-else class="browser-default" disabled>
                                             <option value="1" selected>Público en general</option>
@@ -145,7 +145,7 @@
         </div>
         <div id="productsCompactListModal" class="modal modal-fixed-footer productsCompactListModal">
             <div class="modal-content">
-                <product-search-bar-component :search-value-product.sync="searchProduct"></product-search-bar-component>
+                <product-search-bar-component></product-search-bar-component>
                 <ul class="collection with-header">
                     <a class="collection-item selectable product-element" v-on:click="selectArticle(product, 0)" v-for="(product, index) in filteredProducts">{{product.product_name}}</a>
                 </ul>
@@ -173,6 +173,7 @@
 <script>
     import { parseCurrency } from 'vue-currency-input'
     import { CurrencyDirective } from 'vue-currency-input'
+    import {mapState, mapMutations, mapActions} from "vuex";
     export default {
         directives: {
             currency: CurrencyDirective
@@ -214,7 +215,6 @@
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 searchSale: '',
-                searchProduct: '',
                 searchService: '',
                 componentKey: 0,
                 clientId: 0,
@@ -235,9 +235,11 @@
         },
 
         computed: {
+            ...mapState(['searchProductValue']),
+            
             filteredProducts: function() {
                 return this.products.filter((product)=>{
-                    return product.product_name.toLowerCase().indexOf(this.searchProduct.toLowerCase()) >= 0;
+                    return product.product_name.toLowerCase().indexOf(this.searchProductValue.toLowerCase()) >= 0;
                     // || product.product_phone.indexOf(this.searchProduct) >= 0
                 });   		
             },
@@ -614,6 +616,18 @@
             validateSalePrice: function (salePrice, cost) {
                 if(salePrice < cost && salePrice != ''){
                     $('#warningProductCostModal').modal('open');
+                }
+            },
+
+            selectSalePrice: function(event, article){
+                if(event.target.value==1){
+                    article.article_unit_price=article.article_cost+(article.article_cost * article.product_base_price_percentage / 100);
+                }
+                else if(event.target.value==2){
+                    article.article_unit_price=article.article_cost+(article.article_cost * article.product_retail_price_percentage / 100)
+                }
+                else{
+                    article.article_unit_price=article.article_cost+(article.article_cost * article.product_wholesale_price_percentage / 100)
                 }
             }
         }

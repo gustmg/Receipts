@@ -6,7 +6,7 @@
                     <product-search-bar-component></product-search-bar-component>
                     <ul class="collection row">
                         <FormulateForm v-model="productsChecklist">
-                            <li v-for="product in products" v-bind:key="product.product_id" class="collection-item col s12 row valign-wrapper">
+                            <li v-for="product in filteredProducts" v-bind:key="product.product_id" class="collection-item col s12 row valign-wrapper">
                                 <div class="col s2" align="center">
                                     <FormulateInput
                                         type="checkbox"
@@ -74,8 +74,16 @@
                         });
                         return filteredProductsByStock;
                     }
-                }
+                },
             }),
+            ...mapState(['searchProductValue']),
+
+            filteredProducts: function() {
+				return this.products.filter((product)=>{
+					return product.product_name.toLowerCase().indexOf(this.searchProductValue.toLowerCase()) >= 0;
+					// || product.product_phone.indexOf(this.searchProduct) >= 0
+				});   		
+            }
         },
         methods: {
             ...mapActions('inventoryExits', [

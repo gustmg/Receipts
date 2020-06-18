@@ -46,11 +46,11 @@
         </div>
 		<div class="col s12">
 			<h5 
-				v-show="filteredProducts.length == 0 && this.$parent.searchProduct != '' " 
+				v-show="filteredProducts.length == 0 && this.searchProductValue != '' " 
 				class="center grey-text">
 				Búsqueda sin resultados.
 			</h5>
-			<h5 v-show="products.length == 0 && this.$parent.searchProduct == ''" class="center grey-text">No hay productos registrados.</h5>
+			<h5 v-show="products.length == 0 && this.searchProductValue == ''" class="center grey-text">No hay productos registrados.</h5>
 		</div>
         <update-product-modal-component></update-product-modal-component>
 	</div>
@@ -104,11 +104,11 @@
 		},
 
 		computed: {
-            ...mapState(['products', 'product_to_update']),
+            ...mapState(['products', 'product_to_update', 'searchProductValue']),
 
 			filteredProducts: function() {
 				return this.products.filter((product)=>{
-					return product.product_name.toLowerCase().indexOf(this.$parent.searchProduct.toLowerCase()) >= 0;
+					return product.product_name.toLowerCase().indexOf(this.searchProductValue.toLowerCase()) >= 0;
 					// || product.product_phone.indexOf(this.searchProduct) >= 0
 				});   		
             }

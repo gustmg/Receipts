@@ -10,7 +10,8 @@ export default {
         current_username: '',
         products_to_entry: [],
         products_entry_detail: [],
-        current_inventory_entry_detail: null
+        current_inventory_entry_detail: null,
+        searchProductValue: '',
     },
 
     mutations: {
@@ -73,6 +74,10 @@ export default {
         SET_CURRENT_INVENTORY_ENTRY_DETAIL(state, inventoryEntryId) {
             var index= state.inventory_entries.findIndex(state_inventory_entry => state_inventory_entry.inventory_entry_id === inventoryEntryId);
             state.current_inventory_entry_detail = state.inventory_entries[index];
+        },
+
+        UPDATE_SEARCH_PRODUCT_VALUE(state, updateSearchProductValue) {
+            state.searchProductValue = updateSearchProductValue
         }
     },
 
@@ -177,6 +182,10 @@ export default {
 
         setCurrentInventoryEntryDetail: function({commit}, inventoryEntryId) {
             commit('SET_CURRENT_INVENTORY_ENTRY_DETAIL', inventoryEntryId)
+        },
+
+        updateSearchProductValue: function({commit}, updateSearchProductValue) {
+            commit('UPDATE_SEARCH_PRODUCT_VALUE', updateSearchProductValue)
         }
     },
 
