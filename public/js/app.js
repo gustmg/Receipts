@@ -5016,7 +5016,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       invalidProductWholesalePricePercentage: false
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['productToUpdate', 'productToUpdatePrevCost']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['product_to_update', 'product_to_update_prev_cost']), {
     validateForm: function validateForm(e) {
       if (this.invalidProductName || this.invalidProductCost || this.invalidProductBasePricePercentage || this.invalidProductRetailPricePercentage || this.invalidProductWholesalePricePercentage) {
         return true;
