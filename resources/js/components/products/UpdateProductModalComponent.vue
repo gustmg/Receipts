@@ -140,7 +140,7 @@
         },
         
         computed:{
-            ...mapState(['product_to_update', 'product_to_update_prev_cost']),
+            ...mapState(['productToUpdate', 'productToUpdatePrevCost']),
 
             validateForm: function (e) {
                 if(this.invalidProductName || this.invalidProductCost || this.invalidProductBasePricePercentage || this.invalidProductRetailPricePercentage || this.invalidProductWholesalePricePercentage){

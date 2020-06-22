@@ -11,10 +11,6 @@
 
         methods: {
             newService: function() {
-                $('#service_name,#service_description').characterCounter();
-                $('#newServiceModal').modal({
-                    dismissible: false
-                });
                 $('#newServiceModal').modal('open');
             },
         }

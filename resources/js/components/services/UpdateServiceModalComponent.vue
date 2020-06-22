@@ -1,41 +1,101 @@
 <template>
-	<div id="updateServiceModal" class="modal updateServiceModal">
+	<div id="updateServiceModal" class="modal updateServiceModal modal-fixed-footer">
 		<div class="modal-content">
-			<h5>Editar servicio</h5><br>
-			<div class="row">
-				<form id="updateServiceForm" class="col s12 no-padding" method="POST" action="services">
-					<input type="hidden" name="_token" :value="csrf">
-					<div class="row">
-						<div class="input-field col s8 m8 no-vertical-margin">
-							<input placeholder="" v-model="updateServiceName" @input="emitServiceName" v-on:blur="validateServiceName" v-bind:class="{'valid': validServiceName, 'invalid': invalidServiceName}" id="update_service_name" type="text" data-length="50" maxlength="50" required>
-							<label for="update_service_name" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Servicio *</label>
-							<span class="helper-text service_name_helper" data-success="Nombre validado."></span>
-				        </div>
-						<div class="input-field col s4 m4 no-vertical-margin">
-							<input placeholder="" v-model="updateServiceCode" @input="emitServiceCode" id="update_service_code" type="text" data-length="50" maxlength="50" required>
-							<label for="update_service_code" class="valign-wrapper"><i class="material-icons">layers</i>&nbsp;&nbsp;Código de servicio *</label>
-							<span class="helper-text service_code_helper" data-success="Código validado."></span>
-						</div>
-				        <div class="input-field col s12 m6 no-vertical-margin">
-							<input placeholder="" v-model="updateServiceDescription" @input="emitServiceDescription" v-on:blur="validateServiceDescription" v-bind:class="{'valid': validServiceDescription, 'invalid': invalidServiceDescription}" id="update_service_description" type="text" data-length="50" maxlength="50" required>
-							<label for="update_service_description" class="valign-wrapper"><i class="material-icons">settings</i>&nbsp;&nbsp;Descripción *</label>
-							<span class="helper-text service_description_helper" data-success="Descripción del servicio validada."></span>
-				        </div>
-			        </div>
-				</form>
-			</div>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="left delete-button" v-on:click="openDeleteServiceModal"><i class="material-icons black-text">delete</i></a>
-			<button v-on:click="resetUpdateServiceInputs" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
-			<button v-on:click="updateService" type="submit" class="modal-action btn waves-effect submit_button" >
-				<b>Guardar</b>
-			</button>
-		</div>
-		<delete-service-modal-component :service-id="serviceId.toString()"></delete-service-modal-component>
+            <div class="row no-margin-bottom">
+                <div class="col m12"><h6><b>Editar Services</b></h6></div>
+            </div>
+            <FormulateForm class="row" name="updateServiceForm" v-model="updateServiceForm">
+                <input type="hidden" name="_token" :value="csrf">
+                <FormulateInput
+                    type="hidden"
+                    name="service_id"
+                    v-model="serviceToUpdate.service_id"
+                />
+                <blockquote class="col s12"><b>Información principal</b></blockquote>                 
+                <FormulateInput
+                    @validation="invalidServiceName = $event.hasErrors"
+                    type="text"
+                    name="service_name"
+                    label="Nombre *"
+                    validation="bail|required|min:5"
+                    class="col m12"
+                    v-model="serviceToUpdate.service_name"
+                />
+                <FormulateInput
+                    type="text"
+                    name="service_description"
+                    label="Descripción"
+                    class="col m12"
+                    v-model="serviceToUpdate.service_description"
+                />
+                <FormulateInput
+                    type="text"
+                    name="service_code"
+                    label="Código interno"
+                    class="col m6"
+                    v-model="serviceToUpdate.service_code"
+                />
+                <FormulateInput
+                    @validation="invalidServiceCost = $event.hasErrors"
+                    type="text"
+                    name="service_cost"
+                    label="Costo ($)"
+                    class="col m6"
+                    validation="bail|min:0, value"
+                    v-model="serviceToUpdate.service_cost"
+                    v-on:blur="validateSalePrice(serviceToUpdate.service_cost, serviceToUpdate_prev_cost)"
+                    v-currency
+                />
+                <blockquote class="col s12"><b>Porcentajes de ganancia por tipo de venta</b></blockquote>
+                <FormulateInput
+                    @validation="invalidServiceBasePricePercentage = $event.hasErrors"
+                    type="number"
+                    name="service_base_price_percentage"
+                    label="Público en general"
+                    class="col m4"
+                    help="Precio de venta estimado: $1230.00"
+                    validation="min:0, value"
+                    min="0"
+                    v-model="serviceToUpdate.service_base_price_percentage"
+                />
+                <FormulateInput
+                    @validation="invalidServiceRetailPricePercentage = $event.hasErrors"
+                    type="number"
+                    name="service_retail_price_percentage"
+                    label="Menudeo"
+                    class="col m4"
+                    help="Precio de venta estimado: $1230.00"
+                    validation="min:0, value"
+                    min="0"
+                    v-model="serviceToUpdate.service_retail_price_percentage"
+                />
+                <FormulateInput
+                    @validation="invalidServiceWholesalePricePercentage = $event.hasErrors"
+                    type="number"
+                    name="service_wholesale_price_percentage"
+                    label="Mayoreo"
+                    class="col m4"
+                    help="Precio de venta estimado: $1230.00"
+                    validation="min:0, value"
+                    min="0"
+                    v-model="serviceToUpdate.service_wholesale_price_percentage"
+                />
+            </FormulateForm>
+        </div>
+        <div class="modal-footer">
+            <button v-on:click="resetUpdateServiceForm" class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
+            <button v-on:click="saveService" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
+                <b>Editar</b>
+            </button>
+        </div>
 	</div>
 </template>
 <style type="text/css">
+    .updateServiceModal{
+        width: 37%;
+        max-height: 80%;
+        height: 80%;
+    }
 	.delete-button{
 		margin-left: 10px;
 		margin-top: 10px;
@@ -54,117 +114,70 @@
 	}
 	.helper-text{
 		min-height: 0 !important;
-	}
+    }
+    .no-margin-bottom{
+        margin-bottom:0;
+    }
 </style>
 <script>
-	export default {
-		props: {
-			serviceId: String,
-			serviceName: String,
-			serviceCode: String,
-			serviceDescription: String
-		},
+    import {mapState, mapMutations, mapActions} from "vuex";
 
+	export default {
 	    mounted() {
 	        console.log('Update Service Modal Component Mounted');
 	    },
 
 	    data(){
 	    	return {
-	    		csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-				updateServiceName:'',
-				updateServiceCode:'',
-	    		updateServiceDescription:'',
-	    		validServiceName: false,
-	    		invalidServiceName: false,
-	    		activeServiceName: false,
-	    		validServiceDescription: false,
-	    		invalidServiceDescription: false
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                updateServiceForm: null,
+                invalidServiceName: true,
+                invalidServiceCost: false,
+                invalidServiceBasePricePercentage: false,
+                invalidServiceRetailPricePercentage: false,
+                invalidServiceWholesalePricePercentage: false
 	    	}
-	    },
+        },
+        
+        computed:{
+            ...mapState('services',[
+                'serviceToUpdate', 'serviceToUpdatePrevCost'
+            ]),
 
-	    watch: {
-            serviceName(newVal) {
-                this.updateServiceName = newVal;
-			},
-			serviceCode(newVal) {
-                this.updateServiceCode = newVal;
+            validateForm: function (e) {
+                if(this.invalidServiceName || this.invalidServiceCost || this.invalidServiceBasePricePercentage || this.invalidServiceRetailPricePercentage || this.invalidServiceWholesalePricePercentage){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             },
-            serviceDescription(newVal) {
-                this.updateServiceDescription = newVal;
+
+            serviceCost: function(e) {
+                return this.$parseCurrency(this.updateServiceForm.service_cost)
             }
         },
 
-
 	    methods: {
-	    	emitServiceName(newInputValue) {
-	            this.$emit('service-name', newInputValue);
-			},
-			
-			emitServiceCode(newInputValue) {
-	            this.$emit('service-code', newInputValue);
-	        },
-
-	        emitServiceDescription(newInputValue) {
-	            this.$emit('service-description', newInputValue);
-	        },
-
-	    	updateService: function(){
-	    		axios.put('http://localhost:8000/services/'+this.serviceId,{
-					service_name: this.updateServiceName,
-					service_code: this.updateServiceCode,
-	    			service_description: this.updateServiceDescription
-	    		})
-	    		.then(function(res){
-	    			console.log(res);
-	    		})
-	    		.catch(function(err){
-	    			console.log(err.response);
-	    		});
-				this.$parent.services[this.$parent.serviceIndex].service_name=this.updateServiceName;
-				this.$parent.services[this.$parent.serviceIndex].service_code=this.updateServiceCode;
-	    		this.$parent.services[this.$parent.serviceIndex].service_description=this.updateServiceDescription;
-	    		this.$parent.$parent.forceRerender();
-	    		$('#updateServiceModal').modal('close');
+            ...mapActions('services', [
+                'updateService'
+            ]),
+	    	saveService: function(){
+                this.updateServiceForm.service_cost=this.serviceCost;
+                this.updateService(this.updateServiceForm);
+                this.$formulate.reset('updateServiceForm');
+                $('#updateServiceModal').modal('close');
 	    	},
 
-	    	validateServiceName: function(e) {
-	    		if(!this.updateServiceName){
-	    			this.validServiceName = false;
-	    			this.invalidServiceName = true;
-	    			$('.service_name_helper').attr('data-error', 'Este campo no puede quedar vacío.');
-	    		}
-	    		else{
-	    			this.validServiceName = true;
-	    			this.invalidServiceName = false;
-	    		}
-    		},
+    		resetUpdateServiceForm: function(e) {
+    			this.$formulate.reset('updateServiceForm');
+            },
 
-    		validateServiceDescription: function(e) {
-	    		if(!this.updateServiceDescription){
-	    			this.validServiceDescription = false;
-	    			this.invalidServiceDescription = true;
-	    			$('.service_description_helper').attr('data-error', 'Este campo no puede quedar vacío.');
-	    		}
-	    		else{
-	    			this.validServiceDescription = true;
-	    			this.invalidServiceDescription = false;
-	    		}
-    		},
-
-    		resetUpdateServiceInputs: function(e) {
-    			this.validServiceName= false;
-    			this.invalidServiceName=false;
-    			this.validServiceDescription=false;
-    			this.invalidServiceDescription=false;
-    		},
-
-    		openDeleteServiceModal: function(e) {
-    			$('#deleteServiceModal').modal({
-    				dismissible: false
-    			});
-    			$('#deleteServiceModal').modal('open');
-    		}
+            validateSalePrice: function (salePrice, cost) {
+                if(salePrice < cost && salePrice != ''){
+                    ('#warningServiceCostModal').modal('open');
+                }
+            }
 	    },
 	}
 </script>

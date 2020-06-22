@@ -14,9 +14,16 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $services=DB::table('services')->orderBy('service_name','asc')->get();
+        
+        if($request->ajax()){
+            return response()->json([
+                "services" => $services
+            ], 200);
+        }
+
         return View::make('services.index',['services'=>$services]);
     }
 
@@ -38,11 +45,16 @@ class ServiceController extends Controller
             $service->service_name=$request->service_name;
             $service->service_code=$request->service_code;
             $service->service_description=$request->service_description;
+            $service->service_cost=0;
+            $service->service_base_price_percentage=0;
+            $service->service_retail_price_percentage=0;
+            $service->service_wholesale_price_percentage=0;
+            $service->service_stock=0;
             $service->save();
 
             return response()->json([
                 "message" => "Servicio creado correctamente.",
-                "service_id" => $service->service_id
+                "service" => $service
             ],200);
         }
     }
@@ -59,17 +71,45 @@ class ServiceController extends Controller
         if($request->ajax()){
             $validatedData = $request->validate([
                 'service_name' => 'required|max:255',
-                'service_description' => 'required|max:255',
             ]);
 
             $service=Service::find($id);
             $service->service_name=$request->service_name;
             $service->service_code=$request->service_code;
             $service->service_description=$request->service_description;
+            
+            if(isset($request->service_cost)){
+                $service->service_cost=$request->service_cost;
+            }
+            else{
+                $service->service_cost=$service->service_cost;
+            }
+            
+            if(isset($request->service_base_price_percentage)){
+                $service->service_base_price_percentage=$request->service_base_price_percentage;
+            }
+            else{
+                $service->service_base_price_percentage=0;
+            }
+
+            if(isset($request->service_retail_price_percentage)){
+                $service->service_retail_price_percentage=$request->service_retail_price_percentage;
+            }
+            else{
+                $service->service_retail_price_percentage=0;
+            }
+
+            if(isset($request->service_wholesale_price_percentage)){
+                $service->service_wholesale_price_percentage=$request->service_wholesale_price_percentage;
+            }
+            else{
+                $service->service_wholesale_price_percentage=0;
+            }
             $service->save();
 
             return response()->json([
-                "message" => "Servicio actualizado correctamente."
+                "message" => "Serviceo actualizado correctamente.",
+                "service" => $service
             ],200);
         }
     }

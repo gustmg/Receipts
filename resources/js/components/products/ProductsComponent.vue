@@ -7,6 +7,3 @@
         <warning-product-cost-modal-component></warning-product-cost-modal-component>
     </div>
 </template>
-<script>
-    
-</script>

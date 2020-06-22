@@ -66,7 +66,7 @@ Vue.component('delete-client-modal-component', require('./components/clients/Del
 
 Vue.component('services-component', require('./components/services/ServicesComponent.vue').default);
 Vue.component('service-search-bar-component', require('./components/services/ServiceSearchBarComponent.vue').default);
-Vue.component('services-list-component', require('./components/services/ServicesListComponent.vue').default);
+Vue.component('services-table-component', require('./components/services/ServicesTableComponent.vue').default);
 Vue.component('new-service-button-component', require('./components/services/NewServiceButtonComponent.vue').default);
 Vue.component('new-service-modal-component', require('./components/services/NewServiceModalComponent.vue').default);
 Vue.component('update-service-modal-component', require('./components/services/UpdateServiceModalComponent.vue').default);

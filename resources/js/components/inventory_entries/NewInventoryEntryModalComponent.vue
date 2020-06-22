@@ -31,7 +31,7 @@
                         <i class="material-icons">add</i>
                     </button>
                 </div>
-                <div v-else class="col m12 row">
+                <div v-else class="col m12 row" align="center">
                     <product-search-bar-component class="col m6 offset-m3"></product-search-bar-component>
                     <table class="centered">
                         <thead>
@@ -88,7 +88,10 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table><br><br>
+                    <button v-on:click="openProductsListDialog" class="btn-floating btn-large">
+                        <i class="material-icons">add</i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -201,14 +204,15 @@
         },
 
         methods: {
-            ...mapActions(['addProduct', 'closeModal', 'openModal', 'updateProductAmount', 'updateProductUnitCost', 'addInventoryEntry']),
+            ...mapActions(['fetchProducts','addProduct', 'closeModal', 'openModal', 'updateProductAmount', 'updateProductUnitCost', 'addInventoryEntry']),
             saveInventoryEntry: function(){
                 this.addInventoryEntry(this.totalCost);
-                 $('#newInventoryEntryModal').modal('close');
+                $('#newInventoryEntryModal').modal('close');
             },
 
             openProductsListDialog: function() {
-                this.openModal($('#productsListWithStocksModal'));
+                this.fetchProducts();
+                $('#productsListWithStocksModal').modal('open');
             },
 
             updateAmount: function(product_index, newValue) {

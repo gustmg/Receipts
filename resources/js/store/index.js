@@ -1,4 +1,5 @@
 import inventoryExits from "./modules/inventoryExits"
+import services from "./modules/services"
 
 export default {
     state: {
@@ -51,16 +52,41 @@ export default {
         },
 
         SET_PRODUCTS_TO_ENTRY(state, products) {
-            state.products_to_entry = products
-            products.forEach( (product, index)=> {
-                var productEntry = {
-                    product_id: product.product_id,
-                    checked: false,
-                    product_amount: null,
-                    product_unit_cost: null
-                }
-                state.products_entry_detail.push(productEntry);
-            });
+            if(state.products_to_entry.length == 0) {
+                state.products_to_entry = products
+
+                products.forEach( (product)=> {
+                    var productEntry = {
+                        product_id: product.product_id,
+                        checked: false,
+                        product_amount: null,
+                        product_unit_cost: null
+                    }
+                    state.products_entry_detail.push(productEntry);
+                });
+            }
+            else { 
+                products.forEach( product => { //Por cada producto que se desea agregar
+                    var isInList = 0;
+
+                    state.products_to_entry.forEach( product_to_entry => {
+                        if(product_to_entry.product_id == product.product_id){
+                            isInList++;
+                        }
+                    });
+
+                    if(isInList==0){
+                        state.products_to_entry.push(product);
+                        var productEntry = {
+                            product_id: product.product_id,
+                            checked: false,
+                            product_amount: null,
+                            product_unit_cost: null
+                        }
+                        state.products_entry_detail.push(productEntry);
+                    }
+                });
+            } 
         },
 
         UPDATE_PRODUCT_AMOUNT(state, newProductAmount) {
@@ -78,6 +104,11 @@ export default {
 
         UPDATE_SEARCH_PRODUCT_VALUE(state, updateSearchProductValue) {
             state.searchProductValue = updateSearchProductValue
+        },
+
+        RESET_INVENTORY_ENTRY_MODAL(state) {
+            state.products_to_entry= [];
+            state.products_entry_detail= [];
         }
     },
 
@@ -128,7 +159,7 @@ export default {
             })
             .then(function(response){
                 context.dispatch('fetchInventoryEntries');
-                context.dispatch('closeModal');
+                context.commit('RESET_INVENTORY_ENTRY_MODAL');
             })
             .catch(function(error){
                 console.log(error);
@@ -190,6 +221,7 @@ export default {
     },
 
     modules: {
-        inventoryExits: inventoryExits
+        inventoryExits: inventoryExits,
+        services
     }
 }

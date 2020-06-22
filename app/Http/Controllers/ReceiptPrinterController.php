@@ -66,7 +66,7 @@ class ReceiptPrinterController extends Controller
         if($request->ajax()){
             $receipt=Receipt::find($request->receipt_id);
             $subtotal_amount=0;
-            $connector = new WindowsPrintConnector("EC-PM-80250");
+            $connector = new WindowsPrintConnector("Tectro");
             $printer = new Printer($connector);
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
             $img = EscposImage::load("css/tec.png");

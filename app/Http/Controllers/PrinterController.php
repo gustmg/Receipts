@@ -48,7 +48,7 @@ class PrinterController extends Controller
         if($request->ajax()){
             $sale=Sale::find($request->sale_id);
             $subtotal_amount=0;
-            $connector = new WindowsPrintConnector("EC-PM-80250");
+            $connector = new WindowsPrintConnector("Tectro");
             $printer = new Printer($connector);
             $printer -> setJustification(Printer::JUSTIFY_CENTER);
             $img = EscposImage::load("css/tec.png");

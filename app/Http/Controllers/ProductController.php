@@ -49,7 +49,6 @@ class ProductController extends Controller
             $product->product_retail_price_percentage=0;
             $product->product_wholesale_price_percentage=0;
             $product->product_stock=0;
-            
             $product->save();
 
             return response()->json([

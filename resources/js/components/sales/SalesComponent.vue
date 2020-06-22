@@ -36,13 +36,10 @@
                                 </td>
                                 <td>
                                     <div class="input-field col s12">
-                                        <select v-on:change="selectSalePrice($event, article)" v-if="article.article_type == 0" class="browser-default">
+                                        <select v-on:change="selectSalePrice($event, article)" class="browser-default">
                                             <option value="1" selected>Público en general</option>
                                             <option value="2" >Menudeo</option>
                                             <option value="3" >Mayoreo</option>
-                                        </select>
-                                        <select v-else class="browser-default" disabled>
-                                            <option value="1" selected>Público en general</option>
                                         </select>
                                     </div>
                                 </td>
@@ -489,6 +486,11 @@
                     newArticle.article_name=article.service_name;
                     newArticle.article_description=article.service_description;
                     newArticle.article_code=article.service_code;
+                    newArticle.article_cost=article.service_cost;
+                    newArticle.article_base_price_percentage=article.service_base_price_percentage;
+                    newArticle.article_retail_price_percentage=article.service_retail_price_percentage;
+                    newArticle.article_wholesale_price_percentage=article.service_wholesale_price_percentage;
+                    newArticle.article_unit_price=article.service_cost+(article.service_cost * article.service_base_price_percentage / 100);
                 }
                 else{
                     newArticle.article_id=article.product_id;
@@ -496,9 +498,9 @@
                     newArticle.article_description=article.product_description;
                     newArticle.article_code=article.product_code;
                     newArticle.article_cost=article.product_cost;
-                    newArticle.product_base_price_percentage=article.product_base_price_percentage;
-                    newArticle.product_retail_price_percentage=article.product_retail_price_percentage;
-                    newArticle.product_wholesale_price_percentage=article.product_wholesale_price_percentage;
+                    newArticle.article_base_price_percentage=article.product_base_price_percentage;
+                    newArticle.article_retail_price_percentage=article.product_retail_price_percentage;
+                    newArticle.article_wholesale_price_percentage=article.product_wholesale_price_percentage;
                     newArticle.article_unit_price=article.product_cost+(article.product_cost * article.product_base_price_percentage / 100);
                 }
                 this.articles.push(newArticle);
@@ -621,13 +623,13 @@
 
             selectSalePrice: function(event, article){
                 if(event.target.value==1){
-                    article.article_unit_price=article.article_cost+(article.article_cost * article.product_base_price_percentage / 100);
+                    article.article_unit_price=article.article_cost+(article.article_cost * article.article_base_price_percentage / 100);
                 }
                 else if(event.target.value==2){
-                    article.article_unit_price=article.article_cost+(article.article_cost * article.product_retail_price_percentage / 100)
+                    article.article_unit_price=article.article_cost+(article.article_cost * article.article_retail_price_percentage / 100)
                 }
                 else{
-                    article.article_unit_price=article.article_cost+(article.article_cost * article.product_wholesale_price_percentage / 100)
+                    article.article_unit_price=article.article_cost+(article.article_cost * article.article_wholesale_price_percentage / 100)
                 }
             }
         }

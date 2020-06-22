@@ -14,16 +14,42 @@ export default {
         },
 
         SET_PRODUCTS_TO_EXIT(state, products) {
-            state.productsToExit = products
-            products.forEach( product => {
-                var productExit = {
-                    product_id: product.product_id,
-                    checked: false,
-                    product_exit_amount: null,
-                    product_exit_justification: null
-                }
-                state.productsExitDetail.push(productExit);
-            });
+            if(state.productsToExit.length == 0){
+                state.productsToExit = products
+
+                products.forEach( product => {
+                    var productExit = {
+                        product_id: product.product_id,
+                        checked: false,
+                        product_exit_amount: null,
+                        product_exit_justification: null
+                    }
+                    state.productsExitDetail.push(productExit);
+                });
+            }
+            else{
+                products.forEach( product => {
+                    var isInList=0;
+
+                    state.productsToExit.forEach(productToExit => {
+                        if(productToExit.product_id == product.product_id){
+                            isInList++;
+                        }
+                    })
+
+                    if(isInList==0){
+                        state.productsToExit.push(product)
+                        var productExit = {
+                            product_id: product.product_id,
+                            checked: false,
+                            product_exit_amount: null,
+                            product_exit_justification: null
+                        }
+                        state.productsExitDetail.push(productExit)
+                    }
+                });
+            }
+            
         },
 
         UPDATE_PRODUCT_AMOUNT(state, newProductAmount) {
@@ -37,6 +63,11 @@ export default {
         SET_CURRENT_INVENTORY_EXIT_DETAIL(state, inventoryExitId) {
             var index= state.inventoryExits.findIndex(state_inventory_exit => state_inventory_exit.inventory_exit_id === inventoryExitId);
             state.currentInventoryExitDetail = state.inventoryExits[index];
+        },
+
+        RESET_INVENTORY_EXIT_MODAL(state) {
+            state.productsToExit= [];
+            state.productsExitDetail= [];
         }
     },
 
@@ -77,6 +108,7 @@ export default {
             })
             .then(function(){
                 context.dispatch('fetchInventoryExits');
+                context.commit('RESET_INVENTORY_EXIT_MODAL');
             })
             .catch(function(error){
                 console.log(error);

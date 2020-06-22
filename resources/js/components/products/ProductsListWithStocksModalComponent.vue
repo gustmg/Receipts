@@ -5,7 +5,7 @@
                 <div class="col s12">
                     <product-search-bar-component></product-search-bar-component>
                     <ul class="collection row">
-                        <FormulateForm v-model="productsChecklist">
+                        <FormulateForm v-model="productsChecklist" name="productsChecklist">
                             <li v-for="product in filteredProducts" v-bind:key="product.product_id" class="collection-item col s12 row valign-wrapper">
                                 <div class="col s2" align="center">
                                     <FormulateInput
@@ -47,7 +47,7 @@
 <script>
     import {mapState, mapMutations, mapActions} from "vuex";
     export default {
-        mounted() {
+        mounted(){
             this.fetchProducts();
         },
         
@@ -111,7 +111,7 @@
                     });
                     this.setProductsToExit(productsToExit);
                 }
-                
+                this.$formulate.reset('productsChecklist');
                 $('#productsListWithStocksModal').modal('close');
             },
 
