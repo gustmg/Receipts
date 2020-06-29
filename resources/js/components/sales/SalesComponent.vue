@@ -600,15 +600,14 @@
                 location.reload();
             },
 
-            printSale: function(sale_id) {
-                axios.post('http://localhost:8000/print',{
+            printSale: async function(sale_id) {
+                await axios.post('http://localhost:8000/print',{
                     sale_id: sale_id,
                     tax: this.vatChargeToggle,
                     credit_card_charge: this.creditCardCharge
                 })
                 .then((res)=>{
-                    // console.log(res.data.sale);
-                    // location.reload();
+                    console.log(res.data.sale);
                 })
                 .catch(function(err){
                     console.log(err);
