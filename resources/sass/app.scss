@@ -1,6 +1,6 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
+// @import url('https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css');
 
 //Materialize
 @import '../sass/materialize.scss';
@@ -13,19 +13,19 @@ $mdc-theme-on-secondary: #442b2d;
 @import '~@material/button/mdc-button';
 
 .navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-#slide-out{
+#slide-out {
     height: 100% !important;
 }
 
-.formulate-input-element{
+.formulate-input-element {
     max-width: 100% !important;
 }
 
-.formulate-input[data-classification="box"] .formulate-input-element-decorator{
+.formulate-input[data-classification='box'] .formulate-input-element-decorator {
     width: 1.5em !important;
     height: 1.5em !important;
 }

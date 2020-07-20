@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Client;
 use View;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -18,6 +19,35 @@ class ClientController extends Controller
         $clients=Client::all(); 
         return View::make('clients.index',['clients'=>$clients]);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchClients(Request $request)
+    {
+        $clients=DB::table('clients')->orderBy('client_name','asc')->get();
+        
+        return response()->json([
+            "clients" => $clients
+        ], 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchLastClientId(Request $request)
+    {
+        $last_client=DB::table('clients')->latest('client_id')->first();
+        
+        return response()->json([
+            "last_client_id" => $last_client->client_id
+        ], 200);
+    }
+
 
     /**
      * Store a newly created resource in storage.

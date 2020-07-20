@@ -18,13 +18,21 @@ class ProductController extends Controller
     {
         $products=DB::table('products')->orderBy('product_name','asc')->get();
 
-        if($request->ajax()){
-            return response()->json([
-                "products" => $products
-            ], 200);
-        }
-
         return View::make('products.index',['products'=>$products]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchProducts(Request $request)
+    {
+        $products=DB::table('products')->orderBy('product_name','asc')->get();
+        
+        return response()->json([
+            "products" => $products
+        ], 200);
     }
 
     /**

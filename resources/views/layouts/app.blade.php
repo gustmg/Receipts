@@ -17,14 +17,14 @@
     <div id="app">
         <div class="navbar-fixed">
             <nav>
-                <div class="nav-wrapper valign-wrapper">
-                    <a class="left btn-floating btn-small transparent sidenav-trigger" data-target="slide-out" style="margin-left: 24px;margin-right: 24px;box-shadow: none;display: inherit;"><i class="material-icons">menu</i></a>
+                <div class="nav-wrapper">
+                    <a class="left btn-floating btn-small transparent sidenav-trigger" data-target="slide-out" style="margin-top: 14px;margin-left: 24px;margin-right: 24px;box-shadow: none;display: inherit;"><i class="material-icons">menu</i></a>
                     <span class="brand-logo center">Tectro</span>
                 </div>
             </nav>
         </div>
         <ul id="slide-out" class="sidenav">
-            <li><a href="#!"><i class="material-icons">home</i>Inicio</a></li>
+            <li><a href="home"><i class="material-icons">home</i>Inicio</a></li>
             <li><a href="{{route('receipts.index')}}"><i class="material-icons">assignment</i>Recepciones</a></li>
             <li><a class="subheader">MIS CATALOGOS</a></li>
             <li><a href="{{route('clients.index')}}"><i class="material-icons">person</i>Clientes</a></li>

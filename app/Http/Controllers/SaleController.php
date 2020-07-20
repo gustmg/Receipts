@@ -30,6 +30,20 @@ class SaleController extends Controller
         return View::make('sales.index', ['sales'=>$sales, 'services'=>$services, 'products'=>$products, 'clients'=>$clients]);
     }
 
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchLastSaleId(Request $request)
+    {
+        $last_sale=DB::table('sales')->latest('sale_id')->first();
+        
+        return response()->json([
+            "last_sale_id" => $last_sale->sale_id
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

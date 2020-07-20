@@ -17,14 +17,22 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         $services=DB::table('services')->orderBy('service_name','asc')->get();
-        
-        if($request->ajax()){
-            return response()->json([
-                "services" => $services
-            ], 200);
-        }
 
         return View::make('services.index',['services'=>$services]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchServices(Request $request)
+    {
+        $services=DB::table('services')->orderBy('service_name','asc')->get();
+        
+        return response()->json([
+            "services" => $services
+        ], 200);
     }
 
     /**

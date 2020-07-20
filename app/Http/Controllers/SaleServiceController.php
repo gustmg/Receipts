@@ -46,7 +46,7 @@ class SaleServiceController extends Controller
             $sale_service->save();
 
             return response()->json([
-                "message" => "Venta de serviceos registrados correctamente.",
+                "message" => "Detalle de servicos vendidos registrados correctamente.",
             ],200);
         }
     }
