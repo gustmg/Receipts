@@ -3,6 +3,9 @@ import services from './modules/services'
 import sales from './modules/sales'
 import products from './modules/products'
 import clients from './modules/clients'
+import receipts from './modules/receipts'
+import devices from './modules/devices'
+import accessories from './modules/accessories'
 
 export default {
     state: {
@@ -246,5 +249,8 @@ export default {
         sales,
         products,
         clients,
+        receipts,
+        devices,
+        accessories,
     },
 }

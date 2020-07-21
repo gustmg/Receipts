@@ -8,6 +8,7 @@ use App\Service;
 use App\Client;
 use View;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReceiptController extends Controller
 {
@@ -18,11 +19,37 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        $receipts=Receipt::latest()->get();
-        $services=Service::all();
-        $clients=Client::all();
-        return View::make('receipts.index', ['receipts'=>$receipts, 'services'=>$services, 'clients'=>$clients]);
+        return View::make('receipts.index');
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchReceipts()
+    {
+        $receipts=Receipt::latest()->get();
+        
+        return response()->json([
+            "receipts" => $receipts
+        ], 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchLastReceiptId(Request $request)
+    {
+        $last_receipt=DB::table('receipts')->latest('receipt_id')->first();
+        
+        return response()->json([
+            "last_receipt_id" => $last_receipt->receipt_id
+        ], 200);
+    }
+
 
     /**
      * Store a newly created resource in storage.

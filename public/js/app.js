@@ -2062,6 +2062,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2109,13 +2116,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('New accessory modal mounted.');
-  },
   data: function data() {
     return {
-      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       newAccessoryName: null,
       newAccessorySerialNumber: null,
       validAccessoryName: false,
@@ -2131,15 +2173,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('accessories', ['ADD_ACCESSORY'])), {}, {
     addAccessory: function addAccessory() {
-      var newAccessory = {
-        accessory_id: '',
+      this.ADD_ACCESSORY({
         accessory_name: this.newAccessoryName,
         accessory_serial_number: this.newAccessorySerialNumber
-      };
-      this.$parent.accessories.push(newAccessory);
-      this.$parent.forceAccessoryRerender();
+      });
       $('#newAccessoryModal').modal('close');
       this.resetNewAccessoryInputs();
     },
@@ -2179,7 +2218,7 @@ __webpack_require__.r(__webpack_exports__);
       this.validAccessorySerialNumber = false;
       this.invalidAccessorySerialNumber = false;
     }
-  }
+  })
 });
 
 /***/ }),
@@ -2438,12 +2477,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('clients', {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('clients', {
     clients: 'getClients',
     searchClientValue: 'getSearchClientValue'
-  })), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('sales', {
-    cart: 'getCart',
-    saleClient: 'getSaleClient'
   })), {}, {
     filteredClients: function filteredClients() {
       var _this = this;
@@ -2453,8 +2489,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   }),
-  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('sales', ['SET_SALE_CLIENT_ID', 'SET_SALE_CLIENT_NAME', 'SET_SALE_CLIENT_PHONE', 'SET_SALE_CLIENT_EMAIL'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('clients', ['SET_SEARCH_CLIENT_VALUE'])), {}, {
+  methods: _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('sales', ['SET_SALE_CLIENT_ID', 'SET_SALE_CLIENT_NAME', 'SET_SALE_CLIENT_PHONE', 'SET_SALE_CLIENT_EMAIL'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('receipts', ['SET_RECEIPT_CLIENT_ID', 'SET_RECEIPT_CLIENT_NAME', 'SET_RECEIPT_CLIENT_PHONE', 'SET_RECEIPT_CLIENT_EMAIL'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('clients', ['SET_SEARCH_CLIENT_VALUE'])), {}, {
     selectSaleClient: function selectSaleClient(client) {
+      this.SET_RECEIPT_CLIENT_ID(client.client_id);
+      this.SET_RECEIPT_CLIENT_NAME(client.client_name);
+      this.SET_RECEIPT_CLIENT_PHONE(client.client_phone);
+      this.SET_RECEIPT_CLIENT_EMAIL(client.client_email);
       this.SET_SALE_CLIENT_ID(client.client_id);
       this.SET_SALE_CLIENT_NAME(client.client_name);
       this.SET_SALE_CLIENT_PHONE(client.client_phone);
@@ -3015,6 +3055,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3081,14 +3128,69 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('New device modal mounted.');
-  },
-  props: {
-    accessories: {
-      type: Array
-    }
   },
   data: function data() {
     return {
@@ -3105,45 +3207,24 @@ __webpack_require__.r(__webpack_exports__);
       invalidDeviceTroubleDescription: false
     };
   },
-  computed: {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('accessories', {
+    deviceAccessories: 'getAccessories'
+  })), {}, {
     validateForm: function validateForm(e) {
       if (!this.validDeviceName || !this.validDeviceTroubleDescription) {
         return true;
       }
     }
-  },
-  methods: {
+  }),
+  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('devices', ['ADD_DEVICE_TO_LIST'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('accessories', ['RESET_ACCESSORIES'])), {}, {
     addDevice: function addDevice() {
-      this.newDevice = {
-        device_id: '',
+      this.ADD_DEVICE_TO_LIST({
         device_name: this.newDeviceName,
         device_serial_number: this.newDeviceSerialNumber,
         device_trouble_description: this.newDeviceTroubleDescription,
-        device_accessories: this.accessories
-      };
-      this.$parent.devices.push(this.newDevice);
-      this.$parent.forceRerender();
-      this.resetNewDeviceInputs();
-      $('#newDeviceModal').modal('close');
-    },
-    saveDevice: function saveDevice() {
-      var newDevice = {
-        device_id: '',
-        device_name: this.newDeviceName,
-        device_serial_number: this.newDeviceSerialNumber,
-        device_trouble_description: this.newDeviceTroubleDescription
-      };
-      axios.post('http://localhost:8000/devices', {
-        device_name: this.newDeviceName,
-        device_serial_number: this.newDeviceSerialNumber,
-        device_trouble_description: this.newDeviceTroubleDescription
-      }).then(function (res) {
-        newDevice.device_id = res.data.device_id;
-      })["catch"](function (err) {
-        console.log(err);
+        device_accessories: this.deviceAccessories
       });
-      this.$parent.devices.push(newDevice);
-      this.$parent.forceRerender();
+      this.resetNewDeviceInputs();
       $('#newDeviceModal').modal('close');
     },
     validateDeviceName: function validateDeviceName(e) {
@@ -3175,10 +3256,11 @@ __webpack_require__.r(__webpack_exports__);
       this.validDeviceSerialNumber = false;
       this.invalidDeviceSerialNumber = false;
       this.validDeviceTroubleDescription = false;
-      this.invalidDeviceTroubleDescription = false;
-      this.$parent.accessories = [];
+      this.invalidDeviceTroubleDescription = false; //CLEAN ACCESSORIES
+
+      this.RESET_ACCESSORIES();
     }
-  }
+  })
 });
 
 /***/ }),
@@ -5256,7 +5338,93 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _event_bus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../event-bus */ "./resources/js/event-bus.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5396,42 +5564,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    console.log('New receipt modal mounted.'); // axios.post('http://localhost:8000/print_receipt',{
-    // 	receipt_id: 9,
-    // })
-    // .then((res)=>{
-    // 	// console.log(res.data.sale);
-    // 	// location.reload();
-    // })
-    // .catch(function(err){
-    // 	console.log(err.response);
-    // });
-  },
-  props: {
-    devices: {
-      type: Array
-    },
-    clientId: {
-      type: Number
-    },
-    clientName: {
-      type: String
-    },
-    clientEmail: {
-      type: String
-    },
-    clientPhone: {
-      type: String
-    },
-    lastClientId: {
-      type: Number
-    },
-    receiptId: {
-      type: Number
-    },
-    worker: {
-      type: Object
-    }
+    console.log('New receipt modal mounted.');
   },
   data: function data() {
     return {
@@ -5442,18 +5575,28 @@ __webpack_require__.r(__webpack_exports__);
       invalidClientPhone: false,
       validClientEmail: false,
       invalidClientEmail: false,
-      newClientToggle: false,
-      printReceiptId: 0
+      newClientToggle: false
     };
   },
-  computed: {
+  computed: _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('receipts', {
+    currentReceiptId: 'getCurrentReceiptId',
+    receiptClientId: 'getReceiptClientId',
+    receiptClientName: 'getReceiptClientName',
+    receiptClientPhone: 'getReceiptClientPhone',
+    receiptClientEmail: 'getReceiptClientEmail'
+  })), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('clients', {
+    clients: 'getClients',
+    newClientId: 'getNewClientId'
+  })), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('devices', {
+    newReceiptDevices: 'getDevices'
+  })), {}, {
     validateForm: function validateForm(e) {
       if (this.newClientToggle) {
-        if (this.devices.length == 0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail) {
+        if (this.newReceiptDevices.length == 0 || !this.validClientName || this.invalidClientPhone || this.invalidClientEmail) {
           return true;
         }
       } else {
-        if (this.devices.length == 0 || this.clientName == null) {
+        if (this.newReceiptDevices.length == 0 || this.clientName == '') {
           return true;
         }
       }
@@ -5463,127 +5606,131 @@ __webpack_require__.r(__webpack_exports__);
 
       switch (d.getMonth()) {
         case 0:
-          return "Enero " + d.getDate() + ", " + d.getFullYear();
+          return 'Enero ' + d.getDate() + ', ' + d.getFullYear();
 
         case 1:
-          return "Febrero " + d.getDate() + ", " + d.getFullYear();
+          return 'Febrero ' + d.getDate() + ', ' + d.getFullYear();
 
         case 2:
-          return "Marzo " + d.getDate() + ", " + d.getFullYear();
+          return 'Marzo ' + d.getDate() + ', ' + d.getFullYear();
 
         case 3:
-          return "Abril " + d.getDate() + ", " + d.getFullYear();
+          return 'Abril ' + d.getDate() + ', ' + d.getFullYear();
 
         case 4:
-          return "Mayo " + d.getDate() + ", " + d.getFullYear();
+          return 'Mayo ' + d.getDate() + ', ' + d.getFullYear();
 
         case 5:
-          return "Junio " + d.getDate() + ", " + d.getFullYear();
+          return 'Junio ' + d.getDate() + ', ' + d.getFullYear();
 
         case 6:
-          return "Julio " + d.getDate() + ", " + d.getFullYear();
+          return 'Julio ' + d.getDate() + ', ' + d.getFullYear();
 
         case 7:
-          return "Agosto " + d.getDate() + ", " + d.getFullYear();
+          return 'Agosto ' + d.getDate() + ', ' + d.getFullYear();
 
         case 8:
-          return "Septiembre " + d.getDate() + ", " + d.getFullYear();
+          return 'Septiembre ' + d.getDate() + ', ' + d.getFullYear();
 
         case 9:
-          return "Octubre " + d.getDate() + ", " + d.getFullYear();
+          return 'Octubre ' + d.getDate() + ', ' + d.getFullYear();
 
         case 10:
-          return "Noviembre " + d.getDate() + ", " + d.getFullYear();
+          return 'Noviembre ' + d.getDate() + ', ' + d.getFullYear();
 
         case 11:
-          return "Diciembre " + d.getDate() + ", " + d.getFullYear();
+          return 'Diciembre ' + d.getDate() + ', ' + d.getFullYear();
 
         default:
           break;
       }
+    },
+    clientName: {
+      get: function get() {
+        return this.receiptClientName;
+      },
+      set: function set(value) {
+        this.SET_RECEIPT_CLIENT_NAME(value);
+      }
+    },
+    clientPhone: {
+      get: function get() {
+        return this.receiptClientPhone;
+      },
+      set: function set(value) {
+        this.SET_RECEIPT_CLIENT_PHONE(value);
+      }
+    },
+    clientEmail: {
+      get: function get() {
+        return this.receiptClientEmail;
+      },
+      set: function set(value) {
+        this.SET_RECEIPT_CLIENT_EMAIL(value);
+      }
     }
-  },
-  methods: {
-    saveReceipt: function saveReceipt() {
-      var _this = this;
+  }),
+  methods: _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('receipts', ['SET_RECEIPT_CLIENT_ID', 'SET_RECEIPT_CLIENT_NAME', 'SET_RECEIPT_CLIENT_PHONE', 'SET_RECEIPT_CLIENT_EMAIL'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('devices', ['RESET_DEVICES'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('accessories', ['RESET_ACCESSORIES'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('receipts', ['saveReceipt', 'printReceipt', 'fetchReceipts', 'fetchLastReceiptId'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('devices', ['saveDevices'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('clients', ['saveClient', 'fetchClients', 'fetchLastClientId'])), {}, {
+    processReceipt: function () {
+      var _processReceipt = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!this.newClientToggle) {
+                  _context.next = 7;
+                  break;
+                }
 
-      var newReceipt = {
-        receipt_id: 0,
-        receipt_date: null,
-        receipt_worker_id: 0,
-        receipt_client_id: 0
-      };
+                _context.next = 3;
+                return this.saveClient({
+                  client_name: this.clientName,
+                  client_phone: this.clientPhone,
+                  client_email: this.clientEmail
+                });
 
-      if (this.newClientToggle) {
-        this.saveClient();
+              case 3:
+                _context.next = 5;
+                return this.fetchClients();
+
+              case 5:
+                _context.next = 7;
+                return this.fetchLastClientId();
+
+              case 7:
+                _context.next = 9;
+                return this.saveReceipt();
+
+              case 9:
+                _context.next = 11;
+                return this.saveDevices(this.currentReceiptId);
+
+              case 11:
+                _context.next = 13;
+                return this.fetchReceipts();
+
+              case 13:
+                _context.next = 15;
+                return this.fetchLastReceiptId();
+
+              case 15:
+                this.resetReceipt();
+                $('#newReceiptModal').modal('close');
+
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function processReceipt() {
+        return _processReceipt.apply(this, arguments);
       }
 
-      axios.post('http://localhost:8000/receipts', {
-        receipt_client_id: this.clientId
-      }).then(function (res) {
-        // this.printReceiptId=res.data.receipt_id;
-        // newReceipt.receipt_date = res.data.receipt_date;
-        // newReceipt.receipt_worker_id = res.data.receipt_worker_id;
-        // newReceipt.receipt_client_id = res.data.receipt_client_id;
-        _this.saveDevices(res.data.receipt_id);
-
-        setTimeout(function () {
-          axios.post('http://localhost:8000/print_receipt', {
-            receipt_id: res.data.receipt_id
-          }).then(function (res) {// console.log(res.data.sale);
-            // location.reload();
-          })["catch"](function (err) {
-            console.log(err.response);
-          });
-        }, 3000);
-      })["catch"](function (err) {
-        console.log(err);
-      }); // this.$parent.receipts.push(newReceipt);
-      // this.$parent.forceRerender();
-
-      $('#newReceiptModal').modal('close');
-    },
-    saveClient: function saveClient() {
-      axios.post('http://localhost:8000/clients', {
-        client_name: this.clientName,
-        client_phone: this.clientPhone,
-        client_email: this.clientEmail
-      }).then(function (res) {
-        console.log("Cliente registrado");
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    },
-    saveDevices: function saveDevices(receipt_id) {
-      var _this2 = this;
-
-      this.devices.forEach(function (device) {
-        axios.post('http://localhost:8000/devices', {
-          device_name: device.device_name,
-          device_serial_number: device.device_serial_number,
-          device_trouble_description: device.device_trouble_description,
-          device_receipt_id: receipt_id
-        }).then(function (res) {
-          // console.log("Equipo registrado");
-          _this2.saveAccessories(res.data.device_id, device.device_accessories);
-        })["catch"](function (err) {
-          console.log(err);
-        });
-      });
-    },
-    saveAccessories: function saveAccessories(device_id, accessories) {
-      accessories.forEach(function (accessory) {
-        axios.post('http://localhost:8000/accessories', {
-          accessory_name: accessory.accessory_name,
-          accessory_serial_number: accessory.accessory_serial_number,
-          accessory_device_id: device_id
-        }).then(function (res) {
-          console.log("Accessorios de equipo registrados");
-        })["catch"](function (err) {
-          console.log(err);
-        });
-      });
-    },
+      return processReceipt;
+    }(),
     validateReceiptClientName: function validateReceiptClientName(e) {
       if (!this.clientName) {
         this.validClientName = false;
@@ -5625,37 +5772,31 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     resetReceipt: function resetReceipt(e) {
-      this.$emit('update:clientId', 0);
-      this.$emit('update:clientName', null);
-      this.$emit('update:clientEmail', null);
-      this.$emit('update:clientPhone', null);
-      this.$parent.resetDevices();
+      this.SET_RECEIPT_CLIENT_ID(this.newClientId);
+      this.SET_RECEIPT_CLIENT_NAME('');
+      this.SET_RECEIPT_CLIENT_PHONE('');
+      this.SET_RECEIPT_CLIENT_EMAIL('');
+      this.RESET_DEVICES();
+      this.RESET_ACCESSORIES();
       this.validClientName = false;
       this.invalidClientName = false;
       this.validClientPhone = false;
       this.invalidClientPhone = false;
       this.validClientEmail = false;
       this.invalidClientEmail = false;
+      this.newClientToggle = false;
     },
     showClientsList: function showClientsList() {
       $('#clientsCompactListModal').modal({
-        dismissible: false
+        dismissible: true
       });
       $('#clientsCompactListModal').modal('open');
     },
     newClientToggleHandler: function newClientToggleHandler() {
-      if (!this.newClientToggle) {
-        this.$emit('update:clientId', this.lastClientId);
-        this.$emit('update:clientName', null);
-        this.$emit('update:clientEmail', null);
-        this.$emit('update:clientPhone', null);
-      } else {
-        this.$emit('update:clientId', 0);
-        this.$emit('update:clientName', null);
-        this.$emit('update:clientEmail', null);
-        this.$emit('update:clientPhone', null);
-      }
-
+      this.SET_RECEIPT_CLIENT_ID(this.newClientId);
+      this.SET_RECEIPT_CLIENT_NAME('');
+      this.SET_RECEIPT_CLIENT_PHONE('');
+      this.SET_RECEIPT_CLIENT_EMAIL('');
       this.validClientName = false;
       this.invalidClientName = false;
       this.validClientPhone = false;
@@ -5663,7 +5804,7 @@ __webpack_require__.r(__webpack_exports__);
       this.validClientEmail = false;
       this.invalidClientEmail = false;
     }
-  }
+  })
 });
 
 /***/ }),
@@ -5677,6 +5818,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5690,8 +5838,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['search']
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('receipts', {
+    searchReceiptValue: 'getSearchReceiptValue'
+  })),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('receipts', ['SET_SEARCH_RECEIPT_VALUE'])), {}, {
+    updateSearchReceipt: function updateSearchReceipt(event) {
+      this.SET_SEARCH_RECEIPT_VALUE(event.target.value);
+    }
+  })
 });
 
 /***/ }),
@@ -5705,6 +5865,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5716,60 +5883,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    receipts: {
-      type: Array
-    },
-    // devices: {
-    //     type: Array,
-    //     default: function () { return [] }
-    // },
-    clients: {
-      type: Array
-    },
     worker: {
       type: Object
-    },
-    searchValue: String
-  },
-  data: function data() {
-    return {
-      clientId: 0,
-      clientName: null,
-      clientPhone: null,
-      clientEmail: null,
-      searchReceipt: '',
-      componentKey: 0,
-      componentAccessoryKey: 0,
-      devices: [],
-      accessories: [],
-      lastClientId: this.clients[this.clients.length - 1].client_id + 1
-    };
+    }
   },
   mounted: function mounted() {
-    console.log('Receipts component mounted'); // console.log(this.receipts);
+    this.fetchClients();
+    this.fetchReceipts();
+    this.fetchLastReceiptId();
+    this.fetchLastClientId();
+    this.fetchServices();
   },
-  computed: {
-    lastReceiptId: function lastReceiptId() {
-      if (this.receipts.length > 0) {
-        return this.receipts[this.receipts.length - 1].receipt_id + 1;
-      } else {
-        return 1;
-      }
-    }
-  },
-  methods: {
-    forceRerender: function forceRerender() {
-      this.componentKey += 1;
-    },
-    forceAccessoryRerender: function forceAccessoryRerender() {
-      this.componentAccessoryKey += 1;
-    },
-    resetDevices: function resetDevices() {
-      this.devices = [];
-    }
-  }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('services', ['getServices'])),
+  methods: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('receipts', ['fetchReceipts', 'fetchLastReceiptId'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('services', ['fetchServices'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('clients', ['fetchClients', 'fetchLastClientId']))
 });
 
 /***/ }),
@@ -5783,6 +5912,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5851,22 +5987,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log("Receipts list component mounted");
-  },
-  props: {
-    receipts: {
-      type: Array
-    }
-  },
   data: function data() {
     return {
-      receiptIndex: null,
-      receiptId: '',
-      receiptName: '',
-      receiptPhone: '',
-      receiptEmail: ''
+      receiptIndex: null
     };
   },
   methods: {
@@ -5890,93 +6029,97 @@ __webpack_require__.r(__webpack_exports__);
 
       switch (month) {
         case 0:
-          month_name = "Enero";
+          month_name = 'Enero';
           break;
 
         case 1:
-          month_name = "Febrero";
+          month_name = 'Febrero';
           break;
 
         case 2:
-          month_name = "Marzo";
+          month_name = 'Marzo';
           break;
 
         case 3:
-          month_name = "Abril";
+          month_name = 'Abril';
           break;
 
         case 4:
-          month_name = "Mayo";
+          month_name = 'Mayo';
           break;
 
         case 5:
-          month_name = "Junio";
+          month_name = 'Junio';
           break;
 
         case 6:
-          month_name = "Julio";
+          month_name = 'Julio';
           break;
 
         case 7:
-          month_name = "Agosto";
+          month_name = 'Agosto';
           break;
 
         case 8:
-          month_name = "Septiembre";
+          month_name = 'Septiembre';
           break;
 
         case 9:
-          month_name = "Octubre";
+          month_name = 'Octubre';
           break;
 
         case 10:
-          month_name = "Noviembre";
+          month_name = 'Noviembre';
           break;
 
         case 11:
-          month_name = "Diciembre";
+          month_name = 'Diciembre';
           break;
       }
 
       switch (day) {
         case 0:
-          day_name = "Domingo";
+          day_name = 'Domingo';
           break;
 
         case 1:
-          day_name = "Lunes";
+          day_name = 'Lunes';
           break;
 
         case 2:
-          day_name = "Martes";
+          day_name = 'Martes';
           break;
 
         case 3:
-          day_name = "Miércoles";
+          day_name = 'Miércoles';
           break;
 
         case 4:
-          day_name = "Jueves";
+          day_name = 'Jueves';
           break;
 
         case 5:
-          day_name = "Viernes";
+          day_name = 'Viernes';
           break;
 
         case 6:
-          day_name = "Sábado";
+          day_name = 'Sábado';
           break;
       }
 
       return day_name + ', ' + date + ' de ' + month_name + ' de ' + year;
     }
   },
-  computed: {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('receipts', {
+    receipts: 'getReceipts',
+    newReceiptId: 'getNewReceiptId',
+    searchReceiptValue: 'getSearchReceiptValue'
+  })), {}, {
     filteredReceipts: function filteredReceipts() {
       var _this = this;
 
       return this.receipts.filter(function (receipt) {
-        return receipt.client.client_name.toLowerCase().indexOf(_this.$parent.searchReceipt.toLowerCase()) >= 0; // || receipt.receipt_id.indexOf(this.searchReceipt) >= 0;
+        return receipt.client.client_name.toLowerCase().indexOf(_this.searchReceiptValue.toLowerCase()) >= 0;
       });
     },
     groupedReceipts: function groupedReceipts() {
@@ -5985,7 +6128,7 @@ __webpack_require__.r(__webpack_exports__);
         return date.getFullYear() + ' ' + (date.getMonth() + 1) + ' ' + date.getDate();
       });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -7717,7 +7860,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n.no-vertical-margin{\n\tmargin-top: 0;\n\tmargin-bottom: 0;\n}\n", ""]);
+exports.push([module.i, "\n.inline-icon-large {\n    vertical-align: bottom;\n    font-size: 48px !important;\n}\n.inline-icon-small {\n    vertical-align: bottom;\n    font-size: 20px !important;\n}\n.helper-text {\n    min-height: 0 !important;\n}\n.no-vertical-margin {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n", ""]);
 
 // exports
 
@@ -7831,7 +7974,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n.no-vertical-margin{\n\tmargin-top: 0;\n\tmargin-bottom: 0;\n}\n", ""]);
+exports.push([module.i, "\n.inline-icon-large {\n    vertical-align: bottom;\n    font-size: 48px !important;\n}\n.inline-icon-small {\n    vertical-align: bottom;\n    font-size: 20px !important;\n}\n.helper-text {\n    min-height: 0 !important;\n}\n.no-vertical-margin {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n", ""]);
 
 // exports
 
@@ -8097,7 +8240,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.helper-text{\n\tmin-height: 0 !important;\n}\n.no-vertical-margin{\n\tmargin-top: 0;\n\tmargin-bottom: 0;\n}\n.modal-content{\n\tpadding-bottom: 0 !important;\n}\n.newReceiptModal{\n\twidth:75% !important;\n}\n", ""]);
+exports.push([module.i, "\n.inline-icon-large {\n    vertical-align: bottom;\n    font-size: 48px !important;\n}\n.inline-icon-small {\n    vertical-align: bottom;\n    font-size: 20px !important;\n}\n.helper-text {\n    min-height: 0 !important;\n}\n.no-vertical-margin {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.modal-content {\n    padding-bottom: 0 !important;\n}\n.newReceiptModal {\n    width: 75% !important;\n}\n", ""]);
 
 // exports
 
@@ -8116,7 +8259,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.date-header{\n\tpadding-bottom: 12px !important;\n\tborder-bottom: 2px solid #1565c0;\n}\n.inline-icon-large {\n   vertical-align: bottom;\n   font-size: 48px !important;\n}\n.inline-icon-small {\n   vertical-align: bottom;\n   font-size: 20px !important;\n}\n.inline-icon-medium {\n\tvertical-align: bottom;\n\tfont-size: 32px !important;\n}\n.device-desc{\n\tmargin-left:24px !important;\n}\n.hoverable-card:hover{\n\tbackground-color: #eeeeee;\n\ttransition: .1s;\n}\n.selectable{\n\tcursor: pointer;\n}\n.receipt-card{\n\theight: 500px !important;\n\tborder: 1px solid #cfd8dc;\n}\n", ""]);
+exports.push([module.i, "\n.date-header {\n    padding-bottom: 12px !important;\n    border-bottom: 2px solid #1565c0;\n}\n.inline-icon-large {\n    vertical-align: bottom;\n    font-size: 48px !important;\n}\n.inline-icon-small {\n    vertical-align: bottom;\n    font-size: 20px !important;\n}\n.inline-icon-medium {\n    vertical-align: bottom;\n    font-size: 32px !important;\n}\n.device-desc {\n    margin-left: 24px !important;\n}\n.hoverable-card:hover {\n    background-color: #eeeeee;\n    transition: 0.1s;\n}\n.selectable {\n    cursor: pointer;\n}\n.receipt-card {\n    height: 500px !important;\n    border: 1px solid #cfd8dc;\n}\n", ""]);
 
 // exports
 
@@ -52052,6 +52195,7 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-content" }, [
         _c("h5", [_vm._v("Nuevo accesorio")]),
+        _vm._v(" "),
         _c("br"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
@@ -52066,10 +52210,7 @@ var render = function() {
               }
             },
             [
-              _c("input", {
-                attrs: { type: "hidden", name: "_token" },
-                domProps: { value: _vm.csrf }
-              }),
+              _c("input", { attrs: { type: "hidden", name: "_token" } }),
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c(
@@ -53315,6 +53456,7 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-content" }, [
         _c("h5", [_vm._v("Nuevo equipo")]),
+        _vm._v(" "),
         _c("br"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
@@ -53483,7 +53625,7 @@ var render = function() {
               [
                 _c("new-accessory-button-component"),
                 _vm._v(" "),
-                _vm._l(_vm.accessories, function(accessory, index) {
+                _vm._l(_vm.deviceAccessories, function(accessory) {
                   return _c(
                     "div",
                     {
@@ -53491,10 +53633,11 @@ var render = function() {
                         {
                           name: "show",
                           rawName: "v-show",
-                          value: _vm.accessories.length > 0,
-                          expression: "accessories.length > 0"
+                          value: _vm.deviceAccessories.length > 0,
+                          expression: "deviceAccessories.length > 0"
                         }
                       ],
+                      key: accessory.accessory_id,
                       staticClass: "col s12 m4"
                     },
                     [
@@ -56237,6 +56380,7 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-content" }, [
         _c("h5", [_vm._v("Nueva recepción")]),
+        _vm._v(" "),
         _c("br"),
         _vm._v(" "),
         _c(
@@ -56253,206 +56397,241 @@ var render = function() {
                 _vm._m(1),
                 _vm._v(" "),
                 _c("div", { staticClass: "col s7" }, [
-                  _c("span", [_vm._v(_vm._s(_vm.receiptId))])
+                  _c("span", [_vm._v(_vm._s(_vm.currentReceiptId))])
                 ]),
                 _vm._v(" "),
                 _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "col s7" }, [
                   _c("span", [_vm._v(_vm._s(_vm.date))])
-                ]),
-                _vm._v(" "),
-                _vm._m(3),
-                _vm._v(" "),
-                _c("div", { staticClass: "col s7" }, [
-                  _c("span", [_vm._v(_vm._s(_vm.worker.name))])
                 ])
               ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col m7" }, [
               _c("div", { staticClass: "row" }, [
-                _vm._m(4),
+                _vm._m(3),
                 _vm._v(" "),
                 _c("div", { staticClass: "col m12" }, [
-                  _c("div", { staticClass: "switch" }, [
-                    _c("label", [
-                      _c("b", [_vm._v("¿Cliente nuevo?")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.newClientToggle,
-                            expression: "newClientToggle"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(_vm.newClientToggle)
-                            ? _vm._i(_vm.newClientToggle, null) > -1
-                            : _vm.newClientToggle
-                        },
-                        on: {
-                          click: _vm.newClientToggleHandler,
-                          change: function($event) {
-                            var $$a = _vm.newClientToggle,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  (_vm.newClientToggle = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.newClientToggle = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col m12" }, [
+                      _c("div", { staticClass: "switch" }, [
+                        _c("label", [
+                          _c("b", [_vm._v("¿Cliente nuevo?")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.newClientToggle,
+                                expression: "newClientToggle"
                               }
-                            } else {
-                              _vm.newClientToggle = $$c
+                            ],
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked: Array.isArray(_vm.newClientToggle)
+                                ? _vm._i(_vm.newClientToggle, null) > -1
+                                : _vm.newClientToggle
+                            },
+                            on: {
+                              click: _vm.newClientToggleHandler,
+                              change: function($event) {
+                                var $$a = _vm.newClientToggle,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.newClientToggle = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.newClientToggle = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.newClientToggle = $$c
+                                }
+                              }
                             }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "lever" })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "mdc-button mdc-button--outlined",
-                        attrs: { disabled: _vm.newClientToggle == true },
-                        on: { click: _vm.showClientsList }
-                      },
-                      [_vm._v("Buscar cliente")]
-                    )
-                  ]),
-                  _c("br")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col m12" }, [
-                  _c("form", { staticClass: "row" }, [
-                    _c("div", { staticClass: "input-field col s4" }, [
-                      _c("input", {
-                        attrs: {
-                          placeholder: "",
-                          id: "receipt_client_id",
-                          type: "text",
-                          disabled: ""
-                        },
-                        domProps: { value: _vm.clientId },
-                        on: {
-                          input: function($event) {
-                            return _vm.$emit(
-                              "update:clientId",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "client_id" } }, [
-                        _vm._v("No. de cliente")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "input-field col s8" }, [
-                      _c("input", {
-                        class: {
-                          valid: _vm.validClientName,
-                          invalid: _vm.invalidClientName
-                        },
-                        attrs: {
-                          placeholder: "",
-                          id: "receipt_client_name",
-                          type: "text",
-                          disabled: _vm.newClientToggle == false,
-                          "data-length": "50",
-                          maxlength: "50",
-                          required: ""
-                        },
-                        domProps: { value: _vm.clientName },
-                        on: {
-                          input: function($event) {
-                            return _vm.$emit(
-                              "update:clientName",
-                              $event.target.value
-                            )
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "lever" })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "mdc-button mdc-button--outlined",
+                            attrs: { disabled: _vm.newClientToggle == true },
+                            on: { click: _vm.showClientsList }
                           },
-                          blur: _vm.validateReceiptClientName
-                        }
-                      }),
+                          [
+                            _vm._v(
+                              "\n                                        Buscar cliente\n                                    "
+                            )
+                          ]
+                        )
+                      ]),
                       _vm._v(" "),
-                      _c("label", { attrs: { for: "client_name" } }, [
-                        _vm._v("Nombre")
-                      ])
+                      _c("br")
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "input-field col s8" }, [
-                      _c("input", {
-                        class: {
-                          valid: _vm.validClientEmail,
-                          invalid: _vm.invalidClientEmail
-                        },
-                        attrs: {
-                          placeholder: "",
-                          id: "receipt_client_email",
-                          type: "email",
-                          disabled: _vm.newClientToggle == false,
-                          "data-length": "40",
-                          maxlength: "40"
-                        },
-                        domProps: { value: _vm.clientEmail },
-                        on: {
-                          input: function($event) {
-                            return _vm.$emit(
-                              "update:clientEmail",
-                              $event.target.value
-                            )
-                          },
-                          blur: _vm.validateReceiptClientEmail
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "client_email" } }, [
-                        _vm._v("E-mail")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "input-field col s4" }, [
-                      _c("input", {
-                        class: {
-                          valid: _vm.validClientPhone,
-                          invalid: _vm.invalidClientPhone
-                        },
-                        attrs: {
-                          placeholder: "",
-                          id: "receipt_client_phone",
-                          type: "tel",
-                          disabled: _vm.newClientToggle == false,
-                          "data-length": "10",
-                          minlength: "10",
-                          maxlength: "10"
-                        },
-                        domProps: { value: _vm.clientPhone },
-                        on: {
-                          input: function($event) {
-                            return _vm.$emit(
-                              "update:clientPhone",
-                              $event.target.value
-                            )
-                          },
-                          blur: _vm.validateReceiptClientPhone
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("label", { attrs: { for: "client_phone" } }, [
-                        _vm._v("Teléfono")
+                    _c("div", { staticClass: "col m12" }, [
+                      _c("form", { staticClass: "row" }, [
+                        _c("div", { staticClass: "input-field col s4" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.receiptClientId,
+                                expression: "receiptClientId"
+                              }
+                            ],
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_id",
+                              type: "text",
+                              disabled: ""
+                            },
+                            domProps: { value: _vm.receiptClientId },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.receiptClientId = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_id" } }, [
+                            _vm._v("No. de cliente")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-field col s8" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.clientName,
+                                expression: "clientName"
+                              }
+                            ],
+                            class: {
+                              valid: _vm.validClientName,
+                              invalid: _vm.invalidClientName
+                            },
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_name",
+                              type: "text",
+                              disabled: _vm.newClientToggle == false,
+                              "data-length": "50",
+                              maxlength: "50",
+                              required: ""
+                            },
+                            domProps: { value: _vm.clientName },
+                            on: {
+                              blur: _vm.validateReceiptClientName,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.clientName = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_name" } }, [
+                            _vm._v("Nombre")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-field col s8" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.clientEmail,
+                                expression: "clientEmail"
+                              }
+                            ],
+                            class: {
+                              valid: _vm.validClientEmail,
+                              invalid: _vm.invalidClientEmail
+                            },
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_email",
+                              type: "email",
+                              disabled: _vm.newClientToggle == false,
+                              "data-length": "40",
+                              maxlength: "40"
+                            },
+                            domProps: { value: _vm.clientEmail },
+                            on: {
+                              blur: _vm.validateReceiptClientEmail,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.clientEmail = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_email" } }, [
+                            _vm._v("E-mail")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-field col s4" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.clientPhone,
+                                expression: "clientPhone"
+                              }
+                            ],
+                            class: {
+                              valid: _vm.validClientPhone,
+                              invalid: _vm.invalidClientPhone
+                            },
+                            attrs: {
+                              placeholder: "",
+                              id: "receipt_client_phone",
+                              type: "tel",
+                              disabled: _vm.newClientToggle == false,
+                              "data-length": "10",
+                              minlength: "10",
+                              maxlength: "10"
+                            },
+                            domProps: { value: _vm.clientPhone },
+                            on: {
+                              blur: _vm.validateReceiptClientPhone,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.clientPhone = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "client_phone" } }, [
+                            _vm._v("Teléfono")
+                          ])
+                        ])
                       ])
                     ])
                   ])
@@ -56461,15 +56640,13 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col m12" }, [
-              _vm._m(5),
+              _vm._m(4),
               _vm._v(" "),
               _c(
                 "div",
                 { staticClass: "row" },
                 [
-                  _c("new-device-button-component"),
-                  _vm._v(" "),
-                  _vm._l(_vm.devices, function(device, index) {
+                  _vm._l(_vm.newReceiptDevices, function(device, index) {
                     return _c(
                       "div",
                       {
@@ -56477,10 +56654,11 @@ var render = function() {
                           {
                             name: "show",
                             rawName: "v-show",
-                            value: _vm.devices.length > 0,
-                            expression: "devices.length > 0"
+                            value: _vm.newReceiptDevices.length > 0,
+                            expression: "newReceiptDevices.length > 0"
                           }
                         ],
+                        key: device.device_id,
                         staticClass: "col s12 m4"
                       },
                       [
@@ -56519,7 +56697,7 @@ var render = function() {
                                 ]),
                                 _c("br"),
                                 _vm._v(" "),
-                                _vm._m(6, true),
+                                _vm._m(5, true),
                                 _vm._v(" "),
                                 _c(
                                   "ul",
@@ -56537,13 +56715,21 @@ var render = function() {
                                     staticClass: "collection"
                                   },
                                   _vm._l(device.device_accessories, function(
-                                    accessory,
-                                    index_accessory
+                                    accessory
                                   ) {
                                     return _c(
                                       "li",
-                                      { staticClass: "collection-item" },
-                                      [_vm._v(_vm._s(accessory.accessory_name))]
+                                      {
+                                        key: accessory.accessory_id,
+                                        staticClass: "collection-item"
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                            " +
+                                            _vm._s(accessory.accessory_name) +
+                                            "\n                                        "
+                                        )
+                                      ]
                                     )
                                   }),
                                   0
@@ -56564,15 +56750,23 @@ var render = function() {
                           {
                             name: "show",
                             rawName: "v-show",
-                            value: _vm.devices.length == 0,
-                            expression: "devices.length == 0"
+                            value: _vm.newReceiptDevices.length == 0,
+                            expression: "newReceiptDevices.length == 0"
                           }
                         ],
                         staticClass: "center grey-text"
                       },
-                      [_vm._v("No hay equipos registrados.")]
+                      [
+                        _vm._v(
+                          "\n                            No hay equipos registrados."
+                        ),
+                        _c("br"),
+                        _c("br")
+                      ]
                     )
-                  ])
+                  ]),
+                  _vm._v(" "),
+                  _c("new-device-button-component")
                 ],
                 2
               )
@@ -56597,7 +56791,7 @@ var render = function() {
             staticClass: "modal-action btn waves-effect submit_button",
             class: { disabled: _vm.validateForm },
             attrs: { type: "submit" },
-            on: { click: _vm.saveReceipt }
+            on: { click: _vm.processReceipt }
           },
           [_c("b", [_vm._v("Registrar")])]
         )
@@ -56628,14 +56822,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col s5" }, [
       _c("span", [_c("b", [_vm._v("Fecha")])])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s5" }, [
-      _c("span", [_c("b", [_vm._v("Creada por")])])
     ])
   },
   function() {
@@ -56680,12 +56866,14 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row", staticStyle: { "margin-bottom": "0" } }, [
+  return _c(
+    "div",
+    { staticClass: "row", staticStyle: { "margin-bottom": "0" } },
+    [
       _c(
         "div",
         {
-          staticClass: "card hoverable col s12 m12",
+          staticClass: "card hoverable col s10 offset-s1",
           staticStyle: { float: "none" }
         },
         [
@@ -56700,19 +56888,15 @@ var render = function() {
                 "box-shadow": "none!important",
                 "margin-bottom": "0"
               },
-              attrs: { placeholder: "Buscar recepción", type: "text" },
-              domProps: { value: _vm.search },
-              on: {
-                input: function($event) {
-                  return _vm.$emit("update:searchValue", $event.target.value)
-                }
-              }
+              attrs: { placeholder: "Buscar receipte", type: "text" },
+              domProps: { value: _vm.searchReceiptValue },
+              on: { input: _vm.updateSearchReceipt }
             })
           ])
         ]
       )
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -56740,108 +56924,19 @@ var render = function() {
     "div",
     { staticClass: "row" },
     [
-      _c("receipt-search-bar-component", {
-        attrs: { "search-value": _vm.searchReceipt },
-        on: {
-          "update:searchValue": function($event) {
-            _vm.searchReceipt = $event
-          },
-          "update:search-value": function($event) {
-            _vm.searchReceipt = $event
-          }
-        }
-      }),
+      _c("receipt-search-bar-component"),
       _vm._v(" "),
-      _c("receipts-list-component", {
-        key: _vm.componentKey,
-        attrs: { receipts: _vm.receipts }
-      }),
+      _c("receipts-list-component"),
       _vm._v(" "),
       _c("new-receipt-button-component"),
       _vm._v(" "),
-      _c("new-receipt-modal-component", {
-        attrs: {
-          "receipt-id": _vm.lastReceiptId,
-          worker: _vm.worker,
-          devices: _vm.devices,
-          "client-id": _vm.clientId,
-          "client-name": _vm.clientName,
-          "client-phone": _vm.clientPhone,
-          "client-email": _vm.clientEmail,
-          "last-client-id": _vm.lastClientId
-        },
-        on: {
-          "update:clientId": function($event) {
-            _vm.clientId = $event
-          },
-          "update:client-id": function($event) {
-            _vm.clientId = $event
-          },
-          "update:clientName": function($event) {
-            _vm.clientName = $event
-          },
-          "update:client-name": function($event) {
-            _vm.clientName = $event
-          },
-          "update:clientPhone": function($event) {
-            _vm.clientPhone = $event
-          },
-          "update:client-phone": function($event) {
-            _vm.clientPhone = $event
-          },
-          "update:clientEmail": function($event) {
-            _vm.clientEmail = $event
-          },
-          "update:client-email": function($event) {
-            _vm.clientEmail = $event
-          }
-        }
-      }),
+      _c("new-receipt-modal-component"),
       _vm._v(" "),
-      _c("new-device-modal-component", {
-        attrs: {
-          accessories: _vm.accessories,
-          accessoryKey: _vm.componentAccessoryKey
-        }
-      }),
+      _c("new-device-modal-component"),
       _vm._v(" "),
       _c("new-accessory-modal-component"),
       _vm._v(" "),
-      _c("clients-compact-list-modal-component", {
-        attrs: {
-          clients: _vm.clients,
-          "client-id": _vm.clientId,
-          "client-name": _vm.clientName,
-          "client-phone": _vm.clientPhone,
-          "client-email": _vm.clientEmail
-        },
-        on: {
-          "update:clientId": function($event) {
-            _vm.clientId = $event
-          },
-          "update:client-id": function($event) {
-            _vm.clientId = $event
-          },
-          "update:clientName": function($event) {
-            _vm.clientName = $event
-          },
-          "update:client-name": function($event) {
-            _vm.clientName = $event
-          },
-          "update:clientPhone": function($event) {
-            _vm.clientPhone = $event
-          },
-          "update:client-phone": function($event) {
-            _vm.clientPhone = $event
-          },
-          "update:clientEmail": function($event) {
-            _vm.clientEmail = $event
-          },
-          "update:client-email": function($event) {
-            _vm.clientEmail = $event
-          }
-        }
-      })
+      _c("clients-list-modal-component")
     ],
     1
   )
@@ -56883,6 +56978,7 @@ var render = function() {
               expression: "receipts.length > 0"
             }
           ],
+          key: index,
           staticClass: "col s12"
         },
         [
@@ -56896,82 +56992,92 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._l(receiptGroup, function(receipt, index) {
-                return _c("div", { staticClass: "col m3" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "card hoverable hoverable-card selectable receipt-card"
-                    },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "card-content" },
-                        [
-                          _c("span", [
-                            _c("b", [
-                              _vm._v("Recepción #" + _vm._s(receipt.receipt_id))
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "card-title" }, [
-                            receipt.client.client_name
-                              ? _c("b", [
-                                  _vm._v(_vm._s(receipt.client.client_name))
-                                ])
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            receipt.client.client_phone
-                              ? _c("span", [
-                                  _c(
-                                    "i",
-                                    {
-                                      staticClass:
-                                        "material-icons inline-icon-small"
-                                    },
-                                    [_vm._v("phone")]
-                                  ),
-                                  _vm._v(
-                                    " " + _vm._s(receipt.client.client_phone)
-                                  )
-                                ])
-                              : _c("span", { staticClass: "grey-text" }, [
-                                  _vm._v("Teléfono no registrado")
-                                ])
-                          ]),
-                          _vm._v(" "),
-                          _vm._m(0, true),
-                          _vm._v(" "),
-                          _c("devices-list-component", {
-                            attrs: { devices: receipt.devices }
-                          }),
-                          _vm._v(" "),
-                          _c("span", [
-                            _c("b", [_vm._v("Registrada por:")]),
-                            _vm._v(" " + _vm._s(receipt.user.name))
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "a",
-                            {
-                              staticClass: "waves-effect waves-light btn blue",
-                              on: {
-                                click: function($event) {
-                                  return _vm.reprintReceipt(receipt.receipt_id)
+              _vm._l(receiptGroup, function(receipt) {
+                return _c(
+                  "div",
+                  { key: receipt.receipt_id, staticClass: "col m3" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card hoverable hoverable-card selectable receipt-card"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "card-content" },
+                          [
+                            _c("span", [
+                              _c("b", [
+                                _vm._v(
+                                  "Recepción #" + _vm._s(receipt.receipt_id)
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "card-title" }, [
+                              receipt.client.client_name
+                                ? _c("b", [
+                                    _vm._v(_vm._s(receipt.client.client_name))
+                                  ])
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              receipt.client.client_phone
+                                ? _c("span", [
+                                    _c(
+                                      "i",
+                                      {
+                                        staticClass:
+                                          "material-icons inline-icon-small"
+                                      },
+                                      [_vm._v("phone")]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(receipt.client.client_phone)
+                                    )
+                                  ])
+                                : _c("span", { staticClass: "grey-text" }, [
+                                    _vm._v("Teléfono no registrado")
+                                  ])
+                            ]),
+                            _vm._v(" "),
+                            _vm._m(0, true),
+                            _vm._v(" "),
+                            _c("devices-list-component", {
+                              attrs: { devices: receipt.devices }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [
+                              _c("b", [_vm._v("Registrada por:")]),
+                              _vm._v(" " + _vm._s(receipt.user.name))
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "waves-effect waves-light btn blue",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.reprintReceipt(
+                                      receipt.receipt_id
+                                    )
+                                  }
                                 }
-                              }
-                            },
-                            [_vm._v("Reimprimir ticket")]
-                          )
-                        ],
-                        1
-                      )
-                    ]
-                  )
-                ])
+                              },
+                              [_vm._v("Reimprimir ticket")]
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    )
+                  ]
+                )
               })
             ],
             2
@@ -76889,21 +76995,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/event-bus.js":
-/*!***********************************!*\
-  !*** ./resources/js/event-bus.js ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-var bus = new Vue();
-/* harmony default export */ __webpack_exports__["default"] = (bus);
-
-/***/ }),
-
 /***/ "./resources/js/store/index.js":
 /*!*************************************!*\
   !*** ./resources/js/store/index.js ***!
@@ -76918,6 +77009,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_sales__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/sales */ "./resources/js/store/modules/sales.js");
 /* harmony import */ var _modules_products__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/products */ "./resources/js/store/modules/products.js");
 /* harmony import */ var _modules_clients__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/clients */ "./resources/js/store/modules/clients.js");
+/* harmony import */ var _modules_receipts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/receipts */ "./resources/js/store/modules/receipts.js");
+/* harmony import */ var _modules_devices__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/devices */ "./resources/js/store/modules/devices.js");
+/* harmony import */ var _modules_accessories__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/accessories */ "./resources/js/store/modules/accessories.js");
+
+
+
 
 
 
@@ -77139,7 +77236,117 @@ __webpack_require__.r(__webpack_exports__);
     services: _modules_services__WEBPACK_IMPORTED_MODULE_1__["default"],
     sales: _modules_sales__WEBPACK_IMPORTED_MODULE_2__["default"],
     products: _modules_products__WEBPACK_IMPORTED_MODULE_3__["default"],
-    clients: _modules_clients__WEBPACK_IMPORTED_MODULE_4__["default"]
+    clients: _modules_clients__WEBPACK_IMPORTED_MODULE_4__["default"],
+    receipts: _modules_receipts__WEBPACK_IMPORTED_MODULE_5__["default"],
+    devices: _modules_devices__WEBPACK_IMPORTED_MODULE_6__["default"],
+    accessories: _modules_accessories__WEBPACK_IMPORTED_MODULE_7__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/accessories.js":
+/*!***************************************************!*\
+  !*** ./resources/js/store/modules/accessories.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    accessories: []
+  },
+  getters: {
+    getAccessories: function getAccessories(state) {
+      return state.accessories;
+    }
+  },
+  mutations: {
+    ADD_ACCESSORY: function ADD_ACCESSORY(state, accessory) {
+      state.accessories.push(accessory);
+    },
+    RESET_ACCESSORIES: function RESET_ACCESSORIES(state) {
+      state.accessories = [];
+    }
+  },
+  actions: {
+    saveAccessories: function () {
+      var _saveAccessories = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(_ref, device) {
+        var commit;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                commit = _ref.commit;
+                _context2.prev = 1;
+                _context2.next = 4;
+                return Promise.all(device.device_accessories.map( /*#__PURE__*/function () {
+                  var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(accessory) {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+                      while (1) {
+                        switch (_context.prev = _context.next) {
+                          case 0:
+                            console.log('Guardando accessorio...' + accessory.accessory_name);
+                            _context.next = 3;
+                            return axios.post('accessories', {
+                              accessory_name: accessory.accessory_name,
+                              accessory_serial_number: accessory.accessory_serial_number,
+                              accessory_device_id: device.device_id
+                            });
+
+                          case 3:
+                            console.log('Accesorio ' + accessory.accessory_name + ' guardado...OK');
+
+                          case 4:
+                          case "end":
+                            return _context.stop();
+                        }
+                      }
+                    }, _callee);
+                  }));
+
+                  return function (_x3) {
+                    return _ref2.apply(this, arguments);
+                  };
+                }()));
+
+              case 4:
+                _context2.next = 9;
+                break;
+
+              case 6:
+                _context2.prev = 6;
+                _context2.t0 = _context2["catch"](1);
+                console.log(_context2.t0);
+
+              case 9:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[1, 6]]);
+      }));
+
+      function saveAccessories(_x, _x2) {
+        return _saveAccessories.apply(this, arguments);
+      }
+
+      return saveAccessories;
+    }()
   }
 });
 
@@ -77242,6 +77449,152 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return saveClient;
+    }()
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/devices.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/devices.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    devices: []
+  },
+  getters: {
+    getDevices: function getDevices(state) {
+      return state.devices;
+    }
+  },
+  mutations: {
+    ADD_DEVICE_TO_LIST: function ADD_DEVICE_TO_LIST(state, device) {
+      state.devices.push(device);
+    },
+    RESET_DEVICES: function RESET_DEVICES(state) {
+      state.devices = [];
+    }
+  },
+  actions: {
+    fetchReceipts: function fetchReceipts(_ref) {
+      var commit = _ref.commit;
+      axios.post('fetchReceipts').then(function (response) {
+        commit('SET_RECEIPTS', response.data.receipts);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    fetchLastReceiptId: function fetchLastReceiptId(_ref2) {
+      var commit = _ref2.commit;
+      axios.post('fetchLastReceiptId').then(function (response) {
+        commit('SET_LAST_RECEIPT_ID', response.data.last_receipt_id);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    saveDevices: function () {
+      var _saveDevices = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(context, receiptId) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return Promise.all(context.state.devices.map( /*#__PURE__*/function () {
+                  var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(device) {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            console.log('Guardando device: ' + device.device_name);
+                            _context2.next = 3;
+                            return axios.post('devices', {
+                              device_name: device.device_name,
+                              device_serial_number: device.device_serial_number,
+                              device_trouble_description: device.device_trouble_description,
+                              device_receipt_id: receiptId
+                            }).then( /*#__PURE__*/function () {
+                              var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(response) {
+                                return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+                                  while (1) {
+                                    switch (_context.prev = _context.next) {
+                                      case 0:
+                                        _context.next = 2;
+                                        return context.dispatch('accessories/saveAccessories', {
+                                          device_id: response.data.device_id,
+                                          device_accessories: device.device_accessories
+                                        }, {
+                                          root: true
+                                        });
+
+                                      case 2:
+                                      case "end":
+                                        return _context.stop();
+                                    }
+                                  }
+                                }, _callee);
+                              }));
+
+                              return function (_x4) {
+                                return _ref4.apply(this, arguments);
+                              };
+                            }())["catch"](function (error) {
+                              console.log(error);
+                            });
+
+                          case 3:
+                            console.log('Device ' + device.device_name + ' guardado...OK');
+
+                          case 4:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  }));
+
+                  return function (_x3) {
+                    return _ref3.apply(this, arguments);
+                  };
+                }()));
+
+              case 3:
+                _context3.next = 8;
+                break;
+
+              case 5:
+                _context3.prev = 5;
+                _context3.t0 = _context3["catch"](0);
+                console.log(_context3.t0);
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 5]]);
+      }));
+
+      function saveDevices(_x, _x2) {
+        return _saveDevices.apply(this, arguments);
+      }
+
+      return saveDevices;
     }()
   }
 });
@@ -77415,6 +77768,174 @@ __webpack_require__.r(__webpack_exports__);
       var commit = _ref2.commit;
       commit('UPDATE_SEARCH_PRODUCT_VALUE', _updateSearchProductValue);
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/receipts.js":
+/*!************************************************!*\
+  !*** ./resources/js/store/modules/receipts.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    receipts: [],
+    searchReceiptValue: '',
+    lastReceiptId: 0,
+    receiptClientId: null,
+    receiptClientName: '',
+    receiptClientPhone: '',
+    receiptClientEmail: ''
+  },
+  getters: {
+    getReceipts: function getReceipts(state) {
+      return state.receipts;
+    },
+    getSearchReceiptValue: function getSearchReceiptValue(state) {
+      return state.searchReceiptValue;
+    },
+    getCurrentReceiptId: function getCurrentReceiptId(state) {
+      return state.lastReceiptId + 1;
+    },
+    getReceiptClientId: function getReceiptClientId(state) {
+      return state.receiptClientId;
+    },
+    getReceiptClientName: function getReceiptClientName(state) {
+      return state.receiptClientName;
+    },
+    getReceiptClientPhone: function getReceiptClientPhone(state) {
+      return state.receiptClientPhone;
+    },
+    getReceiptClientEmail: function getReceiptClientEmail(state) {
+      return state.receiptClientEmail;
+    }
+  },
+  mutations: {
+    SET_RECEIPTS: function SET_RECEIPTS(state, receipts) {
+      state.receipts = receipts;
+    },
+    SET_LAST_RECEIPT_ID: function SET_LAST_RECEIPT_ID(state, lastReceiptId) {
+      state.lastReceiptId = lastReceiptId;
+    },
+    SET_SEARCH_RECEIPT_VALUE: function SET_SEARCH_RECEIPT_VALUE(state, updateSearchReceiptValue) {
+      state.searchReceiptValue = updateSearchReceiptValue;
+    },
+    SET_RECEIPT_CLIENT_ID: function SET_RECEIPT_CLIENT_ID(state, clientId) {
+      state.receiptClientId = clientId;
+    },
+    SET_RECEIPT_CLIENT_NAME: function SET_RECEIPT_CLIENT_NAME(state, clientName) {
+      state.receiptClientName = clientName;
+    },
+    SET_RECEIPT_CLIENT_PHONE: function SET_RECEIPT_CLIENT_PHONE(state, clientPhone) {
+      state.receiptClientPhone = clientPhone;
+    },
+    SET_RECEIPT_CLIENT_EMAIL: function SET_RECEIPT_CLIENT_EMAIL(state, clientEmail) {
+      state.receiptClientEmail = clientEmail;
+    }
+  },
+  actions: {
+    fetchReceipts: function fetchReceipts(_ref) {
+      var commit = _ref.commit;
+      axios.post('fetchReceipts').then(function (response) {
+        commit('SET_RECEIPTS', response.data.receipts);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    fetchLastReceiptId: function fetchLastReceiptId(_ref2) {
+      var commit = _ref2.commit;
+      axios.post('fetchLastReceiptId').then(function (response) {
+        commit('SET_LAST_RECEIPT_ID', response.data.last_receipt_id);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    saveReceipt: function () {
+      var _saveReceipt = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                console.log('Guardando recepción...');
+                _context.prev = 1;
+                _context.next = 4;
+                return axios.post('receipts', {
+                  receipt_client_id: context.state.receiptClientId
+                });
+
+              case 4:
+                console.log('Recepción guardada...OK');
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](1);
+                console.log(_context.t0);
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 7]]);
+      }));
+
+      function saveReceipt(_x) {
+        return _saveReceipt.apply(this, arguments);
+      }
+
+      return saveReceipt;
+    }(),
+    printReceipt: function () {
+      var _printReceipt = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(context, receiptId) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return axios.post('print_receipt', {
+                  receipt_id: receiptId
+                });
+
+              case 3:
+                _context2.next = 8;
+                break;
+
+              case 5:
+                _context2.prev = 5;
+                _context2.t0 = _context2["catch"](0);
+                console.log(_context2.t0);
+
+              case 8:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 5]]);
+      }));
+
+      function printReceipt(_x2, _x3) {
+        return _printReceipt.apply(this, arguments);
+      }
+
+      return printReceipt;
+    }()
   }
 });
 

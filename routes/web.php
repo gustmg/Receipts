@@ -37,20 +37,14 @@ Route::resource('inventory_entries', 'InventoryEntryController')->middleware('au
 Route::resource('inventory_entries_products', 'InventoryEntryProductController')->middleware('auth');
 Route::resource('inventory_exits', 'InventoryExitController')->middleware('auth');
 Route::resource('inventory_exits_products', 'InventoryExitProductController')->middleware('auth');
-Route::post('createBackup', function() {
-    return Spatie\DbDumper\Databases\MySql::create()
-    ->setDbName('receipts')
-    ->setUserName('root')
-    ->setPassword('')
-    ->setDumpBinaryPath('C:\xampp\mysql\bin')
-    ->dumpToFile('dump.sql');
-});
 
 Route::post('fetchProducts', 'ProductController@fetchProducts')->middleware('auth');
 Route::post('fetchServices', 'ServiceController@fetchServices')->middleware('auth');
 Route::post('fetchClients', 'ClientController@fetchClients')->middleware('auth');
+Route::post('fetchReceipts', 'ReceiptController@fetchReceipts')->middleware('auth');
 Route::post('fetchLastSaleId', 'SaleController@fetchLastSaleId')->middleware('auth');
 Route::post('fetchLastClientId', 'ClientController@fetchLastClientId')->middleware('auth');
+Route::post('fetchLastReceiptId', 'ReceiptController@fetchLastReceiptId')->middleware('auth');
 Route::post('createBackup', function(){
     $filename = "backup-".date("d-m-Y-H-i").".sql";
     $mysqlPath = "C:\\xampp/mysql/bin/mysqldump";

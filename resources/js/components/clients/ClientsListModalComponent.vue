@@ -38,11 +38,6 @@
                 searchClientValue: 'getSearchClientValue',
             }),
 
-            ...mapGetters('sales', {
-                cart: 'getCart',
-                saleClient: 'getSaleClient',
-            }),
-
             filteredClients: function() {
                 return this.clients.filter(client => {
                     return client.client_name.toLowerCase().indexOf(this.searchClientValue.toLowerCase()) >= 0
@@ -58,9 +53,20 @@
                 'SET_SALE_CLIENT_EMAIL',
             ]),
 
+            ...mapMutations('receipts', [
+                'SET_RECEIPT_CLIENT_ID',
+                'SET_RECEIPT_CLIENT_NAME',
+                'SET_RECEIPT_CLIENT_PHONE',
+                'SET_RECEIPT_CLIENT_EMAIL',
+            ]),
+
             ...mapMutations('clients', ['SET_SEARCH_CLIENT_VALUE']),
 
             selectSaleClient: function(client) {
+                this.SET_RECEIPT_CLIENT_ID(client.client_id)
+                this.SET_RECEIPT_CLIENT_NAME(client.client_name)
+                this.SET_RECEIPT_CLIENT_PHONE(client.client_phone)
+                this.SET_RECEIPT_CLIENT_EMAIL(client.client_email)
                 this.SET_SALE_CLIENT_ID(client.client_id)
                 this.SET_SALE_CLIENT_NAME(client.client_name)
                 this.SET_SALE_CLIENT_PHONE(client.client_phone)
