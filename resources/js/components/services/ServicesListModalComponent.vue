@@ -58,7 +58,7 @@
                     articleWholesalePricePercentage: service.service_wholesale_price_percentage,
                     articleUnitPrice: (
                         service.service_cost +
-                        (service.service_cost + service.service_base_price_percentage) / 100
+                        (service.service_cost * service.service_base_price_percentage) / 100
                     ).toFixed(2),
                 })
 
