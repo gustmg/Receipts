@@ -17,7 +17,7 @@
                     .post('createBackup')
                     .then(response => {
                         if (response.data == 1) {
-                            M.toast({ html: 'I am a toast!', classes: 'rounded' })
+                            M.toast({ html: 'Respaldo creado correctamente', classes: 'rounded' })
                         }
                     })
                     .catch(error => console.log(error))

@@ -2009,7 +2009,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('createBackup').then(function (response) {
         if (response.data == 1) {
           M.toast({
-            html: 'I am a toast!',
+            html: 'Respaldo creado correctamente',
             classes: 'rounded'
           });
         }
@@ -5707,17 +5707,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 11:
                 _context.next = 13;
-                return this.fetchReceipts();
+                return this.printReceipt(this.currentReceiptId);
 
               case 13:
                 _context.next = 15;
-                return this.fetchLastReceiptId();
+                return this.fetchReceipts();
 
               case 15:
+                _context.next = 17;
+                return this.fetchLastReceiptId();
+
+              case 17:
                 this.resetReceipt();
                 $('#newReceiptModal').modal('close');
 
-              case 17:
+              case 19:
               case "end":
                 return _context.stop();
             }
@@ -78021,12 +78025,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.saleCreditCardCharge = 0;
 
       if (state.salePaymentForm == 2) {
-        if (state.saleSubtotalAmount + state.saleVatAmount >= 1000) {
-          if (state.isInvoicedSale) {
-            state.saleCreditCardCharge = (state.saleSubtotalAmount + state.saleVatAmount) * 0.025;
-          } else {
-            state.saleCreditCardCharge = state.saleSubtotalAmount * 0.025;
-          }
+        if (state.isInvoicedSale) {
+          state.saleCreditCardCharge = (state.saleSubtotalAmount + state.saleVatAmount) * 0.035;
+        } else {
+          state.saleCreditCardCharge = state.saleSubtotalAmount * 0.035;
         }
       }
 

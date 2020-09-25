@@ -348,7 +348,7 @@
 
                 await this.saveReceipt()
                 await this.saveDevices(this.currentReceiptId)
-                // await this.printReceipt(this.currentReceiptId)
+                await this.printReceipt(this.currentReceiptId)
 
                 await this.fetchReceipts()
                 await this.fetchLastReceiptId()

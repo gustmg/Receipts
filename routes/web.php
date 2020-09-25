@@ -48,7 +48,7 @@ Route::post('fetchLastReceiptId', 'ReceiptController@fetchLastReceiptId')->middl
 Route::post('createBackup', function(){
     $filename = "backup-".date("d-m-Y-H-i").".sql";
     $mysqlPath = "C:\\xampp/mysql/bin/mysqldump";
-    $file_path = "E:";
+    $file_path = "D:\TectroDiciembre\GoogleDrive\RespaldosDB";
     try{
         $command = "$mysqlPath --user=" . env('DB_USERNAME') ." --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . "  > " . $file_path . "/" . $filename."  2>&1";
         $returnVar = NULL;
