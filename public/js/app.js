@@ -7527,7 +7527,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         articleBasePricePercentage: service.service_base_price_percentage,
         articleRetailPricePercentage: service.service_retail_price_percentage,
         articleWholesalePricePercentage: service.service_wholesale_price_percentage,
-        articleUnitPrice: (service.service_cost + (service.service_cost + service.service_base_price_percentage) / 100).toFixed(2)
+        articleUnitPrice: (service.service_cost + service.service_cost * service.service_base_price_percentage / 100).toFixed(2)
       });
       $('#servicesCompactListModal').modal('close');
     }
