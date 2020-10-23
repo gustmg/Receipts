@@ -1,5 +1,5 @@
 <template>
-    <div class="col m4" style="padding-left:24px !important;padding-top:8px !important;">
+    <div class="col m4" style="padding-left: 24px !important; padding-top: 8px !important">
         <div class="row">
             <div class="col m12">
                 <span class="grey-text"><b>Información de venta</b></span
@@ -8,7 +8,7 @@
                 ><br />
                 <span><b>Fecha:</b> {{ date }}</span
                 ><br />
-                <div class="row" style="padding-top:12px !important;">
+                <div class="row" style="padding-top: 12px !important">
                     <div class="col m12">
                         <div class="row">
                             <div class="col m12">
@@ -101,12 +101,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input-field col s12 m8" style="margin-top:0 !important;">
+                    <div class="input-field col s12 m8" style="margin-top: 0 !important">
                         <select v-model="paymentForm" class="icons test">
                             <option value="1" data-icon="svg/baseline-attach_money-24px.svg">Efectivo</option>
-                            <option value="2" data-icon="svg/baseline-payment-24px.svg"
-                                >Tarjeta de crédito / débito</option
-                            >
+                            <option value="2" data-icon="svg/baseline-payment-24px.svg">
+                                Tarjeta de crédito / débito
+                            </option>
                         </select>
                         <label>Forma de pago</label>
                     </div>
@@ -181,7 +181,7 @@
                 newClientId: 'getNewClientId',
             }),
 
-            date: function() {
+            date: function () {
                 var d = new Date()
 
                 switch (d.getMonth()) {
@@ -259,7 +259,7 @@
                 },
             },
 
-            validateForm: function() {
+            validateForm: function () {
                 if (this.newClientToggle) {
                     if (
                         this.cart.length == 0 ||
@@ -280,9 +280,9 @@
                 }
             },
 
-            validateUnitPrices: function() {
+            validateUnitPrices: function () {
                 var amount_zero_prices = 0
-                this.cart.forEach(article => {
+                this.cart.forEach((article) => {
                     if (article.articleUnitPrice == 0) {
                         amount_zero_prices = amount_zero_prices + 1
                     }
@@ -307,7 +307,7 @@
             ...mapActions('sales', ['saveSale', 'saveSaleDetail', 'printSale']),
             ...mapActions('clients', ['saveClient']),
 
-            newClientToggleHandler: function() {
+            newClientToggleHandler: function () {
                 this.SET_SALE_CLIENT_ID(this.newClientId)
                 this.SET_SALE_CLIENT_NAME('')
                 this.SET_SALE_CLIENT_PHONE('')
@@ -321,11 +321,11 @@
                 this.invalidClientEmail = false
             },
 
-            showClientsList: function() {
+            showClientsList: function () {
                 $('#clientsCompactListModal').modal('open')
             },
 
-            validateReceiptClientName: function(e) {
+            validateReceiptClientName: function (e) {
                 if (!this.clientName) {
                     this.validClientName = false
                     this.invalidClientName = true
@@ -336,7 +336,7 @@
                 }
             },
 
-            validateReceiptClientPhone: function(e) {
+            validateReceiptClientPhone: function (e) {
                 const PHONE_REGEXP = /^[0-9]*$/gm
 
                 if (this.clientPhone == null || this.clientPhone.length == 0) {
@@ -352,7 +352,7 @@
                 }
             },
 
-            validateReceiptClientEmail: function(e) {
+            validateReceiptClientEmail: function (e) {
                 const MAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
                 if (this.clientEmail == null || this.clientEmail.length == 0) {
@@ -368,13 +368,13 @@
                 }
             },
 
-            getFormatedNumber: function(number) {
+            getFormatedNumber: function (number) {
                 var int_amount = parseInt(number)
                 var decimal_amount = (number % 1).toFixed(2).slice(1)
                 return int_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + decimal_amount
             },
 
-            processSale: async function() {
+            processSale: async function () {
                 if (this.newClientToggle) {
                     await this.saveClient({
                         client_name: this.clientName,
@@ -387,7 +387,7 @@
 
                 await this.saveSale()
                 await this.saveSaleDetail()
-                await this.printSale()
+                // await this.printSale()
 
                 $('.test').formSelect()
                 this.validClientName = false

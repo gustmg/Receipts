@@ -6465,6 +6465,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log(this.sales);
@@ -6533,7 +6557,7 @@ __webpack_require__.r(__webpack_exports__);
       var credit_card_comision = 0;
 
       if (this.sale_detail_payment_form_id == 2 && this.sale_detail_total > 999) {
-        credit_card_comision = this.sale_detail_total - this.sale_detail_total / 1.025;
+        credit_card_comision = this.sale_detail_total - this.sale_detail_total / 1.035;
       }
 
       return credit_card_comision.toFixed(2);
@@ -7082,10 +7106,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return this.saveSaleDetail();
 
               case 11:
-                _context.next = 13;
-                return this.printSale();
-
-              case 13:
+                // await this.printSale()
                 $('.test').formSelect();
                 this.validClientName = false;
                 this.invalidClientName = false;
@@ -7095,7 +7116,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 this.invalidClientEmail = false;
                 this.newClientToggle = false;
 
-              case 21:
+              case 19:
               case "end":
                 return _context.stop();
             }
@@ -8301,7 +8322,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n#sale-detail-modal{\n    width: 1094px;\n}\n.green-icon{\n   color: green;\n}\n.red-icon{\n    color:red;\n}\n.right-align{\n    text-align: right !important;\n    padding-right: 24px;\n}\n.padding-r-24{\n    padding-right: 24px;\n}\n.padding-r-20{\n    padding-right: 20px;\n}\n.no-margin{\n    margin:0;\n}\n", ""]);
+exports.push([module.i, "\n#sale-detail-modal {\n    width: 1094px;\n}\n.green-icon {\n    color: green;\n}\n.red-icon {\n    color: red;\n}\n.right-align {\n    text-align: right !important;\n    padding-right: 24px;\n}\n.padding-r-24 {\n    padding-right: 24px;\n}\n.padding-r-20 {\n    padding-right: 20px;\n}\n.no-margin {\n    margin: 0;\n}\n", ""]);
 
 // exports
 
@@ -57529,13 +57550,14 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", { staticClass: "right-align" }, [
                             _vm._v(
-                              "$" +
+                              "\n                                        $" +
                                 _vm._s(
                                   (
                                     service.pivot.service_quantity *
                                     service.pivot.service_unit_price
                                   ).toFixed(2)
-                                )
+                                ) +
+                                "\n                                    "
                             )
                           ])
                         ])
@@ -57557,13 +57579,14 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", { staticClass: "right-align" }, [
                             _vm._v(
-                              "$" +
+                              "\n                                        $" +
                                 _vm._s(
                                   (
                                     product.pivot.product_quantity *
                                     product.pivot.product_unit_price
                                   ).toFixed(2)
-                                )
+                                ) +
+                                "\n                                    "
                             )
                           ])
                         ])
@@ -58266,7 +58289,11 @@ var render = function() {
                             "data-icon": "svg/baseline-payment-24px.svg"
                           }
                         },
-                        [_vm._v("Tarjeta de crédito / débito")]
+                        [
+                          _vm._v(
+                            "\n                            Tarjeta de crédito / débito\n                        "
+                          )
+                        ]
                       )
                     ]
                   ),
