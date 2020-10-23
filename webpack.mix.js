@@ -1,5 +1,5 @@
 const mix = require('laravel-mix')
-// require('vuetifyjs-mix-extension')
+
 mix.disableNotifications()
 
 /*
@@ -16,4 +16,3 @@ mix.disableNotifications()
 mix.js('resources/js/app.js', 'public/js').sass('resources/sass/app.scss', 'public/css', {
     includePaths: ['node_modules'],
 })
-// mix.js('resources/js/app.js', 'public/js').vuetify()

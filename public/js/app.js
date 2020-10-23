@@ -78021,12 +78021,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.saleCreditCardCharge = 0;
 
       if (state.salePaymentForm == 2) {
-        if (state.saleSubtotalAmount + state.saleVatAmount >= 1000) {
-          if (state.isInvoicedSale) {
-            state.saleCreditCardCharge = (state.saleSubtotalAmount + state.saleVatAmount) * 0.025;
-          } else {
-            state.saleCreditCardCharge = state.saleSubtotalAmount * 0.025;
-          }
+        if (state.isInvoicedSale) {
+          state.saleCreditCardCharge = (state.saleSubtotalAmount + state.saleVatAmount) * 0.035;
+        } else {
+          state.saleCreditCardCharge = state.saleSubtotalAmount * 0.035;
         }
       }
 
