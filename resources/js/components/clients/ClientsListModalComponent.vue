@@ -1,37 +1,65 @@
 <template>
-    <div id="clientsCompactListModal" class="modal modal-fixed-footer clientsCompactListModal">
-        <div class="modal-content">
-            <client-search-bar-component></client-search-bar-component>
-            <ul class="collection with-header">
-                <a
-                    class="collection-item selectable client-element"
-                    v-on:click="selectSaleClient(client)"
-                    v-for="client in filteredClients"
-                    v-bind:key="client.client_id"
-                >
-                    {{ client.client_name }}
-                </a>
-            </ul>
-        </div>
-        <div class="modal-footer">
-            <button class="modal-action modal-close waves-effect btn-flat">
-                <b>Cancelar</b>
-            </button>
-        </div>
-    </div>
+    <v-dialog width="480" v-model="clientsListDialog">
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn v-on="on" v-bind="attrs" class="primary white--text" :disabled="newClientToggle">
+                Buscar cliente
+            </v-btn>
+        </template>
+        <v-card>
+            <v-card-title class="justify-center">
+                Seleccione un cliente
+            </v-card-title>
+            <v-card-text>
+                <v-row>
+                    <v-col cols="12" class="py-0"><client-search-bar-component></client-search-bar-component></v-col>
+                    <v-col cols="12" class="py-0">
+                        <v-card>
+                            <v-list class="clients-list">
+                                <v-list-item-group>
+                                    <v-list-item
+                                        v-for="client in filteredClients"
+                                        v-bind:key="client.client_id"
+                                        v-on:click="selectSaleClient(client)"
+                                    >
+                                        <v-list-item-content>
+                                            <v-list-item-title>{{ client.client_name }}</v-list-item-title>
+                                            <v-list-item-subtitle>{{ client.client_phone }}</v-list-item-subtitle>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list-item-group>
+                            </v-list>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-actions class="justify-center">
+                <v-btn class="primary--text" text v-on:click="clientsListDialog = false">Cancelar</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
-<style type="text/css">
-    .modal-content {
-        padding-bottom: 0 !important;
-    }
-
-    .client-element {
-        color: #039be5 !important;
+<style scoped>
+    .clients-list {
+        overflow-y: auto !important;
+        height: auto;
+        max-height: 300px;
     }
 </style>
 <script>
     import { mapGetters, mapMutations } from 'vuex'
     export default {
+        data() {
+            return {
+                clientsListDialog: false,
+            }
+        },
+
+        props: {
+            newClientToggle: {
+                type: Boolean,
+            },
+        },
+
         computed: {
             ...mapGetters('clients', {
                 clients: 'getClients',
@@ -73,7 +101,7 @@
                 this.SET_SALE_CLIENT_EMAIL(client.client_email)
                 this.SET_SEARCH_CLIENT_VALUE('')
 
-                $('#clientsCompactListModal').modal('close')
+                this.clientsListDialog = false
             },
         },
     }

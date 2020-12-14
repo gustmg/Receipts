@@ -16,6 +16,10 @@ export default {
             state.devices.push(device)
         },
 
+        REMOVE_DEVICE(state, deviceIndex) {
+            state.devices.splice(deviceIndex, 1)
+        },
+
         RESET_DEVICES(state) {
             state.devices = []
         },

@@ -1,108 +1,76 @@
 <template>
-    <div id="newAccessoryModal" class="modal newAccessoryModal">
-        <div class="modal-content">
-            <h5>Nuevo accesorio</h5>
-            <br />
-            <div class="row">
-                <form id="newAccessoryForm" class="col s12 no-padding" method="POST" action="accessories">
-                    <input type="hidden" name="_token" />
-                    <div class="row">
-                        <div class="input-field col s12 m8 no-vertical-margin">
-                            <input
-                                placeholder=""
-                                id="accessory_name"
-                                type="text"
-                                v-model="newAccessoryName"
-                                v-on:blur="validateAccessoryName"
-                                v-bind:class="{ valid: validAccessoryName, invalid: invalidAccessoryName }"
-                                data-length="50"
-                                maxlength="50"
-                                required
-                            />
-                            <label for="accessory_name" class="valign-wrapper"
-                                ><i class="material-icons">computer</i>&nbsp;&nbsp;Nombre del accesorio*</label
-                            >
-                            <span class="helper-text accessory_name_helper" data-success="Nombre validado."></span
-                            ><br />
-                        </div>
-                        <div class="input-field col s12 m4 no-vertical-margin">
-                            <input
-                                placeholder=""
-                                id="accessory_serial_number"
-                                type="tel"
-                                v-model="newAccessorySerialNumber"
-                                v-bind:class="{
-                                    valid: validAccessorySerialNumber,
-                                    invalid: invalidAccessorySerialNumber,
-                                }"
-                                data-length="4"
-                                minlength="4"
-                                maxlength="4"
-                            />
-                            <label for="accessory_serial_number" class="valign-wrapper"
-                                ><i class="material-icons">local_offer</i>&nbsp;&nbsp;Número de serie</label
-                            >
-                            <span
-                                class="helper-text accessory_serial_number_helper"
-                                data-success="Número de serie validado."
-                            ></span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button v-on:click="resetNewAccessoryInputs" class="modal-action modal-close waves-effect btn-flat">
-                <b>Cancelar</b>
-            </button>
-            <button
-                v-on:click="addAccessory"
-                type="submit"
-                v-bind:class="{ disabled: validateForm }"
-                class="modal-action btn waves-effect submit_button"
-            >
-                <b>Agregar</b>
-            </button>
-        </div>
-    </div>
+    <v-dialog v-model="newAccessoryDialog" width="360">
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn class="primary" fab v-bind="attrs" v-on="on"><v-icon>mdi-plus</v-icon></v-btn>
+        </template>
+        <v-card>
+            <v-card-title class="justify-center">Accesorio de equipo</v-card-title>
+            <v-card-text class="pb-0">
+                <v-container fluid class="px-0">
+                    <v-form v-model="newAccessoryForm" ref="newAccessoryForm">
+                        <v-row>
+                            <v-col cols="12">
+                                <v-text-field
+                                    v-model="newAccessoryName"
+                                    label="Nombre *"
+                                    :rules="requiredRule"
+                                    filled
+                                    rounded
+                                    validate-on-blur
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field
+                                    v-model="newAccessorySerialNumber"
+                                    label="Número de serie"
+                                    :rules="serialNumberRules"
+                                    filled
+                                    rounded
+                                    validate-on-blur
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </v-container>
+            </v-card-text>
+            <v-card-actions class="py-0">
+                <v-container>
+                    <v-row>
+                        <v-col cols="6">
+                            <v-btn class="primary--text" block text v-on:click="resetNewAccessoryInputs">
+                                Cancelar
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-btn class="primary" block :disabled="!newAccessoryForm" v-on:click="addAccessory">
+                                Agregar
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
-<style type="text/css">
-    .inline-icon-large {
-        vertical-align: bottom;
-        font-size: 48px !important;
-    }
-    .inline-icon-small {
-        vertical-align: bottom;
-        font-size: 20px !important;
-    }
-    .helper-text {
-        min-height: 0 !important;
-    }
-    .no-vertical-margin {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-</style>
 <script>
     import { mapMutations } from 'vuex'
     export default {
         data() {
             return {
-                newAccessoryName: null,
-                newAccessorySerialNumber: null,
-                validAccessoryName: false,
-                invalidAccessoryName: false,
-                validAccessorySerialNumber: false,
-                invalidAccessorySerialNumber: false,
+                newAccessoryDialog: false,
+                newAccessoryForm: false,
+                newAccessoryName: '',
+                newAccessorySerialNumber: '',
+                requiredRule: [v => !!v || this.requiredFieldErrorMessage],
+                serialNumberRules: [
+                    v => {
+                        if (!v || v.length == 0) return true
+                        if (!v || v.length > 3) return true
+                        return 'El número de serie debe contener al menos 4 caracteres.'
+                    },
+                ],
+                requiredFieldErrorMessage: 'Este campo es requerido.',
             }
-        },
-
-        computed: {
-            validateForm: function(e) {
-                if (!this.validAccessoryName || this.invalidAccessorySerialNumber) {
-                    return true
-                }
-            },
         },
 
         methods: {
@@ -114,7 +82,6 @@
                     accessory_serial_number: this.newAccessorySerialNumber,
                 })
 
-                $('#newAccessoryModal').modal('close')
                 this.resetNewAccessoryInputs()
             },
 
@@ -142,24 +109,10 @@
                 $('#newAccessoryModal').modal('close')
             },
 
-            validateAccessoryName: function(e) {
-                if (!this.newAccessoryName) {
-                    this.validAccessoryName = false
-                    this.invalidAccessoryName = true
-                    $('.accessory_name_helper').attr('data-error', 'Este campo no puede quedar vacío.')
-                } else {
-                    this.validAccessoryName = true
-                    this.invalidAccessoryName = false
-                }
-            },
-
             resetNewAccessoryInputs: function(e) {
-                this.newAccessoryName = null
-                this.newAccessorySerialNumber = null
-                this.validAccessoryName = false
-                this.invalidAccessoryName = false
-                this.validAccessorySerialNumber = false
-                this.invalidAccessorySerialNumber = false
+                this.$refs.newAccessoryForm.reset()
+                this.$refs.newAccessoryForm.resetValidation()
+                this.newAccessoryDialog = false
             },
         },
     }

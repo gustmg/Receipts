@@ -1,5 +1,55 @@
 <template>
-    <div id="inventoryEntryDetailModal" class="modal inventoryEntryDetailModal modal-fixed-footer">
+    <v-dialog v-model="inventoryEntryDetailModal">
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" block v-bind="attrs" v-on="on">
+                Ver detalles
+            </v-btn>
+        </template>
+        <v-card>
+            <v-container>
+                <v-row>
+                    <v-col cols="12" algin="center">
+                        <v-row>
+                            <v-col cols="3">
+                                <div class="text-subtitle-2">Fecha de entrada</div>
+                                <div class="body-1">{{ inventoryEntry.inventory_entry_created_at }}</div>
+                            </v-col>
+                            <v-col cols="3">
+                                <div class="text-subtitle-2">Almacén destino</div>
+                                <div class="body-1">{{ inventoryEntry.warehouse.warehouse_name }}</div>
+                            </v-col>
+                            <v-col cols="3">
+                                <div class="text-subtitle-2">Costo total</div>
+                                <div class="body-1">${{ inventoryEntry.inventory_entry_total_cost }}</div>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" align="center">
+                        <v-data-table
+                            :headers="entryProductsTableHeaders"
+                            :items="inventoryEntry.products"
+                            item-key="product_id"
+                            hide-default-footer
+                            calculate-widths
+                        >
+                            <template v-slot:item.product_import="{ item }">
+                                ${{ item.pivot.product_unit_cost * item.pivot.product_entry_amount }}
+                            </template>
+                        </v-data-table>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-spacer></v-spacer>
+                    <v-col cols="2">
+                        <v-btn color="primary" block v-on:click="inventoryEntryDetailModal = false">Cerrar</v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-card>
+    </v-dialog>
+    <!-- <div id="inventoryEntryDetailModal" class="modal inventoryEntryDetailModal modal-fixed-footer">
         <div class="modal-content" v-if="this.inventoryEntryDetail">
             <div class="row">
                 <div class="col m12">
@@ -47,151 +97,147 @@
         <div class="modal-footer">
             <button class="modal-action modal-close waves-effect btn-flat"><b>Cerrar</b></button>
         </div>
-    </div>
+    </div> -->
 </template>
-<style scoped>
-    .product-checkbox-header{
-        width: 5%;
-    }
-    .product-name-header{
-        width: 20%;
-    }
-    .product-description-header{
-        width: 25%;
-    }
-    .product-code-header,
-    .product-measurement-header,
-    .product-amount-header,
-    .product-unit-cost-header,
-    .product-import-header{
-        width: 10%;
-    }
-    .inventoryEntryDetailModal{
-        width: 95%;
-        max-height: 80%;
-    }
-</style>
 <script>
-    import {mapState, mapMutations, mapActions} from "vuex";
+    import { mapState, mapMutations, mapActions } from 'vuex'
     import { parseCurrency } from 'vue-currency-input'
     export default {
         data() {
             return {
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                invalidProductName: true
+                inventoryEntryDetailModal: false,
+                entryProductsTableHeaders: [
+                    { text: 'Código', value: 'product_code', width: '10%' },
+                    { text: 'Producto', value: 'product_name', width: '15%' },
+                    { text: 'Descripción', value: 'product_description', width: '20%' },
+                    { text: 'Cantidad', value: 'pivot.product_entry_amount', width: '15%' },
+                    { text: 'Costo unitario', value: 'pivot.product_unit_cost', width: '15%' },
+                    { text: 'Importe total', value: 'product_import', width: '15%' },
+                ],
             }
         },
 
         props: {
-            inventoryEntryDetail: {
-                type: Object
-            }
+            inventoryEntry: {
+                type: Object,
+            },
         },
 
         computed: {
-            ...mapState(['current_username','products_to_entry', 'products', 'products_entry_detail']),
+            ...mapState(['current_username', 'products_to_entry', 'products', 'products_entry_detail']),
 
             totalCost: function() {
-                var total=0;
+                var total = 0
                 this.products_entry_detail.forEach(product => {
-                    var product_import = this.getImport(product.product_amount, product.product_unit_cost);
-                    total = total + product_import;
-                });
-                return total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    var product_import = this.getImport(product.product_amount, product.product_unit_cost)
+                    total = total + product_import
+                })
+                return total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
             },
 
-            validateForm: function () {
-                if(this.products_entry_detail.length > 0){
-                    var empty_inputs_counter=0;
+            validateForm: function() {
+                if (this.products_entry_detail.length > 0) {
+                    var empty_inputs_counter = 0
                     this.products_entry_detail.forEach(product => {
-                        if(!product.product_amount || product.product_amount == '' || !product.product_unit_cost || product.product_unit_cost == '' || parseFloat(product.product_amount)==0 || parseFloat(product.product_unit_cost.replace(/[^\d.]/g, ''))==0){
-                            empty_inputs_counter ++;
+                        if (
+                            !product.product_amount ||
+                            product.product_amount == '' ||
+                            !product.product_unit_cost ||
+                            product.product_unit_cost == '' ||
+                            parseFloat(product.product_amount) == 0 ||
+                            parseFloat(product.product_unit_cost.replace(/[^\d.]/g, '')) == 0
+                        ) {
+                            empty_inputs_counter++
                         }
-                    });
+                    })
 
-                    if(empty_inputs_counter == 0){
-                        return false;
+                    if (empty_inputs_counter == 0) {
+                        return false
+                    } else {
+                        return true
                     }
-                    else{
-                        return true;
-                    }
-                }
-                else{
-                    return true;
+                } else {
+                    return true
                 }
             },
 
             date: function() {
-                var d = new Date();
+                var d = new Date()
 
                 switch (d.getMonth()) {
                     case 0:
-                        return "Enero "+d.getDate()+", "+d.getFullYear();
+                        return 'Enero ' + d.getDate() + ', ' + d.getFullYear()
                     case 1:
-                        return "Febrero "+d.getDate()+", "+d.getFullYear();
+                        return 'Febrero ' + d.getDate() + ', ' + d.getFullYear()
                     case 2:
-                        return "Marzo "+d.getDate()+", "+d.getFullYear();
+                        return 'Marzo ' + d.getDate() + ', ' + d.getFullYear()
                     case 3:
-                        return "Abril "+d.getDate()+", "+d.getFullYear();
+                        return 'Abril ' + d.getDate() + ', ' + d.getFullYear()
                     case 4:
-                        return "Mayo "+d.getDate()+", "+d.getFullYear();
+                        return 'Mayo ' + d.getDate() + ', ' + d.getFullYear()
                     case 5:
-                        return "Junio "+d.getDate()+", "+d.getFullYear();
+                        return 'Junio ' + d.getDate() + ', ' + d.getFullYear()
                     case 6:
-                        return "Julio "+d.getDate()+", "+d.getFullYear();
+                        return 'Julio ' + d.getDate() + ', ' + d.getFullYear()
                     case 7:
-                        return "Agosto "+d.getDate()+", "+d.getFullYear();
+                        return 'Agosto ' + d.getDate() + ', ' + d.getFullYear()
                     case 8:
-                        return "Septiembre "+d.getDate()+", "+d.getFullYear();
+                        return 'Septiembre ' + d.getDate() + ', ' + d.getFullYear()
                     case 9:
-                        return "Octubre "+d.getDate()+", "+d.getFullYear();
+                        return 'Octubre ' + d.getDate() + ', ' + d.getFullYear()
                     case 10:
-                        return "Noviembre "+d.getDate()+", "+d.getFullYear();
+                        return 'Noviembre ' + d.getDate() + ', ' + d.getFullYear()
                     case 11:
-                        return "Diciembre "+d.getDate()+", "+d.getFullYear();
+                        return 'Diciembre ' + d.getDate() + ', ' + d.getFullYear()
                     default:
-                        break;
+                        break
                 }
-            }
+            },
         },
 
         methods: {
-            ...mapActions(['addProduct', 'closeModal', 'openModal', 'updateProductAmount', 'updateProductUnitCost', 'addInventoryEntry']),
-            saveInventoryEntry: function(){
-                this.addInventoryEntry(this.totalCost);
-                this.closeModal();
+            ...mapActions([
+                'addProduct',
+                'closeModal',
+                'openModal',
+                'updateProductAmount',
+                'updateProductUnitCost',
+                'addInventoryEntry',
+            ]),
+            saveInventoryEntry: function() {
+                this.addInventoryEntry(this.totalCost)
+                this.closeModal()
             },
 
             openProductsListDialog: function() {
-                this.openModal($('#productsListWithStocksModal'));
+                this.openModal($('#productsListWithStocksModal'))
             },
 
             updateAmount: function(product_index, newValue) {
-                this.updateProductAmount({product_index, newValue});
+                this.updateProductAmount({ product_index, newValue })
             },
 
             updateUnitCost: function(product_index, new_unit_cost) {
-                this.updateProductUnitCost({product_index, new_unit_cost});
+                this.updateProductUnitCost({ product_index, new_unit_cost })
             },
 
             getImport: function(amount, unit_cost) {
-                if(amount && unit_cost){
-                    var parsed_amount = parseFloat(amount);
-                    var parsed_unit_cost = unit_cost.replace(/[^\d.]/g, '');
-                    return (parsed_amount*parsed_unit_cost);
-                }
-                else{
-                    return 0;
+                if (amount && unit_cost) {
+                    var parsed_amount = parseFloat(amount)
+                    var parsed_unit_cost = unit_cost.replace(/[^\d.]/g, '')
+                    return parsed_amount * parsed_unit_cost
+                } else {
+                    return 0
                 }
             },
 
             getProductsAmount: function(product_entries) {
-                var total_products_amount = 0;
+                var total_products_amount = 0
                 product_entries.forEach(product_entry => {
-                    total_products_amount += product_entry.pivot.product_entry_amount;
-                });
-                return total_products_amount;
+                    total_products_amount += product_entry.pivot.product_entry_amount
+                })
+                return total_products_amount
             },
-        }
+        },
     }
 </script>

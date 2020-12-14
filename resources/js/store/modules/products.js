@@ -21,6 +21,10 @@ export default {
             state.products = products
         },
 
+        ADD_PRODUCT(state, product) {
+            state.products.push(product)
+        },
+
         UPDATE_SEARCH_PRODUCT_VALUE(state, updateSearchProductValue) {
             state.searchProductValue = updateSearchProductValue
         },
@@ -32,6 +36,21 @@ export default {
                 .post('fetchProducts')
                 .then(response => {
                     commit('SET_PRODUCTS', response.data.products)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+        },
+
+        saveProduct: function({ commit }, product) {
+            axios
+                .post('/products', {
+                    product_name: product.product_name,
+                    product_description: product.product_description,
+                    product_code: product.product_code,
+                })
+                .then(response => {
+                    commit('ADD_PRODUCT', response.data.product)
                 })
                 .catch(function(error) {
                     console.log(error)

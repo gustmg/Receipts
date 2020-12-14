@@ -1,33 +1,32 @@
 <template>
-    <div class="row">
+    <v-container>
         <inventory-entries-list-component></inventory-entries-list-component>
-        <new-inventory-entry-button-component></new-inventory-entry-button-component>
         <new-inventory-entry-modal-component></new-inventory-entry-modal-component>
-        <products-list-with-stocks-modal-component></products-list-with-stocks-modal-component>
-        <inventory-entry-detail-modal-component :inventory-entry-detail="this.current_inventory_entry_detail"></inventory-entry-detail-modal-component>
-    </div>
+    </v-container>
 </template>
-<style scoped>
-</style>
 <script>
-    import {mapActions, mapState} from "vuex";
+    import { mapActions, mapState } from 'vuex'
     export default {
         mounted() {
-            this.setCurrentUsername(this.user.name);
+            this.setCurrentUsername(this.user.name)
+            this.fetchInventoryEntries()
+            this.fetchProducts()
         },
 
         computed: {
-            ...mapState(['current_inventory_entry_detail'])
+            ...mapState(['current_inventory_entry_detail']),
         },
 
         props: {
             user: {
-                type: Object
-            }
+                type: Object,
+            },
         },
 
         methods: {
             ...mapActions(['setCurrentUsername']),
-        }
+            ...mapActions('inventoryEntries', ['fetchInventoryEntries']),
+            ...mapActions('products', ['fetchProducts']),
+        },
     }
 </script>

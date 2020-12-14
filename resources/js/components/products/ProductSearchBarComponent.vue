@@ -1,18 +1,16 @@
 <template>
-    <div class="row" style="margin-bottom: 0;">
-        <div class="card hoverable col s10 offset-s1" style="float: none;">
-            <div class="input-field valign-wrapper">
-                <i class="material-icons prefix">search</i>
-                <input
-                    :value="searchProductValue"
-                    @input="updateSearchProduct"
-                    placeholder="Buscar producto"
-                    type="text"
-                    style="border-bottom: none!important;box-shadow: none!important;margin-bottom: 0;"
-                />
-            </div>
-        </div>
-    </div>
+    <v-row>
+        <v-col cols="10" offset-md="1">
+            <v-text-field
+                :value="searchProductValue"
+                @input="updateSearchProduct"
+                prepend-inner-icon="mdi-magnify"
+                placeholder="Buscar producto"
+                type="text"
+                solo
+            ></v-text-field>
+        </v-col>
+    </v-row>
 </template>
 <style></style>
 <script>
@@ -25,10 +23,10 @@
         },
 
         methods: {
-            ...mapMutations('products', ['UPDATE_SEARCH_PRODUCT_VALUE']),
+            ...mapMutations('products', ['SET_SEARCH_PRODUCT_VALUE']),
 
             updateSearchProduct: function(event) {
-                this.UPDATE_SEARCH_PRODUCT_VALUE(event.target.value)
+                this.SET_SEARCH_PRODUCT_VALUE(event)
             },
         },
     }

@@ -9,8 +9,9 @@ import _ from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueFormulate from '@braid/vue-formulate'
-import M from 'materialize-css'
 import VueCurrencyInput from 'vue-currency-input'
+import storeData from './store/index'
+import vuetify from './plugins/vuetify'
 
 const vueCurrencyOptions = {
     globalOptions: {
@@ -21,8 +22,6 @@ const vueCurrencyOptions = {
 Vue.use(Vuex)
 Vue.use(VueCurrencyInput, vueCurrencyOptions)
 Vue.use(VueFormulate)
-
-import storeData from './store/index'
 
 const store = new Vuex.Store(storeData)
 
@@ -52,6 +51,7 @@ Vue.mixin({
 
 // Vue.component('example-component', require('./components/clients/ExampleComponent.vue').default);
 Vue.component('home-component', require('./components/HomeComponent.vue').default)
+Vue.component('app-header-component', require('./components/AppHeaderComponent.vue').default)
 
 Vue.component('clients-component', require('./components/clients/ClientsComponent.vue').default)
 Vue.component('client-search-bar-component', require('./components/clients/ClientSearchBarComponent.vue').default)
@@ -81,6 +81,10 @@ Vue.component('products-component', require('./components/products/ProductsCompo
 Vue.component('product-search-bar-component', require('./components/products/ProductSearchBarComponent.vue').default)
 Vue.component('products-table-component', require('./components/products/ProductsTableComponent.vue').default)
 Vue.component('products-list-modal-component', require('./components/products/ProductsListModalComponent.vue').default)
+Vue.component(
+    'products-list-dialog-component',
+    require('./components/products/ProductsListDialogComponent.vue').default
+)
 Vue.component('new-product-button-component', require('./components/products/NewProductButtonComponent.vue').default)
 Vue.component('new-product-modal-component', require('./components/products/NewProductModalComponent.vue').default)
 Vue.component(
@@ -103,7 +107,6 @@ Vue.component(
 Vue.component('receipts-component', require('./components/receipts/ReceiptsComponent.vue').default)
 Vue.component('receipt-search-bar-component', require('./components/receipts/ReceiptSearchBarComponent.vue').default)
 Vue.component('receipts-list-component', require('./components/receipts/ReceiptsListComponent.vue').default)
-Vue.component('new-receipt-button-component', require('./components/receipts/NewReceiptButtonComponent.vue').default)
 Vue.component('new-receipt-modal-component', require('./components/receipts/NewReceiptModalComponent.vue').default)
 Vue.component(
     'update-receipt-modal-component',
@@ -143,10 +146,6 @@ Vue.component(
     require('./components/inventory_entries/NewInventoryEntryModalComponent.vue').default
 )
 Vue.component(
-    'new-inventory-entry-button-component',
-    require('./components/inventory_entries/NewInventoryEntryButtonComponent.vue').default
-)
-Vue.component(
     'inventory-entry-detail-modal-component',
     require('./components/inventory_entries/InventoryEntryDetailModalComponent.vue').default
 )
@@ -178,6 +177,5 @@ Vue.component(
 const app = new Vue({
     el: '#app',
     store,
+    vuetify,
 })
-
-M.AutoInit()

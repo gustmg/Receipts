@@ -1,85 +1,40 @@
 <template>
-    <div class="row">
-        <div
-            class="col s12"
+    <v-row>
+        <v-col
+            cols="12"
             v-show="receipts.length > 0"
             v-for="(receiptGroup, index) in groupedReceipts"
             v-bind:key="index"
         >
-            <div class="row">
-                <h6 class="col s12 date-header">
-                    <b>{{ formatDate(receiptGroup[0].receipt_date) }}</b>
-                </h6>
-                <div class="col m3" v-for="receipt in receiptGroup" v-bind:key="receipt.receipt_id">
-                    <div class="card hoverable hoverable-card selectable receipt-card">
-                        <div class="card-content">
-                            <span
-                                ><b>Recepción #{{ receipt.receipt_id }}</b></span
-                            >
-                            <span class="card-title">
-                                <b v-if="receipt.client.client_name">{{ receipt.client.client_name }}</b>
-                            </span>
-                            <p>
-                                <span v-if="receipt.client.client_phone"
-                                    ><i class="material-icons inline-icon-small">phone</i>
-                                    {{ receipt.client.client_phone }}</span
-                                >
-                                <span v-else class="grey-text">Teléfono no registrado</span>
-                            </p>
-                            <span><b>Equipos:</b></span>
+            <v-row>
+                <v-col cols="12">
+                    <h6 class="text-overline">{{ formatDate(receiptGroup[0].receipt_date) }}</h6>
+                </v-col>
+                <v-col cols="3" v-for="receipt in receiptGroup" v-bind:key="receipt.receipt_id">
+                    <v-card>
+                        <v-card-title>
+                            <div class="text-h6">Recepción #{{ receipt.receipt_id }}</div>
+                            <v-spacer></v-spacer>
+                            <v-btn v-on:click="reprintReceipt(receipt.receipt_id)" icon class="primary--text">
+                                <v-icon>mdi-printer</v-icon>
+                            </v-btn>
+                        </v-card-title>
+                        <v-card-subtitle>
+                            <div class="text-subtitle-1">
+                                {{ receipt.client.client_name }}<br />
+                                <v-icon small>mdi-phone</v-icon> {{ receipt.client.client_phone }}
+                            </div>
+                        </v-card-subtitle>
+                        <v-card-text>
+                            <div class="text-caption pb-2">Equipos ({{ receipt.devices.length }}):</div>
                             <devices-list-component :devices="receipt.devices"></devices-list-component>
-                            <span><b>Registrada por:</b> {{ receipt.user.name }}</span>
-                            <a class="waves-effect waves-light btn blue" v-on:click="reprintReceipt(receipt.receipt_id)"
-                                >Reimprimir ticket</a
-                            >
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- <div>
-			<h5 
-				v-show="filteredReceipts.length == 0 && this.$parent.searchReceipt != '' " 
-				class="center grey-text">
-				Búsqueda sin resultados.
-			</h5>
-			<h5 v-show="receipts.length == 0 && this.$parent.searchReceipt == ''" class="center grey-text">No hay receiptes registrados.</h5>
-		</div> -->
-        <!-- <update-receipt-modal-component :receipt-id="receiptId.toString()" :receipt-name="receiptName" :receipt-phone="receiptPhone" :receipt-email="receiptEmail"></update-receipt-modal-component> -->
-    </div>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-col>
+    </v-row>
 </template>
-<style>
-    .date-header {
-        padding-bottom: 12px !important;
-        border-bottom: 2px solid #1565c0;
-    }
-    .inline-icon-large {
-        vertical-align: bottom;
-        font-size: 48px !important;
-    }
-    .inline-icon-small {
-        vertical-align: bottom;
-        font-size: 20px !important;
-    }
-    .inline-icon-medium {
-        vertical-align: bottom;
-        font-size: 32px !important;
-    }
-    .device-desc {
-        margin-left: 24px !important;
-    }
-    .hoverable-card:hover {
-        background-color: #eeeeee;
-        transition: 0.1s;
-    }
-    .selectable {
-        cursor: pointer;
-    }
-    .receipt-card {
-        height: 500px !important;
-        border: 1px solid #cfd8dc;
-    }
-</style>
 <script>
     import { mapGetters } from 'vuex'
     export default {

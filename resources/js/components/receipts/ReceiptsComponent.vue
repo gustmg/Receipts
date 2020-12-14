@@ -1,13 +1,9 @@
 <template>
-    <div class="row">
+    <v-container>
         <receipt-search-bar-component></receipt-search-bar-component>
         <receipts-list-component></receipts-list-component>
-        <new-receipt-button-component></new-receipt-button-component>
         <new-receipt-modal-component></new-receipt-modal-component>
-        <new-device-modal-component></new-device-modal-component>
-        <new-accessory-modal-component></new-accessory-modal-component>
-        <clients-list-modal-component></clients-list-modal-component>
-    </div>
+    </v-container>
 </template>
 <script>
     import { mapActions, mapGetters, mapMutations } from 'vuex'

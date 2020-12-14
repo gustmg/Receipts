@@ -1,128 +1,102 @@
 <template>
-    <div id="newDeviceModal" class="modal newDeviceModal">
-        <div class="modal-content">
-            <h5>Nuevo equipo</h5>
-            <br />
-            <div class="row">
-                <form id="newDeviceForm" class="col s12 no-padding" method="POST" action="devices">
-                    <input type="hidden" name="_token" :value="csrf" />
-                    <div class="row">
-                        <div class="input-field col s12 m8 no-vertical-margin">
-                            <input
-                                placeholder=""
-                                id="device_name"
-                                type="text"
-                                v-model="newDeviceName"
-                                v-on:blur="validateDeviceName"
-                                v-bind:class="{ valid: validDeviceName, invalid: invalidDeviceName }"
-                                data-length="50"
-                                maxlength="50"
-                                required
-                            />
-                            <label for="device_name" class="valign-wrapper"
-                                ><i class="material-icons">computer</i>&nbsp;&nbsp;Nombre del equipo*</label
-                            >
-                            <span class="helper-text device_name_helper" data-success="Nombre validado."></span><br />
-                        </div>
-                        <div class="input-field col s12 m4 no-vertical-margin">
-                            <input
-                                placeholder=""
-                                id="device_serial_number"
-                                type="tel"
-                                v-model="newDeviceSerialNumber"
-                                v-bind:class="{ valid: validDeviceSerialNumber, invalid: invalidDeviceSerialNumber }"
-                                data-length="4"
-                                minlength="4"
-                                maxlength="4"
-                            />
-                            <label for="device_serial_number" class="valign-wrapper"
-                                ><i class="material-icons">local_offer</i>&nbsp;&nbsp;Número de serie</label
-                            >
-                            <span
-                                class="helper-text device_serial_number_helper"
-                                data-success="Número de serie validado."
-                            ></span>
-                        </div>
-                        <div class="input-field col s12 no-vertical-margin">
-                            <input
-                                placeholder=""
-                                id="device_trouble_description"
-                                type="email"
-                                v-model="newDeviceTroubleDescription"
-                                v-on:blur="validateDeviceTroubleDescription"
-                                v-bind:class="{
-                                    valid: validDeviceTroubleDescription,
-                                    invalid: invalidDeviceTroubleDescription,
-                                }"
-                                data-length="100"
-                                maxlength="100"
-                            />
-                            <label for="device_trouble_description" class="valign-wrapper"
-                                ><i class="material-icons">description</i>&nbsp;&nbsp;Descripción del problema</label
-                            >
-                            <span
-                                class="helper-text device_trouble_description_helper"
-                                data-success="Descripción de problema validado."
-                            ></span>
-                        </div>
-                    </div>
-                </form>
-                <div class="col-m12">
-                    <span><b>ACCESORIOS</b></span>
-                    <div class="row">
-                        <new-accessory-button-component></new-accessory-button-component>
-                        <div
-                            class="col s12 m4"
-                            v-show="deviceAccessories.length > 0"
-                            v-for="accessory in deviceAccessories"
-                            v-bind:key="accessory.accessory_id"
-                        >
-                            <div class="card">
-                                <div class="card-content">
-                                    <span class="card-title"
-                                        ><b>{{ accessory.accessory_name }}</b></span
-                                    >
-                                    <span><b>SN:</b> {{ accessory.accessory_serial_number }}</span
-                                    ><br />
-                                </div>
+    <v-dialog v-model="newDeviceDialog" width="480">
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn class="primary" fab v-bind="attrs" v-on="on"><v-icon>mdi-plus</v-icon></v-btn>
+        </template>
+        <v-card>
+            <v-card-title>Equipo a recibir</v-card-title>
+            <v-card-text>
+                <v-container>
+                    <div class="text-caption">Datos generales</div>
+                    <v-form v-model="newDeviceForm" ref="newDeviceForm">
+                        <v-row>
+                            <v-col cols="8">
+                                <v-text-field
+                                    v-model="newDeviceName"
+                                    label="Nombre del equipo *"
+                                    :rules="requiredRule"
+                                    filled
+                                    rounded
+                                    validate-on-blur
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="4">
+                                <v-text-field
+                                    v-model="newDeviceSerialNumber"
+                                    label="Número de serie"
+                                    :rules="serialNumberRules"
+                                    filled
+                                    rounded
+                                    validate-on-blur
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field
+                                    v-model="newDeviceTroubleDescription"
+                                    label="Descripción de la falla o servicio a realizar *"
+                                    :rules="requiredRule"
+                                    filled
+                                    rounded
+                                    validate-on-blur
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                    <div class="text-caption">Accesorios</div>
+                    <v-row>
+                        <v-col cols="12" align="center">
+                            <div class="text-h6 pb-4" v-if="deviceAccessories.length == 0">
+                                No hay accesorios registrados
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button v-on:click="resetNewDeviceInputs" class="modal-action modal-close waves-effect btn-flat">
-                <b>Cancelar</b>
-            </button>
-            <button
-                v-on:click="addDevice"
-                type="submit"
-                v-bind:class="{ disabled: validateForm }"
-                class="modal-action btn waves-effect submit_button"
-            >
-                <b>Registrar</b>
-            </button>
-        </div>
-    </div>
+                            <v-card class="mb-4" v-else>
+                                <v-list>
+                                    <v-list-item
+                                        v-for="(accessory, index) in deviceAccessories"
+                                        v-bind:key="accessory.accessory_id"
+                                    >
+                                        <v-list-item-content align="left">
+                                            <v-list-item-title>
+                                                {{ accessory.accessory_name }}
+                                            </v-list-item-title>
+                                            <v-list-item-subtitle v-if="accessory.accessory_serial_number">
+                                                {{ accessory.accessory_serial_number }}
+                                            </v-list-item-subtitle>
+                                            <v-list-item-subtitle v-else>
+                                                Sin número de serie
+                                            </v-list-item-subtitle>
+                                        </v-list-item-content>
+                                        <v-list-item-action>
+                                            <v-btn icon v-on:click="REMOVE_ACCESSORY(index)">
+                                                <v-icon class="red--text">mdi-close-circle</v-icon>
+                                            </v-btn>
+                                        </v-list-item-action>
+                                    </v-list-item>
+                                </v-list>
+                            </v-card>
+                            <new-accessory-modal-component></new-accessory-modal-component>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card-text>
+            <v-card-actions class="py-0">
+                <v-container>
+                    <v-row>
+                        <v-col cols="6">
+                            <v-btn class="primary--text" block text v-on:click="resetNewDeviceInputs">
+                                Cancelar
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-btn class="primary" block v-on:click="addDevice" :disabled="!newDeviceForm">
+                                Agregar
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
-<style type="text/css">
-    .inline-icon-large {
-        vertical-align: bottom;
-        font-size: 48px !important;
-    }
-    .inline-icon-small {
-        vertical-align: bottom;
-        font-size: 20px !important;
-    }
-    .helper-text {
-        min-height: 0 !important;
-    }
-    .no-vertical-margin {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-</style>
 <script>
     import { mapMutations, mapGetters } from 'vuex'
     export default {
@@ -133,16 +107,19 @@
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                newDevice: null,
+                newDeviceDialog: false,
+                newDeviceForm: false,
                 newDeviceName: null,
                 newDeviceSerialNumber: null,
                 newDeviceTroubleDescription: null,
-                validDeviceName: false,
-                invalidDeviceName: false,
-                validDeviceSerialNumber: false,
-                invalidDeviceSerialNumber: false,
-                validDeviceTroubleDescription: false,
-                invalidDeviceTroubleDescription: false,
+                requiredRule: [v => !!v || 'Este campo es requerido.'],
+                serialNumberRules: [
+                    v => {
+                        if (!v || v.length == 0) return true
+                        if (!v || v.length > 3) return true
+                        return 'El número de serie debe contener al menos 4 caracteres.'
+                    },
+                ],
             }
         },
 
@@ -160,7 +137,7 @@
 
         methods: {
             ...mapMutations('devices', ['ADD_DEVICE_TO_LIST']),
-            ...mapMutations('accessories', ['RESET_ACCESSORIES']),
+            ...mapMutations('accessories', ['RESET_ACCESSORIES', 'REMOVE_ACCESSORY']),
 
             addDevice: function() {
                 this.ADD_DEVICE_TO_LIST({
@@ -170,7 +147,7 @@
                     device_accessories: this.deviceAccessories,
                 })
                 this.resetNewDeviceInputs()
-                $('#newDeviceModal').modal('close')
+                this.newDeviceDialog = false
             },
 
             validateDeviceName: function(e) {
@@ -196,17 +173,10 @@
             },
 
             resetNewDeviceInputs: function(e) {
-                this.newDeviceName = null
-                this.newDeviceSerialNumber = null
-                this.newDeviceTroubleDescription = null
-                this.validDeviceName = false
-                this.invalidDeviceName = false
-                this.validDeviceSerialNumber = false
-                this.invalidDeviceSerialNumber = false
-                this.validDeviceTroubleDescription = false
-                this.invalidDeviceTroubleDescription = false
-                //CLEAN ACCESSORIES
+                this.$refs.newDeviceForm.reset()
+                this.$refs.newDeviceForm.resetValidation()
                 this.RESET_ACCESSORIES()
+                this.newDeviceDialog = false
             },
         },
     }

@@ -1,68 +1,67 @@
 <template>
-	<div>
-		<ul class="collection">
-			<li class="collection-item" v-for="(device, index) in devices">
-				<span class="title"><b>{{device.device_name}}</b></span>
-				<p style="font-size:13px;">
-					{{device.device_trouble_description}}<br>
-				</p>
-				<p style="font-size:13px;" v-for="(accessory, index) in device.accessories">
-					<i class="material-icons inline-icon-small">keyboard</i> {{accessory.accessory_name}}&nbsp;({{getAccessorySerialNumber(accessory.accessory_serial_number)}})
-				</p>
-			</li>
-		</ul>
-	</div>
+    <v-list class="elevation-1">
+        <template v-for="(device, index) in devices">
+            <v-list-item>
+                <v-list-item-content>
+                    <v-list-item-title>
+                        {{ device.device_name }}
+                        <div class="text-caption">SN: {{ device.device_serial_number }}</div>
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                        {{ device.device_trouble_description }}
+                    </v-list-item-subtitle>
+                    <div class="text-caption text--secondary mt-2">Accesorios ({{ device.accessories.length }})</div>
+                    <v-list-item-content v-if="device.accessories.length != 0">
+                        <v-list two-line>
+                            <v-list-item
+                                v-for="(accessory, index) in device.accessories"
+                                v-bind:key="accessory.accessory_id"
+                                class="px-0"
+                            >
+                                <v-list-item-avatar class="mr-1">
+                                    <v-icon>mdi-keyboard</v-icon>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        <div class="text-body-2">{{ accessory.accessory_name }}</div>
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle>
+                                        {{ getAccessorySerialNumber(accessory.accessory_serial_number) }}
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-list-item-content>
+                </v-list-item-content>
+            </v-list-item>
+            <v-divider v-if="index < devices.length - 1"></v-divider>
+        </template>
+    </v-list>
 </template>
-<style>
-	.inline-icon-large {
-	   vertical-align: bottom;
-	   font-size: 48px !important;
-	}
-	.inline-icon-small {
-	   vertical-align: bottom;
-	   font-size: 20px !important;
-	}
-
-	.hoverable-card:hover{
-		background-color: #eeeeee;
-		transition: .1s;
-	}
-
-	.selectable{
-		cursor: pointer;
-	}
-</style>
 <script>
-	export default {
-		mounted(){
-            console.log("Devices list component mounted succesfully");
-		},
+    export default {
+        props: {
+            devices: {
+                type: Array,
+            },
+        },
 
-		props:{
-			devices: {
-				type: Array
-			},
-		},
+        methods: {
+            getAccessorySerialNumber: function(accessory_serial_number) {
+                if (accessory_serial_number) {
+                    return accessory_serial_number
+                } else {
+                    return 'S/N'
+                }
+            },
+        },
 
-		methods: {
-			getAccessorySerialNumber: function(accessory_serial_number) {
-				if(accessory_serial_number){
-					return accessory_serial_number;
-				}
-				else{
-					return "S/N";
-				}
-			}
-		},
-
-		computed: {
-			filteredDevices: function() {
-				return this.devices.filter((device)=>{
-					return device.device_name.toLowerCase().indexOf(this.$parent.searchDevice.toLowerCase()) >= 0;
-					// || device.device_serial_number.indexOf(this.searchDevice) >= 0
-					// || device.device_trouble_description.indexOf(this.searchDevice) >= 0;
-				});   		
-			}
-		}
-	}
+        computed: {
+            filteredDevices: function() {
+                return this.devices.filter(device => {
+                    return device.device_name.toLowerCase().indexOf(this.$parent.searchDevice.toLowerCase()) >= 0
+                })
+            },
+        },
+    }
 </script>

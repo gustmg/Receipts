@@ -57,16 +57,16 @@ class InventoryEntryProductController extends Controller
                     'inventory_entry_id' => $inventory_entry_id,
                     'product_id' => $products_detail_decoded->product_id,
                     'product_entry_amount' => $products_detail_decoded->product_amount,
-                    'product_unit_cost' => $float_unit_cost
+                    'product_unit_cost' => $products_detail_decoded->product_unit_cost,
                 ];
 
                 $product=Product::find($products_detail_decoded->product_id);
                 $product->product_stock = $product->product_stock + $products_detail_decoded->product_amount;
                 if($product->product_cost == 0){
-                    $product->product_cost = $float_unit_cost; 
+                    $product->product_cost = $products_detail_decoded->product_unit_cost; 
                 }
                 else{
-                    $product->product_cost = ($product->product_cost + $float_unit_cost) / 2; 
+                    $product->product_cost = ($product->product_cost + $products_detail_decoded->product_unit_cost) / 2; 
                 }
                 $product->save();
             }

@@ -1,5 +1,5 @@
 const mix = require('laravel-mix')
-// require('vuetifyjs-mix-extension')
+require('vuetifyjs-mix-extension')
 mix.disableNotifications()
 
 /*
@@ -11,9 +11,14 @@ mix.disableNotifications()
  | for your Laravel application. By default, we are compiling the Sass
  | file for the application as well as bundling up all the JS files.
  |
- */
+*/
 
-mix.js('resources/js/app.js', 'public/js').sass('resources/sass/app.scss', 'public/css', {
+mix.sass('resources/sass/app.scss', 'public/css', {
     includePaths: ['node_modules'],
 })
-// mix.js('resources/js/app.js', 'public/js').vuetify()
+mix.js('resources/js/app.js', 'public/js').vuetify()
+
+mix.browserSync({
+    proxy: '127.0.0.1:8000',
+    notify: false,
+})

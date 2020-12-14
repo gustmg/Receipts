@@ -1,31 +1,7 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-// @import url('https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css');
 
-//Materialize
-@import '../sass/materialize.scss';
-@import '../node_modules/@braid/vue-formulate/themes/snow/snow.scss';
-
-$mdc-theme-primary: #fb8c00;
-$mdc-theme-secondary: #feeae6;
-$mdc-theme-on-primary: #442b2d;
-$mdc-theme-on-secondary: #442b2d;
-@import '~@material/button/mdc-button';
-
-.navbar-laravel {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
-
-#slide-out {
-    height: 100% !important;
-}
-
-.formulate-input-element {
-    max-width: 100% !important;
-}
-
-.formulate-input[data-classification='box'] .formulate-input-element-decorator {
-    width: 1.5em !important;
-    height: 1.5em !important;
+html {
+    height: 100%;
+    overflow-y: auto !important;
 }

@@ -18,6 +18,10 @@ export default {
             state.accessories.push(accessory)
         },
 
+        REMOVE_ACCESSORY(state, accessoryIndex) {
+            state.accessories.splice(accessoryIndex, 1)
+        },
+
         RESET_ACCESSORIES(state) {
             state.accessories = []
         },

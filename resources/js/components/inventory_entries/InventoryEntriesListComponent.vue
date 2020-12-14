@@ -1,57 +1,73 @@
 <template>
-    <div class="row">
-        <div v-if="inventory_entries.length == 0" class="col m12">
-            <h1>No hay entradas de inventario registradas</h1>
-        </div>
-        <div v-else class="row col s12">
-            <div v-for="inventory_entry in inventory_entries" v-bind:key="inventory_entry.inventory_entry_id" class="card col s12">
-                <div class="row valign-wrapper inventory-entry">
-                    <div class="col s3">
-                        <span>{{inventory_entry.inventory_entry_created_at}}</span><br>
-                        <h5>Entrada # {{inventory_entry.inventory_entry_id}}</h5>
-                    </div>
-                    <div class="col s2 offset-s3" align="center"><h6><i class="material-icons">store</i></h6><h6>Almacén principal</h6></div>
-                    <div class="col s1" align="center"><h6><b>{{getProductsAmount(inventory_entry.products)}}</b></h6><h6>Productos ingresados</h6></div>
-                    <div class="col s2" align="center"><h6><b>{{formatNumberToCurrency(inventory_entry.inventory_entry_total_cost)}}</b></h6><h6>Costo Total</h6></div>
-                    <div class="col s1" align="center"><button v-on:click="openEntryDetailModal(inventory_entry.inventory_entry_id)" class="waves-effect btn-flat blue-text">Ver detalles</button></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <v-row>
+        <v-col cols="12" v-if="inventoryEntries.length == 0">
+            <div class="text-h4">No hay entradas registradas</div>
+        </v-col>
+        <v-col cols="12" v-else>
+            <v-row>
+                <v-col
+                    cols="12"
+                    v-for="inventory_entry in inventoryEntries"
+                    v-bind:key="inventory_entry.inventory_entry_id"
+                >
+                    <v-card>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="4">
+                                    <div class="text-caption">{{ inventory_entry.inventory_entry_created_at }}</div>
+                                    <div class="text-h5">Entrada #{{ inventory_entry.inventory_entry_id }}</div>
+                                </v-col>
+                                <v-col cols="2" align="center">
+                                    <v-icon>mdi-warehouse</v-icon>
+                                    <div class="text-subtitle-1">Almacén principal</div>
+                                </v-col>
+                                <v-col cols="2" align="center">
+                                    <div class="text-h6">{{ getProductsAmount(inventory_entry.products) }}</div>
+                                    <div class="text-subtitle-1">Productos ingresados</div>
+                                </v-col>
+                                <v-col cols="2" align="center">
+                                    <div class="text-h6">
+                                        {{ formatNumberToCurrency(inventory_entry.inventory_entry_total_cost) }}
+                                    </div>
+                                    <div class="text-subtitle-1">Costo Total</div>
+                                </v-col>
+                                <v-col cols="2" align="center">
+                                    <inventory-entry-detail-modal-component
+                                        :inventory-entry="inventory_entry"
+                                    ></inventory-entry-detail-modal-component>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-col>
+    </v-row>
 </template>
-<style scoped>
-    .inventory-entry{
-        margin-top: 16px;
-        margin-bottom: 16px;
-        margin-left: 4px;
-        margin-right: 4px;
-    }
-</style>
 <script>
-    import {mapMutations, mapActions, mapState} from "vuex";
+    import { mapGetters, mapMutations, mapActions, mapState } from 'vuex'
     export default {
-        mounted () {            
-            this.fetchInventoryEntries();
-        },
-
         computed: {
-            ...mapState(['inventory_entries'])
+            ...mapGetters('inventoryEntries', {
+                inventoryEntries: 'getInventoryEntries',
+            }),
         },
 
         methods: {
             ...mapActions(['openModal', 'setCurrentInventoryEntryDetail', 'fetchInventoryEntries']),
+
             getProductsAmount: function(product_entries) {
-                var total_products_amount = 0;
+                var total_products_amount = 0
                 product_entries.forEach(product_entry => {
-                    total_products_amount += product_entry.pivot.product_entry_amount;
-                });
-                return total_products_amount;
+                    total_products_amount += product_entry.pivot.product_entry_amount
+                })
+                return total_products_amount
             },
 
             openEntryDetailModal: function(inventory_entry_id) {
-                this.setCurrentInventoryEntryDetail(inventory_entry_id);
-                this.openModal($('#inventoryEntryDetailModal'));
+                this.setCurrentInventoryEntryDetail(inventory_entry_id)
+                this.openModal($('#inventoryEntryDetailModal'))
             },
-        }
+        },
     }
 </script>
