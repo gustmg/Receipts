@@ -3,7 +3,7 @@
         <template v-slot:activator="{ on, attrs }">
             <v-speed-dial fixed bottom right>
                 <template v-slot:activator>
-                    <v-btn class="primary white--text" v-bind="attrs" v-on="on" fab>
+                    <v-btn class="secondary primary--text" v-bind="attrs" v-on="on" fab>
                         <v-icon>mdi-plus</v-icon>
                     </v-btn>
                 </template>
@@ -29,6 +29,7 @@
                                     <v-row align="center">
                                         <v-col cols="6">
                                             <v-switch
+                                                color="secondary"
                                                 :value="newClientToggle"
                                                 v-on:change="newClientToggleHandler"
                                                 label="¿Cliente nuevo?"
@@ -43,6 +44,7 @@
                                         <v-col cols="5" class="py-0">
                                             <v-text-field
                                                 label="Id cliente"
+                                                color="secondary"
                                                 v-model="receiptClientId"
                                                 :disabled="newClientToggle == false"
                                                 readonly
@@ -53,6 +55,7 @@
                                         <v-col cols="7" class="py-0">
                                             <v-text-field
                                                 label="Teléfono"
+                                                color="secondary"
                                                 v-model="clientPhone"
                                                 :disabled="newClientToggle == false"
                                                 :rules="clientPhoneRules"
@@ -67,6 +70,7 @@
                                         <v-col cols="12" class="py-0">
                                             <v-text-field
                                                 label="Nombre *"
+                                                color="secondary"
                                                 v-model="clientName"
                                                 :disabled="newClientToggle == false"
                                                 :rules="clientNameRules"
@@ -163,9 +167,9 @@
             </v-stepper>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn class="primary--text px-4" text v-on:click="closeReceiptDialog()">Cancelar</v-btn>
+                <v-btn class="secondary--text px-4" text v-on:click="closeReceiptDialog()">Cancelar</v-btn>
                 <v-btn
-                    class="primary white--text px-4"
+                    class="secondary primary--text px-4"
                     v-on:click="newReceiptStepper++"
                     :disabled="!validStepForm"
                     :loading="loadingNextStepButton"

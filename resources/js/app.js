@@ -12,6 +12,7 @@ import VueFormulate from '@braid/vue-formulate'
 import VueCurrencyInput from 'vue-currency-input'
 import storeData from './store/index'
 import vuetify from './plugins/vuetify'
+import VueApexCharts from 'vue-apexcharts'
 
 const vueCurrencyOptions = {
     globalOptions: {
@@ -22,6 +23,7 @@ const vueCurrencyOptions = {
 Vue.use(Vuex)
 Vue.use(VueCurrencyInput, vueCurrencyOptions)
 Vue.use(VueFormulate)
+Vue.use(VueApexCharts)
 
 const store = new Vuex.Store(storeData)
 
@@ -51,30 +53,27 @@ Vue.mixin({
 
 // Vue.component('example-component', require('./components/clients/ExampleComponent.vue').default);
 Vue.component('home-component', require('./components/HomeComponent.vue').default)
+Vue.component('login-component', require('./components/LoginComponent.vue').default)
 Vue.component('app-header-component', require('./components/AppHeaderComponent.vue').default)
 
 Vue.component('clients-component', require('./components/clients/ClientsComponent.vue').default)
+Vue.component('clients-table-component', require('./components/clients/ClientsTableComponent.vue').default)
 Vue.component('client-search-bar-component', require('./components/clients/ClientSearchBarComponent.vue').default)
 Vue.component('clients-list-component', require('./components/clients/ClientsListComponent.vue').default)
 Vue.component('clients-list-modal-component', require('./components/clients/ClientsListModalComponent.vue').default)
-Vue.component('new-client-button-component', require('./components/clients/NewClientButtonComponent.vue').default)
 Vue.component('new-client-modal-component', require('./components/clients/NewClientModalComponent.vue').default)
-Vue.component('update-client-modal-component', require('./components/clients/UpdateClientModalComponent.vue').default)
-Vue.component('delete-client-modal-component', require('./components/clients/DeleteClientModalComponent.vue').default)
+Vue.component('edit-client-dialog-component', require('./components/clients/EditClientDialogComponent.vue').default)
+Vue.component('delete-client-dialog-component', require('./components/clients/DeleteClientDialogComponent.vue').default)
 
 Vue.component('services-component', require('./components/services/ServicesComponent.vue').default)
 Vue.component('service-search-bar-component', require('./components/services/ServiceSearchBarComponent.vue').default)
 Vue.component('services-table-component', require('./components/services/ServicesTableComponent.vue').default)
 Vue.component('services-list-modal-component', require('./components/services/ServicesListModalComponent.vue').default)
-Vue.component('new-service-button-component', require('./components/services/NewServiceButtonComponent.vue').default)
 Vue.component('new-service-modal-component', require('./components/services/NewServiceModalComponent.vue').default)
+Vue.component('edit-service-dialog-component', require('./components/services/EditServiceDialogComponent.vue').default)
 Vue.component(
-    'update-service-modal-component',
-    require('./components/services/UpdateServiceModalComponent.vue').default
-)
-Vue.component(
-    'delete-service-modal-component',
-    require('./components/services/DeleteServiceModalComponent.vue').default
+    'delete-service-dialog-component',
+    require('./components/services/DeleteServiceDialogComponent.vue').default
 )
 
 Vue.component('products-component', require('./components/products/ProductsComponent.vue').default)
@@ -85,23 +84,15 @@ Vue.component(
     'products-list-dialog-component',
     require('./components/products/ProductsListDialogComponent.vue').default
 )
-Vue.component('new-product-button-component', require('./components/products/NewProductButtonComponent.vue').default)
 Vue.component('new-product-modal-component', require('./components/products/NewProductModalComponent.vue').default)
+Vue.component('edit-product-dialog-component', require('./components/products/EditProductDialogComponent.vue').default)
 Vue.component(
-    'update-product-modal-component',
-    require('./components/products/UpdateProductModalComponent.vue').default
-)
-Vue.component(
-    'delete-product-modal-component',
-    require('./components/products/DeleteProductModalComponent.vue').default
+    'delete-product-dialog-component',
+    require('./components/products/DeleteProductDialogComponent.vue').default
 )
 Vue.component(
     'products-list-with-stocks-modal-component',
     require('./components/products/ProductsListWithStocksModalComponent.vue').default
-)
-Vue.component(
-    'warning-product-cost-modal-component',
-    require('./components/products/WarningProductCostModalComponent.vue').default
 )
 
 Vue.component('receipts-component', require('./components/receipts/ReceiptsComponent.vue').default)
@@ -114,16 +105,11 @@ Vue.component(
 )
 
 Vue.component('new-device-modal-component', require('./components/devices/NewDeviceModalComponent.vue').default)
-Vue.component('new-device-button-component', require('./components/devices/NewDeviceButtonComponent.vue').default)
 Vue.component('devices-list-component', require('./components/devices/DevicesListComponent.vue').default)
 
 Vue.component(
     'new-accessory-modal-component',
     require('./components/accessories/NewAccessoryModalComponent.vue').default
-)
-Vue.component(
-    'new-accessory-button-component',
-    require('./components/accessories/NewAccessoryButtonComponent.vue').default
 )
 
 Vue.component('sales-component', require('./components/sales/SalesComponent.vue').default)
@@ -132,6 +118,7 @@ Vue.component('sale-detail-component', require('./components/sales/SaleDetailCom
 Vue.component('sale-search-bar-component', require('./components/sales/SaleSearchBarComponent.vue').default)
 
 Vue.component('reports-component', require('./components/reports/ReportsComponent.vue').default)
+Vue.component('report-detail-dialog-component', require('./components/reports/ReportDetailDialogComponent.vue').default)
 
 Vue.component(
     'inventory-entries-component',
@@ -160,13 +147,17 @@ Vue.component(
     require('./components/inventory_exits/NewInventoryExitModalComponent.vue').default
 )
 Vue.component(
-    'new-inventory-exit-button-component',
-    require('./components/inventory_exits/NewInventoryExitButtonComponent.vue').default
-)
-Vue.component(
     'inventory-exit-detail-modal-component',
     require('./components/inventory_exits/InventoryExitDetailModalComponent.vue').default
 )
+
+Vue.component('timeline-dialog-component', require('./components/devices/TimelineDialogComponent.vue').default)
+Vue.component(
+    'update-service-status-dialog-component',
+    require('./components/devices/UpdateServiceStatusDialogComponent.vue').default
+)
+
+Vue.component('apexchart', VueApexCharts)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

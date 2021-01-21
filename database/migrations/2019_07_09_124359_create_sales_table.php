@@ -18,6 +18,7 @@ class CreateSalesTable extends Migration
             $table->unsignedInteger('sale_worker_id');
             $table->unsignedInteger('sale_client_id');
             $table->unsignedInteger('sale_payment_form_id');
+            $table->boolean('sale_invoiced');
             $table->decimal('sale_total_amount',8,2);
             $table->timestamps();
 

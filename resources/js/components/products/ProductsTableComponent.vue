@@ -9,6 +9,12 @@
                     item-key="product_id"
                     hide-default-footer
                 >
+                    <template v-slot:item.product_options="{ item }">
+                        <edit-product-dialog-component :product="item"></edit-product-dialog-component>
+                        <delete-product-dialog-component
+                            :product-id="item.product_id"
+                        ></delete-product-dialog-component>
+                    </template>
                 </v-data-table>
             </v-card>
         </v-col>
@@ -26,6 +32,7 @@
                     { text: 'Ganancia público en general', value: 'product_base_price_percentage' },
                     { text: 'Ganancia menudeo', value: 'product_retail_price_percentage' },
                     { text: 'Ganancia mayoreo', value: 'product_wholesale_price_percentage' },
+                    { text: 'Opciones', value: 'product_options' },
                 ],
             }
         },

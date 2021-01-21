@@ -1,223 +1,193 @@
 <template>
-    <div id="newInventoryExitModal" class="modal newInventoryExitModal modal-fixed-footer">
-        <div class="modal-content">
-            <div class="row">
-                <div class="col m10 offset-m1">
-                    <div class="row">
-                        <div class="col m4" align="center">
-                            <span><b>FECHA DE SALIDA</b></span><br>
-                            <span>{{date}}</span>
-                        </div>
-                        <div class="col m4" align="center">
-                            <span><b>REGISTRADA POR</b></span><br>
-                            <span>{{this.current_username}}</span>
-                        </div>
-                        <div class="col m4" align="center">
-                            <span><b>ALMACEN DESTINO</b></span><br>
-                            <span>Almacén Principal</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div v-if="this.productsToExit.length == 0" class="col m12" align="center">
-                    <h4>Lista de productos vacía</h4>
-                    <span>Haz click en el botón de abajo para agregar productos a la salida de inventario.</span><br><br>
-                    <button v-on:click="openProductsListDialog" class="btn-floating btn-large">
-                        <i class="material-icons">add</i>
-                    </button>
-                </div>
-                <div v-else class="col m12 row" align="center">
-                    <product-search-bar-component class="col m6 offset-m3"></product-search-bar-component>
-                    <table class="centered">
-                        <thead>
-                            <tr>
-                                <th class="product-checkbox-header">
-                                    <FormulateInput
-                                        type="checkbox"
-                                        class="valign-wrapper"
-                                    />
-                                </th>
-                                <th class="product-code-header">Codigo</th>
-                                <th class="product-name-header">Nombre</th>
-                                <th class="product-description-header">Descripcion</th>
-                                <th class="product-measurement-header">Unidad de medida</th>
-                                <th class="product-amount-header">Cantidad de salida</th>
-                                <th class="product-unit-cost-header">Causa de salida</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(product,index) in productsToExit" v-bind:key="product.product_id">
-                                <td>
-                                    <FormulateInput
-                                        type="checkbox"
-                                        class="valign-wrapper"
-                                        name="check"
-                                        v-model="productsExitDetail[index].checked"
-                                    />
-                                </td>
-                                <td>{{product.product_code}}</td>
-                                <td>{{product.product_name}}</td>
-                                <td>{{product.product_description}}</td>
-                                <td>PIEZA</td>
-                                <td>
-                                    <FormulateInput
-                                        type="text"
-                                        name="amount"
-                                        :validation="[
-                                            ['number'],
-                                            ['min', 0.01],
-                                            ['max', product.product_stock]
-                                        ]"
-                                        :value="productsExitDetail[index].product_exit_amount"
-                                        @input="updateAmount(index, $event)"
-                                    />
-                                    de {{product.product_stock}} actuales
-                                </td>
-                                <td>
-                                    <FormulateInput
-                                        type="text"
-                                        name="exit_justification"
-                                        :value="productsExitDetail[index].product_exit_justification"
-                                        @input="updateExitJustification(index, $event)"
-                                    />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table><br><br>
-                    <button v-on:click="openProductsListDialog" class="btn-floating btn-large">
-                        <i class="material-icons">add</i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="modal-action modal-close waves-effect btn-flat"><b>Cancelar</b></button>
-            <button v-on:click="saveInventoryExit" type="submit" v-bind:class="{'disabled': validateForm}" class="modal-action btn waves-effect submit_button">
-                <b>Registrar</b>
-            </button>
-        </div>
-    </div>
+    <v-dialog v-model="newInventoryExitModal">
+        <template v-slot:activator="{ on, attrs }">
+            <v-speed-dial fixed bottom right>
+                <template v-slot:activator>
+                    <v-btn class="secondary primary--text" v-bind="attrs" v-on="on" fab>
+                        <v-icon>mdi-plus</v-icon>
+                    </v-btn>
+                </template>
+            </v-speed-dial>
+        </template>
+        <v-card>
+            <v-container>
+                <v-row>
+                    <v-col cols="12" algin="center">
+                        <v-row>
+                            <v-col cols="3">
+                                <div class="text-subtitle-2">Fecha de salida</div>
+                                <div class="body-1">{{ date }}</div>
+                            </v-col>
+                            <v-col cols="3">
+                                <div class="text-subtitle-2">Registrada por</div>
+                                <div class="body-1">{{ this.current_username }}</div>
+                            </v-col>
+                            <v-col cols="3">
+                                <div class="text-subtitle-2">Almacén origen</div>
+                                <div class="body-1">Almacén principal</div>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" align="center">
+                        <v-data-table
+                            :headers="exitProductsTableHeaders"
+                            :items="productsExitDetail"
+                            item-key="product_id"
+                            hide-default-footer
+                            calculate-widths
+                        >
+                            <template v-slot:item.product_amount="{ item }">
+                                <v-text-field
+                                    class="pt-6"
+                                    color="secondary"
+                                    solo
+                                    min="1"
+                                    type="number"
+                                    v-model="item.product_amount"
+                                    suffix="pzas"
+                                ></v-text-field>
+                            </template>
+                            <template v-slot:item.product_justification="{ item }">
+                                <v-text-field
+                                    class="pt-6"
+                                    color="secondary"
+                                    solo
+                                    type="text"
+                                    v-model="item.product_justification"
+                                ></v-text-field>
+                            </template>
+                        </v-data-table>
+                        <products-list-dialog-component :route="2"></products-list-dialog-component>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-spacer></v-spacer>
+                    <v-col cols="2">
+                        <v-btn text block v-on:click="confirmationModal = true">Cancelar</v-btn>
+                    </v-col>
+                    <v-col cols="2">
+                        <v-btn color="secondary" block :disabled="!isValidExitForm" v-on:click="saveInventoryExit()"
+                            >Registrar salida</v-btn
+                        >
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-card>
+        <v-dialog v-model="confirmationModal" width="480">
+            <v-card>
+                <v-card-title>¿Cerrar registro de entrada?</v-card-title>
+                <v-card-text
+                    >Si sale de esta ventana sin generar la entrada, perderá la información ingresada.</v-card-text
+                >
+                <v-card-actions>
+                    <v-btn text v-on:click="confirmationModal = false">Cancelar</v-btn>
+                    <v-btn color="error" v-on:click="closeModal()">Salir</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </v-dialog>
 </template>
-<style scoped>
-    .product-checkbox-header{
-        width: 5%
-    }
-    .product-code-header,
-    .product-measurement-header,
-    .product-amount-header{
-        width: 10%;
-    }
-    .product-name-header{
-        width: 20%;
-    }
-    .product-description-header{
-        width: 25%;
-    }
-    .product-exit-cause-header{
-        width: 20%;
-    }
-    .newInventoryExitModal{
-        width: 95%;
-        max-height: 80%;
-    }
-</style>
 <script>
-    import {mapState, mapMutations, mapActions} from "vuex";
-    import { parseCurrency } from 'vue-currency-input'
+    import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
+
     export default {
         data() {
             return {
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                newInventoryExitModal: false,
+                confirmationModal: false,
+                exitProductsTableHeaders: [
+                    { text: 'Código', value: 'product_code', width: '10%' },
+                    { text: 'Producto', value: 'product_name', width: '15%' },
+                    { text: 'Descripción', value: 'product_description', width: '20%' },
+                    { text: 'Cantidad', value: 'product_amount', width: '15%' },
+                    { text: 'Justificación de salida', value: 'product_justification', width: '15%' },
+                ],
             }
         },
 
         computed: {
-            ...mapState('inventoryExits', {
-                productsToExit : state => state.productsToExit,
-                productsExitDetail: state => state.productsExitDetail
+            ...mapState(['current_username', 'products', 'products_exit_detail']),
+            ...mapGetters('inventoryExits', {
+                productsToExit: 'getProductsToExit',
+                productsExitDetail: 'getProductsExitDetail',
             }),
-            ...mapState(['current_username', 'products']),
 
-            validateForm: function () {
-                if(this.productsExitDetail.length > 0){
-                    var empty_inputs_counter=0;
-                    this.productsExitDetail.forEach(product => {
-                        if(!product.product_exit_amount || product.product_exit_amount == '' || parseFloat(product.product_exit_amount)==0 || !product.product_exit_justification || product.product_exit_justification == ''){
-                            empty_inputs_counter ++;
+            isValidExitForm: function() {
+                if (this.productsExitDetail.length > 0) {
+                    var productsWithNoAmount = 0
+                    var productsWithNoJustification = 0
+                    this.productsExitDetail.forEach(productToExit => {
+                        if (productToExit.product_amount == 0) {
+                            productsWithNoAmount++
                         }
-                    });
+                        if (productToExit.product_justification.length == 0) {
+                            productsWithNoJustification++
+                        }
+                    })
 
-                    if(empty_inputs_counter == 0){
-                        return false;
+                    if (productsWithNoAmount > 0 || productsWithNoJustification > 0) {
+                        return false
+                    } else {
+                        return true
                     }
-                    else{
-                        return true;
-                    }
-                }
-                else{
-                    return true;
+                } else {
+                    return false
                 }
             },
 
             date: function() {
-                var d = new Date();
+                var d = new Date()
 
                 switch (d.getMonth()) {
                     case 0:
-                        return "Enero "+d.getDate()+", "+d.getFullYear();
+                        return 'Enero ' + d.getDate() + ', ' + d.getFullYear()
                     case 1:
-                        return "Febrero "+d.getDate()+", "+d.getFullYear();
+                        return 'Febrero ' + d.getDate() + ', ' + d.getFullYear()
                     case 2:
-                        return "Marzo "+d.getDate()+", "+d.getFullYear();
+                        return 'Marzo ' + d.getDate() + ', ' + d.getFullYear()
                     case 3:
-                        return "Abril "+d.getDate()+", "+d.getFullYear();
+                        return 'Abril ' + d.getDate() + ', ' + d.getFullYear()
                     case 4:
-                        return "Mayo "+d.getDate()+", "+d.getFullYear();
+                        return 'Mayo ' + d.getDate() + ', ' + d.getFullYear()
                     case 5:
-                        return "Junio "+d.getDate()+", "+d.getFullYear();
+                        return 'Junio ' + d.getDate() + ', ' + d.getFullYear()
                     case 6:
-                        return "Julio "+d.getDate()+", "+d.getFullYear();
+                        return 'Julio ' + d.getDate() + ', ' + d.getFullYear()
                     case 7:
-                        return "Agosto "+d.getDate()+", "+d.getFullYear();
+                        return 'Agosto ' + d.getDate() + ', ' + d.getFullYear()
                     case 8:
-                        return "Septiembre "+d.getDate()+", "+d.getFullYear();
+                        return 'Septiembre ' + d.getDate() + ', ' + d.getFullYear()
                     case 9:
-                        return "Octubre "+d.getDate()+", "+d.getFullYear();
+                        return 'Octubre ' + d.getDate() + ', ' + d.getFullYear()
                     case 10:
-                        return "Noviembre "+d.getDate()+", "+d.getFullYear();
+                        return 'Noviembre ' + d.getDate() + ', ' + d.getFullYear()
                     case 11:
-                        return "Diciembre "+d.getDate()+", "+d.getFullYear();
+                        return 'Diciembre ' + d.getDate() + ', ' + d.getFullYear()
                     default:
-                        break;
+                        break
                 }
-            }
+            },
         },
 
         methods: {
-            ...mapActions('inventoryExits', [
-                'updateProductExitJustification',
-                'updateProductAmount',
-                'addInventoryExit'
-            ]),
-            ...mapActions(['fetchProducts', 'addProduct']),
-            saveInventoryExit: function(){
-                this.addInventoryExit();
-                 $('#newInventoryExitModal').modal('close');
+            ...mapActions(['fetchProducts', 'addProduct', 'updateProductAmount', 'updateProductUnitCost']),
+
+            ...mapMutations('inventoryExits', ['RESET_PRODUCTS_TO_EXIT', 'RESET_PRODUCTS_TO_EXIT_DETAIL']),
+
+            ...mapActions('inventoryExits', ['addInventoryExit']),
+
+            saveInventoryExit: function() {
+                this.addInventoryExit()
+                this.newInventoryExitModal = false
             },
 
-            openProductsListDialog: function() {
-                this.fetchProducts();
-                $('#productsListWithStocksModal').modal('open');
+            closeModal: function() {
+                this.$store.commit('inventoryExits/RESET_PRODUCTS_TO_EXIT')
+                this.$store.commit('inventoryExits/RESET_PRODUCTS_TO_EXIT_DETAIL')
+                this.newInventoryExitModal = false
             },
-
-            updateAmount: function(product_index, newValue) {
-                this.updateProductAmount({product_index, newValue});
-            },
-
-            updateExitJustification: function(product_index, new_exit_justification) {
-                this.updateProductExitJustification({product_index, new_exit_justification});
-            }
-        }
+        },
     }
 </script>

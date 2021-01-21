@@ -20,6 +20,7 @@
             this.fetchLastReceiptId()
             this.fetchLastClientId()
             this.fetchServices()
+            this.fetchServiceStatusList()
         },
 
         computed: {
@@ -27,7 +28,7 @@
         },
 
         methods: {
-            ...mapActions('receipts', ['fetchReceipts', 'fetchLastReceiptId']),
+            ...mapActions('receipts', ['fetchReceipts', 'fetchLastReceiptId', 'fetchServiceStatusList']),
             ...mapActions('services', ['fetchServices']),
             ...mapActions('clients', ['fetchClients', 'fetchLastClientId']),
         },

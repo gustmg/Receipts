@@ -14,8 +14,10 @@
 <body>
     <div id="app">
         <v-app>
-            <app-header-component></app-header-component>
-            <v-main>
+            @if (Auth::check())
+            <app-header-component v-if=""></app-header-component>
+            @endif
+            <v-main class="primary">
                 @yield('content')
             </v-main>
         </v-app>

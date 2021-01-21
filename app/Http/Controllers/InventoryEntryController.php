@@ -7,7 +7,6 @@ use View;
 use App\InventoryEntry;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use \NumberFormatter;
 
 class InventoryEntryController extends Controller
 {
@@ -27,6 +26,17 @@ class InventoryEntryController extends Controller
 
         return View::make('inventory_entries.index');
     }
+
+    public function fetchTodayInventoryEntries()
+    {
+        $inventory_entries=InventoryEntry::whereDate('inventory_entry_created_at',Carbon::today())->get();
+        
+        return response()->json([
+            "inventory_entries" => $inventory_entries
+        ], 200);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

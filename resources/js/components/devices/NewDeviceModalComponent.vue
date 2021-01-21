@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="newDeviceDialog" width="480">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" fab v-bind="attrs" v-on="on"><v-icon>mdi-plus</v-icon></v-btn>
+            <v-btn class="secondary" fab v-bind="attrs" v-on="on"><v-icon>mdi-plus</v-icon></v-btn>
         </template>
         <v-card>
             <v-card-title>Equipo a recibir</v-card-title>
@@ -12,31 +12,48 @@
                         <v-row>
                             <v-col cols="8">
                                 <v-text-field
+                                    color="secondary"
                                     v-model="newDeviceName"
                                     label="Nombre del equipo *"
                                     :rules="requiredRule"
                                     filled
                                     rounded
+                                    dense
                                     validate-on-blur
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="4">
                                 <v-text-field
+                                    color="secondary"
                                     v-model="newDeviceSerialNumber"
                                     label="Número de serie"
                                     :rules="serialNumberRules"
                                     filled
                                     rounded
+                                    dense
                                     validate-on-blur
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12">
                                 <v-text-field
+                                    color="secondary"
                                     v-model="newDeviceTroubleDescription"
                                     label="Descripción de la falla o servicio a realizar *"
                                     :rules="requiredRule"
                                     filled
                                     rounded
+                                    dense
+                                    validate-on-blur
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field
+                                    color="secondary"
+                                    v-model="newDeviceServiceCommentary"
+                                    label="Comentario sobre el equipo"
+                                    filled
+                                    rounded
+                                    dense
                                     validate-on-blur
                                 ></v-text-field>
                             </v-col>
@@ -82,12 +99,12 @@
                 <v-container>
                     <v-row>
                         <v-col cols="6">
-                            <v-btn class="primary--text" block text v-on:click="resetNewDeviceInputs">
+                            <v-btn class="secondary--text" block text v-on:click="resetNewDeviceInputs">
                                 Cancelar
                             </v-btn>
                         </v-col>
                         <v-col cols="6">
-                            <v-btn class="primary" block v-on:click="addDevice" :disabled="!newDeviceForm">
+                            <v-btn class="secondary" block v-on:click="addDevice" :disabled="!newDeviceForm">
                                 Agregar
                             </v-btn>
                         </v-col>
@@ -112,6 +129,7 @@
                 newDeviceName: null,
                 newDeviceSerialNumber: null,
                 newDeviceTroubleDescription: null,
+                newDeviceServiceCommentary: null,
                 requiredRule: [v => !!v || 'Este campo es requerido.'],
                 serialNumberRules: [
                     v => {
@@ -144,6 +162,7 @@
                     device_name: this.newDeviceName,
                     device_serial_number: this.newDeviceSerialNumber,
                     device_trouble_description: this.newDeviceTroubleDescription,
+                    device_service_commentary: this.newDeviceServiceCommentary,
                     device_accessories: this.deviceAccessories,
                 })
                 this.resetNewDeviceInputs()

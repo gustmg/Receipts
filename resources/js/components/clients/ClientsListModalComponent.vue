@@ -1,7 +1,7 @@
 <template>
     <v-dialog width="480" v-model="clientsListDialog">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn v-on="on" v-bind="attrs" class="primary white--text" :disabled="newClientToggle">
+            <v-btn v-on="on" v-bind="attrs" class="secondary primary--text" :disabled="newClientToggle">
                 Buscar cliente
             </v-btn>
         </template>

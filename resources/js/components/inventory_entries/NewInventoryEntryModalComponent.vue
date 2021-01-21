@@ -3,7 +3,7 @@
         <template v-slot:activator="{ on, attrs }">
             <v-speed-dial fixed bottom right>
                 <template v-slot:activator>
-                    <v-btn class="primary white--text" v-bind="attrs" v-on="on" fab>
+                    <v-btn class="secondary primary--text" v-bind="attrs" v-on="on" fab>
                         <v-icon>mdi-plus</v-icon>
                     </v-btn>
                 </template>
@@ -45,6 +45,7 @@
                             <template v-slot:item.product_amount="{ item }">
                                 <v-text-field
                                     class="pt-6"
+                                    color="secondary"
                                     solo
                                     min="1"
                                     type="number"
@@ -55,6 +56,7 @@
                             <template v-slot:item.product_unit_cost="{ item }">
                                 <v-text-field
                                     class="pt-6"
+                                    color="secondary"
                                     solo
                                     min="1"
                                     type="number"
@@ -66,6 +68,7 @@
                                 <v-text-field
                                     readonly
                                     class="pt-6"
+                                    color="secondary"
                                     solo
                                     type="number"
                                     :value="item.product_unit_cost * item.product_amount"
@@ -73,31 +76,44 @@
                                 ></v-text-field>
                             </template>
                         </v-data-table>
-                        <products-list-dialog-component></products-list-dialog-component>
+                        <products-list-dialog-component :route="1"></products-list-dialog-component>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-col cols="2">
-                        <v-btn text block>Cancelar</v-btn>
+                        <v-btn color="secondary" text block v-on:click="confirmationModal = true">Cancelar</v-btn>
                     </v-col>
                     <v-col cols="2">
-                        <v-btn color="primary" block :disabled="!isValidEntryForm" v-on:click="saveInventoryEntry()"
+                        <v-btn color="secondary" block :disabled="!isValidEntryForm" v-on:click="saveInventoryEntry()"
                             >Registrar entrada</v-btn
                         >
                     </v-col>
                 </v-row>
             </v-container>
         </v-card>
+        <v-dialog v-model="confirmationModal" width="480">
+            <v-card>
+                <v-card-title>¿Cerrar registro de entrada?</v-card-title>
+                <v-card-text
+                    >Si sale de esta ventana sin generar la entrada, perderá la información ingresada.</v-card-text
+                >
+                <v-card-actions>
+                    <v-btn text v-on:click="confirmationModal = false">Cancelar</v-btn>
+                    <v-btn color="error" v-on:click="closeModal()">Salir</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-dialog>
 </template>
 <script>
     import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
-    import { parseCurrency } from 'vue-currency-input'
+
     export default {
         data() {
             return {
                 newInventoryEntryModal: false,
+                confirmationModal: false,
                 entryProductsTableHeaders: [
                     { text: 'Código', value: 'product_code', width: '10%' },
                     { text: 'Producto', value: 'product_name', width: '15%' },
@@ -182,18 +198,20 @@
         },
 
         methods: {
-            ...mapActions([
-                'fetchProducts',
-                'addProduct',
-                'closeModal',
-                'openModal',
-                'updateProductAmount',
-                'updateProductUnitCost',
-            ]),
+            ...mapActions(['fetchProducts', 'addProduct', 'updateProductAmount', 'updateProductUnitCost']),
+
+            ...mapMutations('inventoryEntries', ['RESET_PRODUCTS_TO_ENTRY', 'RESET_PRODUCTS_TO_ENTRY_DETAIL']),
 
             ...mapActions('inventoryEntries', ['addInventoryEntry']),
+
             saveInventoryEntry: function() {
                 this.addInventoryEntry(this.totalCost)
+                this.newInventoryEntryModal = false
+            },
+
+            closeModal: function() {
+                this.$store.commit('inventoryEntries/RESET_PRODUCTS_TO_ENTRY')
+                this.$store.commit('inventoryEntries/RESET_PRODUCTS_TO_ENTRY_DETAIL')
                 this.newInventoryEntryModal = false
             },
         },

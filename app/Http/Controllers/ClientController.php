@@ -43,8 +43,13 @@ class ClientController extends Controller
     {
         $last_client=DB::table('clients')->latest('client_id')->first();
         
-        return response()->json([
-            "last_client_id" => $last_client->client_id
+        if($last_client){
+            return response()->json([
+                "last_client_id" => $last_client->client_id
+            ], 200);
+        }
+        else return response()->json([
+            "last_client_id" => 0
         ], 200);
     }
 

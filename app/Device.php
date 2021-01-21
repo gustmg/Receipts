@@ -8,7 +8,7 @@ class Device extends Model
 {
     protected $table = 'devices';
     protected $primaryKey = 'device_id';
-    protected $with = ['accessories'];
+    protected $with = ['accessories', 'service_status'];
 
     public function receipts()
     {
@@ -27,6 +27,6 @@ class Device extends Model
 
     public function service_status()
     {
-    	return $this->belongsTo('App\ServiceStatus');
+    	return $this->belongsToMany('App\ServiceStatus', 'device_service_status', 'device_id', 'service_status_id')->withTimestamps();
     }
 }

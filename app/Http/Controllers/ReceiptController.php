@@ -9,6 +9,7 @@ use App\Client;
 use View;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ReceiptController extends Controller
 {
@@ -36,6 +37,15 @@ class ReceiptController extends Controller
         ], 200);
     }
 
+    public function fetchTodayReceipts()
+    {
+        $receipts=Receipt::whereDate('created_at',Carbon::today())->get();
+        
+        return response()->json([
+            "receipts" => $receipts
+        ], 200);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,9 +55,17 @@ class ReceiptController extends Controller
     {
         $last_receipt=DB::table('receipts')->latest('receipt_id')->first();
         
-        return response()->json([
-            "last_receipt_id" => $last_receipt->receipt_id
+        if($last_receipt){
+            return response()->json([
+                "last_receipt_id" => $last_receipt->receipt_id
+            ], 200);
+        }
+
+        else return response()->json([
+            "last_receipt_id" => 0
         ], 200);
+
+        
     }
 
 

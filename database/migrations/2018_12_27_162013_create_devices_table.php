@@ -18,11 +18,10 @@ class CreateDevicesTable extends Migration
             $table->string('device_name');
             $table->string('device_serial_number')->nullable();
             $table->mediumText('device_trouble_description');
-            $table->unsignedInteger('device_service_status_id');
+            $table->mediumText('device_commentary')->nullable();
             $table->unsignedInteger('device_receipt_id');
             $table->timestamps();
 
-            $table->foreign('device_service_status_id')->references('service_status_id')->on('service_status');
             $table->foreign('device_receipt_id')->references('receipt_id')->on('receipts');
         });
     }

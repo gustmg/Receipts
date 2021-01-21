@@ -28,6 +28,15 @@ class InventoryExitController extends Controller
         return View::make('inventory_exits.index');
     }
 
+    public function fetchTodayInventoryExits()
+    {
+        $inventory_exits=InventoryExit::whereDate('inventory_exit_created_at',Carbon::today())->get();
+        
+        return response()->json([
+            "inventory_exits" => $inventory_exits
+        ], 200);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

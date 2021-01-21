@@ -1,35 +1,24 @@
 <template>
-	<div class="row">
-		<client-search-bar-component :search-value.sync="searchClient"></client-search-bar-component>
-		<clients-list-component :clients="clients" :key="componentKey"></clients-list-component>
-		<new-client-button-component></new-client-button-component>
-		<new-client-modal-component></new-client-modal-component>
-	</div>
+    <v-container>
+        <client-search-bar-component></client-search-bar-component>
+        <clients-table-component></clients-table-component>
+        <new-client-modal-component></new-client-modal-component>
+    </v-container>
 </template>
-<script >
-	export default {
-		props: {
-			clients: {
-				type: Array
-			},
-			searchValue:String,
-		},
+<script>
+    import { mapActions, mapGetters, mapMutations } from 'vuex'
 
-		data() {
-			return {
-				searchClient: '',
-				componentKey: 0
-			}
-		},
+    export default {
+        mounted() {
+            this.fetchClients()
+        },
 
-	    mounted() {
-	        console.log('Clients component mounted');
-	    },
+        computed: {
+            ...mapGetters('clients', ['getClients']),
+        },
 
-	    methods: {
-	    	forceRerender() {
-				this.componentKey += 1;  
-			}
-	    }
-	}
+        methods: {
+            ...mapActions('clients', ['fetchClients']),
+        },
+    }
 </script>

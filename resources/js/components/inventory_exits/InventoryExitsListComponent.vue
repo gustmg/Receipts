@@ -1,62 +1,63 @@
 <template>
-    <div class="row">
-        <div v-if="inventoryExits.length == 0" class="col m12">
-            <h1>No hay salidas de inventario registradas</h1>
-        </div>
-        <div v-else class="row col s12">
-            <div v-for="inventory_exit in inventoryExits" v-bind:key="inventory_exit.inventory_exit_id" class="card col s12">
-                <div class="row valign-wrapper inventory-exit">
-                    <div class="col s3">
-                        <span>{{inventory_exit.inventory_exit_created_at}}</span><br>
-                        <h5>Salida # {{inventory_exit.inventory_exit_id}}</h5>
-                    </div>
-                    <div class="col s2 offset-s3" align="center"><h6><i class="material-icons">store</i></h6><h6>Almacén principal</h6></div>
-                    <div class="col s2" align="center"><h6><b>{{getProductsAmount(inventory_exit.products)}}</b></h6><h6>Productos retirados</h6></div>
-                    <div class="col s2" align="center"><button v-on:click="openExitDetailModal(inventory_exit.inventory_exit_id)" class="waves-effect btn-flat blue-text">Ver detalles</button></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <v-row>
+        <v-col cols="12" v-if="inventoryExits.length == 0">
+            <div class="text-h4">No hay salidas registradas</div>
+        </v-col>
+        <v-col cols="12" v-else>
+            <v-row>
+                <v-col cols="12" v-for="inventory_exit in inventoryExits" v-bind:key="inventory_exit.inventory_exit_id">
+                    <v-card>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="4">
+                                    <div class="text-caption">{{ inventory_exit.inventory_exit_created_at }}</div>
+                                    <div class="text-h5">Salida #{{ inventory_exit.inventory_exit_id }}</div>
+                                </v-col>
+                                <v-col cols="2" align="center">
+                                    <v-icon>mdi-warehouse</v-icon>
+                                    <div class="text-subtitle-1">Almacén principal</div>
+                                </v-col>
+                                <v-col cols="2" align="center">
+                                    <div class="text-h6">{{ getProductsAmount(inventory_exit.products) }}</div>
+                                    <div class="text-subtitle-1">Productos retirados</div>
+                                </v-col>
+                                <v-col cols="2" offset-md="2" align="center">
+                                    <inventory-exit-detail-modal-component
+                                        :inventory-exit="inventory_exit"
+                                    ></inventory-exit-detail-modal-component>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-col>
+    </v-row>
 </template>
-<style scoped>
-    .inventory-exit{
-        margin-top: 16px;
-        margin-bottom: 16px;
-        margin-left: 4px;
-        margin-right: 4px;
-    }
-</style>
 <script>
-    import {mapMutations, mapActions, mapState} from "vuex";
+    import { mapGetters, mapMutations, mapActions, mapState } from 'vuex'
     export default {
-        mounted () {            
-            this.fetchInventoryExits();
-        },
-
         computed: {
-            ...mapState('inventoryExits', {
-                inventoryExits: state => state.inventoryExits
-            })
+            ...mapGetters('inventoryExits', {
+                inventoryExits: 'getInventoryExits',
+            }),
         },
 
         methods: {
-            ...mapActions('inventoryExits',[
-                'setCurrentInventoryExitDetail',
-                'fetchInventoryExits'
-            ]),
+            ...mapActions(['openModal', 'setCurrentInventoryExitDetail', 'fetchInventoryExits']),
 
             getProductsAmount: function(product_exits) {
-                var total_products_amount = 0;
+                var total_products_amount = 0
                 product_exits.forEach(product_exit => {
-                    total_products_amount += product_exit.pivot.product_exit_amount;
-                });
-                return total_products_amount;
+                    total_products_amount += product_exit.pivot.product_exit_amount
+                })
+                return total_products_amount
             },
 
             openExitDetailModal: function(inventory_exit_id) {
-                this.setCurrentInventoryExitDetail(inventory_exit_id);
-                $('#inventoryExitDetailModal').modal('open');
-            }
-        }
+                this.setCurrentInventoryExitDetail(inventory_exit_id)
+                this.openModal($('#inventoryExitDetailModal'))
+            },
+        },
     }
 </script>

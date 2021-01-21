@@ -22,6 +22,7 @@ export default {
         SET_SERVICES(state, services) {
             state.services = services
         },
+
         ADD_SERVICE(state, service) {
             state.services.push(service)
         },
@@ -39,7 +40,7 @@ export default {
             state.serviceToUpdate = service
             state.serviceToUpdate_prev_cost = service.service_cost
         },
-        UPDATE_SEARCH_SERVICE_VALUE(state, updateSearchServiceValue) {
+        SET_SEARCH_SERVICE_VALUE(state, updateSearchServiceValue) {
             state.searchServiceValue = updateSearchServiceValue
         },
     },
@@ -56,13 +57,9 @@ export default {
                 })
         },
 
-        addService: function({ commit }, service) {
+        saveService: function({ commit }, service) {
             axios
-                .post('/services', {
-                    service_name: service.service_name,
-                    service_description: service.service_description,
-                    service_code: service.service_code,
-                })
+                .post('/services', service)
                 .then(response => {
                     commit('ADD_SERVICE', response.data.service)
                 })
@@ -90,9 +87,12 @@ export default {
                 })
         },
 
-        setServiceToUpdate: function({ commit }, service) {
-            var service_to_update = _.cloneDeep(service)
-            commit('SET_SERVICE_TO_UPDATE', service_to_update)
+        deleteService: async function({ commit }, service_id) {
+            try {
+                await axios.delete('services/' + service_id)
+            } catch (error) {
+                console.log(error)
+            }
         },
 
         updateSearchServiceValue: function({ commit }, updateSearchServiceValue) {

@@ -1,8 +1,23 @@
 <template>
-    <div class="row">
+    <v-container>
         <service-search-bar-component></service-search-bar-component>
         <services-table-component></services-table-component>
-        <new-service-button-component></new-service-button-component>
         <new-service-modal-component></new-service-modal-component>
-    </div>
+    </v-container>
 </template>
+<script>
+    import { mapActions, mapGetters, mapMutations } from 'vuex'
+    export default {
+        mounted() {
+            this.fetchServices()
+        },
+
+        computed: {
+            ...mapGetters('services', ['getServices']),
+        },
+
+        methods: {
+            ...mapActions('services', ['fetchServices']),
+        },
+    }
+</script>

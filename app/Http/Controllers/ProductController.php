@@ -53,9 +53,9 @@ class ProductController extends Controller
             $product->product_code=$request->product_code;
             $product->product_description=$request->product_description;
             $product->product_cost=0;
-            $product->product_base_price_percentage=0;
-            $product->product_retail_price_percentage=0;
-            $product->product_wholesale_price_percentage=0;
+            $product->product_base_price_percentage=$request->product_base_price_percentage;
+            $product->product_retail_price_percentage=$request->product_retail_price_percentage;
+            $product->product_wholesale_price_percentage=$request->product_wholesale_price_percentage;
             $product->product_stock=0;
             $product->save();
 

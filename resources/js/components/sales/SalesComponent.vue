@@ -1,11 +1,15 @@
 <template>
-    <div class="row" style="margin-bottom:0px; !important;">
-        <sale-detail-component></sale-detail-component>
-        <sale-info-component></sale-info-component>
-        <products-list-modal-component></products-list-modal-component>
-        <services-list-modal-component></services-list-modal-component>
+    <v-container fluid>
+        <v-row>
+            <sale-detail-component></sale-detail-component>
+            <sale-info-component></sale-info-component>
+        </v-row>
+    </v-container>
+    <!-- <div class="row" style="margin-bottom:0px; !important;">
+        
+        
         <clients-list-modal-component></clients-list-modal-component>
-    </div>
+    </div> -->
 </template>
 <style type="text/css">
     .modal-content {
@@ -27,16 +31,13 @@
     import { parseCurrency } from 'vue-currency-input'
     import { CurrencyDirective } from 'vue-currency-input'
     import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
+
     export default {
         directives: {
             currency: CurrencyDirective,
         },
 
         mounted() {
-            document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelectorAll('select')
-                var instances = M.FormSelect.init(elems)
-            })
             this.fetchProducts()
             this.fetchServices()
             this.fetchClients()

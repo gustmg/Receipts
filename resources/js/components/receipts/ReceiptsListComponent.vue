@@ -1,21 +1,19 @@
 <template>
     <v-row>
-        <v-col
-            cols="12"
-            v-show="receipts.length > 0"
-            v-for="(receiptGroup, index) in groupedReceipts"
-            v-bind:key="index"
-        >
+        <!-- <v-col cols="12">
+            <v-btn v-on:click="fetch()">Fetch</v-btn>
+        </v-col> -->
+        <v-col cols="12" v-for="(receiptGroup, index) in groupedReceipts" v-bind:key="index">
             <v-row>
                 <v-col cols="12">
                     <h6 class="text-overline">{{ formatDate(receiptGroup[0].receipt_date) }}</h6>
                 </v-col>
-                <v-col cols="3" v-for="receipt in receiptGroup" v-bind:key="receipt.receipt_id">
+                <v-col cols="12" md="4" xl="3" v-for="receipt in receiptGroup" v-bind:key="receipt.receipt_id">
                     <v-card>
                         <v-card-title>
                             <div class="text-h6">Recepción #{{ receipt.receipt_id }}</div>
                             <v-spacer></v-spacer>
-                            <v-btn v-on:click="reprintReceipt(receipt.receipt_id)" icon class="primary--text">
+                            <v-btn v-on:click="reprintReceipt(receipt.receipt_id)" icon class="secondary--text">
                                 <v-icon>mdi-printer</v-icon>
                             </v-btn>
                         </v-card-title>
@@ -45,6 +43,13 @@
         },
 
         methods: {
+            fetch: function() {
+                axios
+                    .post('fetch')
+                    .then(response => console.log(response.data))
+                    .catch(error => console.log(error))
+            },
+
             reprintReceipt: function(receipt_id) {
                 axios
                     .post('http://localhost:8000/print_receipt', {

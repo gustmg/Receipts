@@ -22,5 +22,11 @@ class PaymentFormSeeder extends Seeder
                'created_at' => date('Y-m-d H:m:s'),
                'updated_at' => date('Y-m-d H:m:s')
         ));
+
+        DB::table('payment_form')->insert(array(
+            'payment_form_name' => 'Transferencia',
+            'created_at' => date('Y-m-d H:m:s'),
+            'updated_at' => date('Y-m-d H:m:s')
+     ));
     }
 }

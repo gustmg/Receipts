@@ -3,7 +3,7 @@
         <template v-slot:activator="{ on, attrs }">
             <v-speed-dial>
                 <template v-slot:activator>
-                    <v-btn class="primary white--text" v-bind="attrs" v-on="on" fab>
+                    <v-btn class="secondary primary--text" v-bind="attrs" v-on="on" fab>
                         <v-icon>mdi-plus</v-icon>
                     </v-btn>
                 </template>
@@ -17,7 +17,11 @@
                         <v-list-item v-for="product in filteredProducts" v-bind:key="product.product_id">
                             <template v-slot:default="{ active }">
                                 <v-list-item-action>
-                                    <v-checkbox v-model="selectedProductsList" :value="product"></v-checkbox>
+                                    <v-checkbox
+                                        v-model="selectedProductsList"
+                                        :value="product"
+                                        color="secondary"
+                                    ></v-checkbox>
                                 </v-list-item-action>
                                 <v-list-item-content>
                                     <v-list-item-title>
@@ -34,7 +38,7 @@
                 </v-list>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="primary" v-on:click="setProductsToEntry()">Aceptar</v-btn>
+                <v-btn color="secondary" v-on:click="setProductsToEntry()">Aceptar</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -42,6 +46,12 @@
 <script>
     import { mapGetters, mapMutations, mapState, mapActions } from 'vuex'
     export default {
+        props: {
+            route: {
+                type: Number, //1->entries, 2->exits
+            },
+        },
+
         data() {
             return {
                 productsListDialog: false,
@@ -53,29 +63,46 @@
             ...mapGetters('inventoryEntries', {
                 productsEntryDetail: 'getProductsEntryDetail',
             }),
+            ...mapGetters('inventoryExits', {
+                productsExitDetail: 'getProductsExitDetail',
+            }),
 
             ...mapGetters('products', {
                 products: 'getProducts',
             }),
 
             filteredProducts: function() {
-                if (this.productsEntryDetail.length == 0) {
-                    return this.products
-                } else {
-                    return this.products.filter(product => {
-                        return !this.productsEntryDetail.some(
-                            productEntryDetail => productEntryDetail.product_id == product.product_id
-                        )
-                    })
+                if (this.route == 1) {
+                    if (this.productsEntryDetail.length == 0) {
+                        return this.products
+                    } else {
+                        return this.products.filter(product => {
+                            return !this.productsEntryDetail.some(
+                                productEntryDetail => productEntryDetail.product_id == product.product_id
+                            )
+                        })
+                    }
+                } else if (this.route == 2) {
+                    if (this.productsExitDetail.length == 0) {
+                        return this.products
+                    } else {
+                        return this.products.filter(product => {
+                            return !this.productsExitDetail.some(
+                                productExitDetail => productExitDetail.product_id == product.product_id
+                            )
+                        })
+                    }
                 }
             },
         },
 
         methods: {
             ...mapMutations('inventoryEntries', ['SET_PRODUCTS_TO_ENTRY']),
+            ...mapMutations('inventoryExits', ['SET_PRODUCTS_TO_EXIT']),
 
             setProductsToEntry: function() {
                 this.SET_PRODUCTS_TO_ENTRY(this.selectedProductsList)
+                this.SET_PRODUCTS_TO_EXIT(this.selectedProductsList)
                 this.productsListDialog = false
                 this.selectedProductsList = []
             },

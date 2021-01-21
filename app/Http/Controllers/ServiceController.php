@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Service;
 use View;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ServiceController extends Controller
 {
@@ -35,6 +36,15 @@ class ServiceController extends Controller
         ], 200);
     }
 
+    public function fetchTodayServices()
+    {
+        $services=Service::whereDate('created_at',Carbon::today())->get();
+        
+        return response()->json([
+            "services" => $services
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -53,10 +63,10 @@ class ServiceController extends Controller
             $service->service_name=$request->service_name;
             $service->service_code=$request->service_code;
             $service->service_description=$request->service_description;
-            $service->service_cost=0;
-            $service->service_base_price_percentage=0;
-            $service->service_retail_price_percentage=0;
-            $service->service_wholesale_price_percentage=0;
+            $service->service_cost=$request->service_cost;
+            $service->service_base_price_percentage=$request->service_base_price_percentage;
+            $service->service_retail_price_percentage=$request->service_retail_price_percentage;
+            $service->service_wholesale_price_percentage=$request->service_wholesale_price_percentage;
             $service->service_stock=0;
             $service->save();
 
@@ -85,34 +95,10 @@ class ServiceController extends Controller
             $service->service_name=$request->service_name;
             $service->service_code=$request->service_code;
             $service->service_description=$request->service_description;
-            
-            if(isset($request->service_cost)){
-                $service->service_cost=$request->service_cost;
-            }
-            else{
-                $service->service_cost=$service->service_cost;
-            }
-            
-            if(isset($request->service_base_price_percentage)){
-                $service->service_base_price_percentage=$request->service_base_price_percentage;
-            }
-            else{
-                $service->service_base_price_percentage=0;
-            }
-
-            if(isset($request->service_retail_price_percentage)){
-                $service->service_retail_price_percentage=$request->service_retail_price_percentage;
-            }
-            else{
-                $service->service_retail_price_percentage=0;
-            }
-
-            if(isset($request->service_wholesale_price_percentage)){
-                $service->service_wholesale_price_percentage=$request->service_wholesale_price_percentage;
-            }
-            else{
-                $service->service_wholesale_price_percentage=0;
-            }
+            $service->service_cost=$request->service_cost;
+            $service->service_base_price_percentage=$request->service_base_price_percentage;
+            $service->service_retail_price_percentage=$request->service_retail_price_percentage;
+            $service->service_wholesale_price_percentage=$request->service_wholesale_price_percentage;
             $service->save();
 
             return response()->json([

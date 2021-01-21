@@ -1,149 +1,151 @@
 <template>
-    <div class="col m4" style="padding-left:24px !important;padding-top:8px !important;">
-        <div class="row">
-            <div class="col m12">
-                <span class="grey-text"><b>Información de venta</b></span
-                ><br />
-                <span><b>Folio:</b> {{ currentSaleId }}</span
-                ><br />
-                <span><b>Fecha:</b> {{ date }}</span
-                ><br />
-                <div class="row" style="padding-top:12px !important;">
-                    <div class="col m12">
-                        <div class="row">
-                            <div class="col m12">
-                                <div class="switch">
-                                    <label>
-                                        <b>¿Cliente nuevo?</b>
-                                        <input
-                                            type="checkbox"
-                                            v-model="newClientToggle"
-                                            v-on:click="newClientToggleHandler"
-                                        />
-                                        <span class="lever"></span>
-                                    </label>
-                                    <button
-                                        v-on:click="showClientsList"
-                                        class="mdc-button mdc-button--outlined"
-                                        :disabled="newClientToggle == true"
+    <v-col cols="4">
+        <v-row>
+            <v-col cols="12">
+                <div class="text-subtitle-1 text--secondary pb-2">Información de venta</div>
+                <div class="subtitle-2">Folio: {{ currentSaleId }}</div>
+                <div class="subtitle-2">Fecha: {{ date }}</div>
+                <v-divider></v-divider>
+                <v-row>
+                    <v-col cols="12" class="pb-0">
+                        <div class="text-subtitle-1 text--secondary">Información de cliente</div>
+                        <v-form v-model="saleClientForm">
+                            <v-row align="center">
+                                <v-col cols="6" class="pt-0">
+                                    <v-switch
+                                        v-model="newClientToggle"
+                                        v-on:change="newClientToggleHandler"
+                                        label="¿Cliente nuevo?"
+                                        color="secondary"
+                                        dense
                                     >
-                                        Buscar cliente
-                                    </button>
-                                </div>
-                                <br />
-                            </div>
-                            <div class="col m12">
-                                <form class="row">
-                                    <div class="input-field col s4">
-                                        <input
-                                            placeholder=""
-                                            v-model="saleClientId"
-                                            id="receipt_client_id"
-                                            type="text"
-                                            disabled
-                                        />
-                                        <label for="client_id">No. de cliente</label>
-                                    </div>
-                                    <div class="input-field col s8">
-                                        <input
-                                            placeholder=""
-                                            v-model="clientName"
-                                            id="receipt_client_name"
-                                            type="text"
-                                            :disabled="newClientToggle == false"
-                                            v-on:blur="validateReceiptClientName"
-                                            v-bind:class="{
-                                                valid: validClientName,
-                                                invalid: invalidClientName,
-                                            }"
-                                            data-length="50"
-                                            maxlength="50"
-                                            required
-                                        />
-                                        <label for="client_name">Nombre</label>
-                                    </div>
-                                    <div class="input-field col s8">
-                                        <input
-                                            placeholder=""
-                                            v-model="clientEmail"
-                                            id="receipt_client_email"
-                                            type="email"
-                                            :disabled="newClientToggle == false"
-                                            v-on:blur="validateReceiptClientEmail"
-                                            v-bind:class="{
-                                                valid: validClientEmail,
-                                                invalid: invalidClientEmail,
-                                            }"
-                                            data-length="40"
-                                            maxlength="40"
-                                        />
-                                        <label for="client_email">E-mail</label>
-                                    </div>
-                                    <div class="input-field col s4">
-                                        <input
-                                            placeholder=""
-                                            v-model="clientPhone"
-                                            id="receipt_client_phone"
-                                            type="tel"
-                                            :disabled="newClientToggle == false"
-                                            v-on:blur="validateReceiptClientPhone"
-                                            v-bind:class="{
-                                                valid: validClientPhone,
-                                                invalid: invalidClientPhone,
-                                            }"
-                                            data-length="10"
-                                            minlength="10"
-                                            maxlength="10"
-                                        />
-                                        <label for="client_phone">Teléfono</label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-field col s12 m8" style="margin-top:0 !important;">
-                        <select v-model="paymentForm" class="icons test">
-                            <option value="1" data-icon="svg/baseline-attach_money-24px.svg">Efectivo</option>
-                            <option value="2" data-icon="svg/baseline-payment-24px.svg"
-                                >Tarjeta de crédito / débito</option
-                            >
-                        </select>
-                        <label>Forma de pago</label>
-                    </div>
-                    <div class="col m8 switch">
-                        <label>
-                            Venta facturada
-                            <input type="checkbox" v-model="invoicedSaleToggle" />
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="col m7">
-                        <br /><span
-                            ><b>Subtotal: ${{ getFormatedNumber(saleSubtotalAmount) }}</b></span
+                                    </v-switch>
+                                </v-col>
+                                <v-col cols="6" align="center" class="pt-0">
+                                    <clients-list-modal-component
+                                        :new-client-toggle="newClientToggle"
+                                    ></clients-list-modal-component>
+                                </v-col>
+                                <v-col cols="5" class="py-0">
+                                    <v-text-field
+                                        label="Id cliente"
+                                        color="secondary"
+                                        v-model="saleClientId"
+                                        :disabled="newClientToggle == false"
+                                        readonly
+                                        filled
+                                        rounded
+                                        dense
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="7" class="py-0">
+                                    <v-text-field
+                                        label="Teléfono"
+                                        color="secondary"
+                                        v-model="clientPhone"
+                                        :disabled="newClientToggle == false"
+                                        :rules="clientPhoneRules"
+                                        validate-on-blur
+                                        type="tel"
+                                        maxlength="10"
+                                        minlength="10"
+                                        filled
+                                        rounded
+                                        dense
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" class="py-0">
+                                    <v-text-field
+                                        label="Nombre *"
+                                        color="secondary"
+                                        v-model="clientName"
+                                        :disabled="newClientToggle == false"
+                                        :rules="clientNameRules"
+                                        validate-on-blur
+                                        maxlength="50"
+                                        filled
+                                        rounded
+                                        dense
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-col>
+                </v-row>
+                <v-divider></v-divider>
+                <v-row>
+                    <v-col cols="12" class="pb-0">
+                        <div class="text-subtitle-1 text--secondary">Información de pago</div>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-row>
+                            <v-col cols="12">
+                                <div class="text-caption pb-1">Forma de pago</div>
+                                <v-select
+                                    :items="paymentForms"
+                                    item-text="name"
+                                    item-value="value"
+                                    v-model="paymentForm"
+                                    dense
+                                    solo
+                                ></v-select>
+                                <v-switch
+                                    v-model="invoicedSaleToggle"
+                                    dense
+                                    inset
+                                    class="pt-0 mt-3"
+                                    label="Venta facturada"
+                                    color="secondary"
+                                ></v-switch>
+                                <v-switch
+                                    v-model="printSaleToggle"
+                                    dense
+                                    inset
+                                    class="pt-0 mt-3"
+                                    label="Imprimir ticket"
+                                    color="secondary"
+                                ></v-switch>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                    <v-col cols="6">
+                        <v-card color="secondary">
+                            <v-card-text>
+                                <v-row class="white--text" align="center">
+                                    <v-col cols="6">
+                                        <div class="text-subtitle-2">Subtotal:</div>
+                                    </v-col>
+                                    <v-col cols="6" align="right">
+                                        <div class="text-body-2">${{ getFormatedNumber(saleSubtotalAmount) }}</div>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <div class="text-subtitle-2">IVA:</div>
+                                    </v-col>
+                                    <v-col cols="6" align="right">
+                                        <div class="text-body-2">${{ getFormatedNumber(saleVatAmount) }}</div>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <div class="text-subtitle-2">Comisión:</div>
+                                    </v-col>
+                                    <v-col cols="6" align="right">
+                                        <div class="text-body-2">${{ getFormatedNumber(saleCreditCardCharge) }}</div>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                            <v-card-title class="white--text justify-center">
+                                Total: ${{ getFormatedNumber(saleTotalAmount) }}
+                            </v-card-title>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="6" offset-md="6">
+                        <v-btn block color="secondary" v-on:click="processSale" v-bind:disabled="!validSaleForm"
+                            >Realizar venta</v-btn
                         >
-                        <br /><span
-                            ><b>IVA: ${{ getFormatedNumber(saleVatAmount) }}</b></span
-                        >
-                        <br v-show="paymentForm == '2'" /><span v-show="paymentForm == '2'"
-                            ><b>Comisión tarjeta: ${{ getFormatedNumber(saleCreditCardCharge) }}</b></span
-                        >
-                        <br /><span
-                            ><b>Total: ${{ getFormatedNumber(saleTotalAmount) }}</b></span
-                        >
-                    </div>
-                    <div class="col m5 right-align">
-                        <button
-                            class="mdc-button mdc-button--outlined"
-                            v-on:click="processSale"
-                            v-bind:disabled="validateForm"
-                        >
-                            Realizar venta
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+    </v-col>
 </template>
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
@@ -157,6 +159,23 @@
                 validClientEmail: false,
                 invalidClientEmail: false,
                 newClientToggle: false,
+                saleClientForm: false,
+                printSaleToggle: true,
+
+                paymentForms: [
+                    { name: 'Efectivo', value: 1 },
+                    { name: 'Tarjeta', value: 2 },
+                    { name: 'Transferencia', value: 3 },
+                ],
+
+                clientNameRules: [v => !!v || 'Este campo es requerido.'],
+                clientPhoneRules: [
+                    v => {
+                        if (!v || v.length == 0 || v.length == 10) return true
+                        return 'Por favor, ingrese el número telefónico a 10 dígitos.'
+                    },
+                ],
+                clientEmailRules: [],
             }
         },
 
@@ -178,7 +197,7 @@
 
             ...mapGetters('clients', {
                 clients: 'getClients',
-                newClientId: 'getNewClientId',
+                clientId: 'getNewClientId',
             }),
 
             date: function() {
@@ -259,24 +278,16 @@
                 },
             },
 
-            validateForm: function() {
-                if (this.newClientToggle) {
-                    if (
-                        this.cart.length == 0 ||
-                        !this.validClientName ||
-                        this.invalidClientPhone ||
-                        this.invalidClientEmail
-                    ) {
-                        return true
-                    } else if (this.cart.length > 0 && this.validateUnitPrices != 0) {
-                        return true
-                    }
+            validSaleForm: function() {
+                if (
+                    this.cart.length > 0 &&
+                    this.clientName != '' &&
+                    this.clientPhone.length == 10 &&
+                    this.validateUnitPrices == 0
+                ) {
+                    return true
                 } else {
-                    if (this.cart.length == 0 || this.clientName == '') {
-                        return true
-                    } else if (this.cart.length > 0 && this.validateUnitPrices != 0) {
-                        return true
-                    }
+                    return false
                 }
             },
 
@@ -308,7 +319,7 @@
             ...mapActions('clients', ['saveClient']),
 
             newClientToggleHandler: function() {
-                this.SET_SALE_CLIENT_ID(this.newClientId)
+                this.SET_SALE_CLIENT_ID(this.clientId)
                 this.SET_SALE_CLIENT_NAME('')
                 this.SET_SALE_CLIENT_PHONE('')
                 this.SET_SALE_CLIENT_EMAIL('')
@@ -319,10 +330,6 @@
                 this.invalidClientPhone = false
                 this.validClientEmail = false
                 this.invalidClientEmail = false
-            },
-
-            showClientsList: function() {
-                $('#clientsCompactListModal').modal('open')
             },
 
             validateReceiptClientName: function(e) {
@@ -387,9 +394,8 @@
 
                 await this.saveSale()
                 await this.saveSaleDetail()
-                await this.printSale()
+                await this.printSale(this.printSaleToggle)
 
-                $('.test').formSelect()
                 this.validClientName = false
                 this.invalidClientName = false
                 this.validClientPhone = false

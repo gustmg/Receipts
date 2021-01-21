@@ -3,6 +3,7 @@ export default {
 
     state: {
         inventoryEntries: [],
+        todayInventoryEntries: [],
         productsToEntry: [],
         productsEntryDetail: [],
         current_inventory_entry_detail: null,
@@ -11,6 +12,10 @@ export default {
     getters: {
         getInventoryEntries: state => {
             return state.inventoryEntries
+        },
+
+        getTodayInventoryEntries: state => {
+            return state.todayInventoryEntries
         },
 
         getProductsToEntry: state => {
@@ -25,6 +30,10 @@ export default {
     mutations: {
         SET_INVENTORY_ENTRIES(state, inventoryEntries) {
             state.inventoryEntries = inventoryEntries
+        },
+
+        SET_TODAY_INVENTORY_ENTRIES(state, inventoryEntries) {
+            state.todayInventoryEntries = inventoryEntries
         },
 
         SET_PRODUCTS_TO_ENTRY(state, products) {
@@ -70,6 +79,14 @@ export default {
             }
         },
 
+        RESET_PRODUCTS_TO_ENTRY(state) {
+            state.productsToEntry = []
+        },
+
+        RESET_PRODUCTS_TO_ENTRY_DETAIL(state) {
+            state.productsEntryDetail = []
+        },
+
         SET_CURRENT_INVENTORY_ENTRY_DETAIL(state, inventoryEntryId) {
             var index = state.inventoryEntries.findIndex(
                 state_inventory_entry => state_inventory_entry.inventory_entry_id === inventoryEntryId
@@ -89,6 +106,17 @@ export default {
                 .get('/inventory_entries')
                 .then(response => {
                     commit('SET_INVENTORY_ENTRIES', response.data.inventory_entries)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+        },
+
+        fetchTodayInventoryEntries: async function({ commit }) {
+            await axios
+                .post('fetchTodayInventoryEntries')
+                .then(response => {
+                    commit('SET_TODAY_INVENTORY_ENTRIES', response.data.inventory_entries)
                 })
                 .catch(function(error) {
                     console.log(error)

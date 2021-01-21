@@ -53,12 +53,12 @@ class InventoryExitProductController extends Controller
                 $data[] = [
                     'inventory_exit_id' => $inventory_exit_id,
                     'product_id' => $products_detail_decoded->product_id,
-                    'product_exit_amount' => $products_detail_decoded->product_exit_amount,
-                    'product_exit_justification' => $products_detail_decoded->product_exit_justification
+                    'product_exit_amount' => $products_detail_decoded->product_amount,
+                    'product_exit_justification' => $products_detail_decoded->product_justification
                 ];
 
                 $product=Product::find($products_detail_decoded->product_id);
-                $product->product_stock = $product->product_stock - $products_detail_decoded->product_exit_amount;
+                $product->product_stock = $product->product_stock - $products_detail_decoded->product_amount;
                 $product->save();
             }
 

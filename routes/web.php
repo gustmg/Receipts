@@ -16,6 +16,8 @@ Route::get('/', function () {
 	if(Auth::check()){return Redirect::to('home');}
     return view('auth/login');
 });
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::post('/vuelogin', 'Auth\LoginController@vuelogin');
 
 Auth::routes();
 
@@ -39,12 +41,20 @@ Route::resource('inventory_exits', 'InventoryExitController')->middleware('auth'
 Route::resource('inventory_exits_products', 'InventoryExitProductController')->middleware('auth');
 
 Route::post('fetchProducts', 'ProductController@fetchProducts')->middleware('auth');
+Route::post('fetch', 'DeviceController@fetch')->middleware('auth');
 Route::post('fetchServices', 'ServiceController@fetchServices')->middleware('auth');
 Route::post('fetchClients', 'ClientController@fetchClients')->middleware('auth');
 Route::post('fetchReceipts', 'ReceiptController@fetchReceipts')->middleware('auth');
+Route::post('fetchDevices', 'DeviceController@fetchDevices')->middleware('auth');
+Route::post('fetchTodayReceipts', 'ReceiptController@fetchTodayReceipts')->middleware('auth');
+Route::post('fetchSales', 'SaleController@fetchSales')->middleware('auth');
+Route::post('fetchServiceStatusList', 'ServiceStatusController@fetchServiceStatusList')->middleware('auth');
+Route::post('fetchTodaySales', 'SaleController@fetchTodaySales')->middleware('auth');
 Route::post('fetchLastSaleId', 'SaleController@fetchLastSaleId')->middleware('auth');
 Route::post('fetchLastClientId', 'ClientController@fetchLastClientId')->middleware('auth');
 Route::post('fetchLastReceiptId', 'ReceiptController@fetchLastReceiptId')->middleware('auth');
+Route::post('fetchTodayInventoryEntries', 'InventoryEntryController@fetchTodayInventoryEntries')->middleware('auth');
+Route::post('fetchTodayInventoryExits', 'InventoryExitController@fetchTodayInventoryExits')->middleware('auth');
 Route::post('createBackup', function(){
     $filename = "backup-".date("d-m-Y-H-i").".sql";
     $mysqlPath = "C:\\xampp/mysql/bin/mysqldump";
@@ -59,3 +69,5 @@ Route::post('createBackup', function(){
         return "0 ".$e->errorInfo;
      }
 });
+
+Route::get('sales/export', 'ReportController@downloadSalesReport');

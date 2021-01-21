@@ -1,18 +1,16 @@
 <template>
-    <div class="row" style="margin-bottom: 0;">
-        <div class="card hoverable col s10 offset-s1" style="float: none;">
-            <div class="input-field valign-wrapper">
-                <i class="material-icons prefix">search</i>
-                <input
-                    :value="searchServiceValue"
-                    @input="updateSearchService"
-                    placeholder="Buscar servicio"
-                    type="text"
-                    style="border-bottom: none!important;box-shadow: none!important;margin-bottom: 0;"
-                />
-            </div>
-        </div>
-    </div>
+    <v-row>
+        <v-col cols="10" offset-md="1">
+            <v-text-field
+                :value="searchServiceValue"
+                @input="updateSearchService"
+                prepend-inner-icon="mdi-magnify"
+                placeholder="Buscar servicio"
+                type="text"
+                solo
+            ></v-text-field>
+        </v-col>
+    </v-row>
 </template>
 <style></style>
 <script>
@@ -25,10 +23,10 @@
         },
 
         methods: {
-            ...mapMutations('services', ['UPDATE_SEARCH_SERVICE_VALUE']),
+            ...mapMutations('services', ['SET_SEARCH_SERVICE_VALUE']),
 
             updateSearchService: function(event) {
-                this.UPDATE_SEARCH_SERVICE_VALUE(event.target.value)
+                this.SET_SEARCH_SERVICE_VALUE(event)
             },
         },
     }

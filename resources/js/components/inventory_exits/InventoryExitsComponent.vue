@@ -1,35 +1,32 @@
 <template>
-    <div class="row">
+    <v-container>
         <inventory-exits-list-component></inventory-exits-list-component>
-        <new-inventory-exit-button-component></new-inventory-exit-button-component>
         <new-inventory-exit-modal-component></new-inventory-exit-modal-component>
-        <products-list-with-stocks-modal-component></products-list-with-stocks-modal-component>
-        <inventory-exit-detail-modal-component :inventory-exit-detail="this.currentInventoryExitDetail"></inventory-exit-detail-modal-component>
-    </div>
+    </v-container>
 </template>
-<style scoped>
-</style>
 <script>
-    import {mapActions, mapState} from "vuex";
+    import { mapActions, mapState } from 'vuex'
     export default {
         mounted() {
-            this.setCurrentUsername(this.user.name);
+            this.setCurrentUsername(this.user.name)
+            this.fetchInventoryExits()
+            this.fetchProducts()
         },
 
         computed: {
-            ...mapState('inventoryExits', {
-                currentInventoryExitDetail: state => state.currentInventoryExitDetail
-            }),
+            ...mapState(['current_inventory_exit_detail']),
         },
 
         props: {
             user: {
-                type: Object
-            }
+                type: Object,
+            },
         },
 
         methods: {
             ...mapActions(['setCurrentUsername']),
-        }
+            ...mapActions('inventoryExits', ['fetchInventoryExits']),
+            ...mapActions('products', ['fetchProducts']),
+        },
     }
 </script>

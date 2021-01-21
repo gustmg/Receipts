@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="newAccessoryDialog" width="360">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="primary" fab v-bind="attrs" v-on="on"><v-icon>mdi-plus</v-icon></v-btn>
+            <v-btn class="secondary" fab v-bind="attrs" v-on="on"><v-icon>mdi-plus</v-icon></v-btn>
         </template>
         <v-card>
             <v-card-title class="justify-center">Accesorio de equipo</v-card-title>
@@ -12,6 +12,7 @@
                             <v-col cols="12">
                                 <v-text-field
                                     v-model="newAccessoryName"
+                                    color="secondary"
                                     label="Nombre *"
                                     :rules="requiredRule"
                                     filled
@@ -22,6 +23,7 @@
                             <v-col cols="12">
                                 <v-text-field
                                     v-model="newAccessorySerialNumber"
+                                    color="secondary"
                                     label="Número de serie"
                                     :rules="serialNumberRules"
                                     filled
@@ -37,12 +39,12 @@
                 <v-container>
                     <v-row>
                         <v-col cols="6">
-                            <v-btn class="primary--text" block text v-on:click="resetNewAccessoryInputs">
+                            <v-btn class="secondary--text" block text v-on:click="resetNewAccessoryInputs">
                                 Cancelar
                             </v-btn>
                         </v-col>
                         <v-col cols="6">
-                            <v-btn class="primary" block :disabled="!newAccessoryForm" v-on:click="addAccessory">
+                            <v-btn class="secondary" block :disabled="!newAccessoryForm" v-on:click="addAccessory">
                                 Agregar
                             </v-btn>
                         </v-col>

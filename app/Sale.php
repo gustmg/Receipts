@@ -9,6 +9,7 @@ class Sale extends Model
     protected $table = 'sales';
     protected $primaryKey = 'sale_id';
     protected $with = ['client', 'user', 'payment_form', 'products', 'services'];
+    protected $hidden = ['updated_at'];
 
     public function client()
     {

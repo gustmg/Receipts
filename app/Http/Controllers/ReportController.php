@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Sale;
 use View;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use App\Exports\SalesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -19,6 +22,11 @@ class ReportController extends Controller
     {
         $sales=Sale::with('client','payment_form')->orderBy('sale_id','desc')->get();
         return View::make('reports.index', ['sales'=>$sales]);
+    }
+
+    public function downloadSalesReport()
+    {
+        return Excel::download(new SalesExport, 'reporte_ventas.xlsx');
     }
 
     /**

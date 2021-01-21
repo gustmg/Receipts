@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="12" class="pb-0">
+        <v-col cols="8" class="pb-0" offset-md="2">
             <v-text-field
                 :value="searchClientValue"
                 @input="updateSearchClient"

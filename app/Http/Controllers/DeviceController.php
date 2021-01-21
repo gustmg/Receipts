@@ -17,14 +17,20 @@ class DeviceController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function fetch()
     {
-        //
+        $devices=Device::all();
+        foreach($devices as $key=>$device){
+            $device->service_status()->attach(1, ['device_service_commentary' => '']);
+        }
+    }
+
+    public function fetchDevices() {
+        $devices = Device::all();
+
+        return response()->json([
+            "devices" => $devices
+        ],200);
     }
 
     /**
@@ -40,9 +46,11 @@ class DeviceController extends Controller
             $device->device_name=$request->device_name;
             $device->device_serial_number=$request->device_serial_number;
             $device->device_trouble_description=$request->device_trouble_description;
-            $device->device_service_status_id=1;
+            $device->device_commentary=$request->device_commentary;
             $device->device_receipt_id=$request->device_receipt_id;
             $device->save();
+
+            $device->service_status()->attach(1, ['device_service_commentary' => $request->device_trouble_description]);
 
             return response()->json([
                 "message" => "Equipo registrado correctamente.",
@@ -82,7 +90,12 @@ class DeviceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $device=Device::find($id);
+        $device->service_status()->attach($request->service_status_id, ['device_service_commentary' => $request->service_status_commentary]);
+
+        return response()->json([
+            "message" => "Dispositivo actualizado correctamente.",
+        ],200);
     }
 
     /**

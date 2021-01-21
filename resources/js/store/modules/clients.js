@@ -65,5 +65,21 @@ export default {
                 console.log(error)
             }
         },
+
+        updateClient: async function({ commit }, client) {
+            try {
+                await axios.put('clients/' + client.client_id, client)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        deleteClient: async function({ commit }, client_id) {
+            try {
+                await axios.delete('clients/' + client_id)
+            } catch (error) {
+                console.log(error)
+            }
+        },
     },
 }

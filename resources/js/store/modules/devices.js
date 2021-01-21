@@ -23,25 +23,18 @@ export default {
         RESET_DEVICES(state) {
             state.devices = []
         },
+
+        SET_DEVICES(state, devices) {
+            state.devices = devices
+        },
     },
 
     actions: {
-        fetchReceipts: function({ commit }) {
-            axios
-                .post('fetchReceipts')
+        fetchDevices: async function({ commit }) {
+            await axios
+                .post('fetchDevices')
                 .then(response => {
-                    commit('SET_RECEIPTS', response.data.receipts)
-                })
-                .catch(function(error) {
-                    console.log(error)
-                })
-        },
-
-        fetchLastReceiptId: function({ commit }) {
-            axios
-                .post('fetchLastReceiptId')
-                .then(response => {
-                    commit('SET_LAST_RECEIPT_ID', response.data.last_receipt_id)
+                    commit('SET_DEVICES', response.data.devices)
                 })
                 .catch(function(error) {
                     console.log(error)
@@ -58,6 +51,7 @@ export default {
                                 device_name: device.device_name,
                                 device_serial_number: device.device_serial_number,
                                 device_trouble_description: device.device_trouble_description,
+                                device_commentary: device.device_commentary,
                                 device_receipt_id: receiptId,
                             })
                             .then(async response => {
@@ -76,6 +70,14 @@ export default {
                         console.log('Device ' + device.device_name + ' guardado...OK')
                     })
                 )
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        updateServiceStatus: async function({ commit }, serviceStatus) {
+            try {
+                await axios.put('devices/' + serviceStatus.device_id, serviceStatus)
             } catch (error) {
                 console.log(error)
             }

@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="inventoryEntryDetailModal">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" block v-bind="attrs" v-on="on">
+            <v-btn color="secondary" block v-bind="attrs" v-on="on">
                 Ver detalles
             </v-btn>
         </template>
@@ -43,61 +43,12 @@
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-col cols="2">
-                        <v-btn color="primary" block v-on:click="inventoryEntryDetailModal = false">Cerrar</v-btn>
+                        <v-btn color="secondary" block v-on:click="inventoryEntryDetailModal = false">Cerrar</v-btn>
                     </v-col>
                 </v-row>
             </v-container>
         </v-card>
     </v-dialog>
-    <!-- <div id="inventoryEntryDetailModal" class="modal inventoryEntryDetailModal modal-fixed-footer">
-        <div class="modal-content" v-if="this.inventoryEntryDetail">
-            <div class="row">
-                <div class="col m12">
-                    <div class="row valign-wrapper inventory-entry">
-                        <div class="col s3">
-                            <span>{{this.inventoryEntryDetail.inventory_entry_created_at}}</span><br>
-                            <h5>Entrada # {{this.inventoryEntryDetail.inventory_entry_id}}</h5>
-                        </div>
-                        <div class="col s2 offset-s3" align="center"><h6><i class="material-icons">store</i></h6><h6>{{this.inventoryEntryDetail.warehouse.warehouse_name}}</h6></div>
-                        <div class="col s2" align="center"><h6><b>{{getProductsAmount(this.inventoryEntryDetail.products)}}</b></h6><h6>Productos ingresados</h6></div>
-                        <div class="col s2" align="center"><h6><b>{{formatNumberToCurrency(this.inventoryEntryDetail.inventory_entry_total_cost)}}</b></h6><h6>Costo Total</h6></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col m12 row">
-                    <product-search-bar-component class="col m6 offset-m3"></product-search-bar-component>
-                    <table class="centered">
-                        <thead>
-                            <tr>
-                                <th class="product-code-header">Codigo</th>
-                                <th class="product-name-header">Nombre</th>
-                                <th class="product-description-header">Descripcion</th>
-                                <th class="product-measurement-header">Unidad de medida</th>
-                                <th class="product-amount-header">Cantidad</th>
-                                <th class="product-unit-cost-header">Costo unitario</th>
-                                <th class="product-import-header">Importe total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(product,index) in this.inventoryEntryDetail.products" v-bind:key="product.product_id">
-                                <td>{{product.product_code}}</td>
-                                <td>{{product.product_name}}</td>
-                                <td>{{product.product_description}}</td>
-                                <td>PIEZA</td>
-                                <td>{{product.pivot.product_entry_amount}}</td>
-                                <td>{{formatNumberToCurrency(product.pivot.product_unit_cost)}}</td>
-                                <td>{{formatNumberToCurrency(product.pivot.product_entry_amount * product.pivot.product_unit_cost)}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="modal-action modal-close waves-effect btn-flat"><b>Cerrar</b></button>
-        </div>
-    </div> -->
 </template>
 <script>
     import { mapState, mapMutations, mapActions } from 'vuex'

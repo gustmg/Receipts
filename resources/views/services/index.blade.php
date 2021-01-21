@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('content')
-<services-component :services="{{$services}}"></services-component>
+<services-component></services-component>
 @endsection

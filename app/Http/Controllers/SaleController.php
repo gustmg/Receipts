@@ -12,6 +12,7 @@ use Auth;
 use Excel;
 use Illuminate\Support\Facades\DB;
 use App\Exports\SalesExport;
+use Carbon\Carbon;
 
 
 class SaleController extends Controller
@@ -23,11 +24,25 @@ class SaleController extends Controller
      */
     public function index()
     {
+        return View::make('sales.index');
+    }
+
+    public function fetchSales()
+    {
         $sales=Sale::all();
-        $services=DB::table('services')->orderBy('service_name','asc')->get();
-        $products=DB::table('products')->orderBy('product_name','asc')->get();
-        $clients=DB::table('clients')->orderBy('client_name','asc')->get();
-        return View::make('sales.index', ['sales'=>$sales, 'services'=>$services, 'products'=>$products, 'clients'=>$clients]);
+        
+        return response()->json([
+            "sales" => $sales
+        ], 200);
+    }
+
+    public function fetchTodaySales()
+    {
+        $sales=Sale::whereDate('created_at',Carbon::today())->get();
+        
+        return response()->json([
+            "sales" => $sales
+        ], 200);
     }
 
      /**
@@ -39,9 +54,15 @@ class SaleController extends Controller
     {
         $last_sale=DB::table('sales')->latest('sale_id')->first();
         
-        return response()->json([
-            "last_sale_id" => $last_sale->sale_id
+        if($last_sale){
+            return response()->json([
+                "last_sale_id" => $last_sale->sale_id
+            ], 200);
+        }
+        else return response()->json([
+            "last_sale_id" => 0
         ], 200);
+        
     }
 
     /**

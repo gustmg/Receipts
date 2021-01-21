@@ -2,6 +2,8 @@ export default {
     namespaced: true,
 
     state: {
+        sales: [],
+        todaySales: [],
         lastSaleId: 0,
         cart: [],
         saleClientId: null,
@@ -17,6 +19,14 @@ export default {
     },
 
     getters: {
+        getSales: state => {
+            return state.sales
+        },
+
+        getTodaySales: state => {
+            return state.todaySales
+        },
+
         getCurrentSaleId: state => {
             return state.lastSaleId + 1
         },
@@ -68,12 +78,10 @@ export default {
         getSaleCreditCardCharge: state => {
             state.saleCreditCardCharge = 0
             if (state.salePaymentForm == 2) {
-                if (state.saleSubtotalAmount + state.saleVatAmount >= 1000) {
-                    if (state.isInvoicedSale) {
-                        state.saleCreditCardCharge = (state.saleSubtotalAmount + state.saleVatAmount) * 0.025
-                    } else {
-                        state.saleCreditCardCharge = state.saleSubtotalAmount * 0.025
-                    }
+                if (state.isInvoicedSale) {
+                    state.saleCreditCardCharge = (state.saleSubtotalAmount + state.saleVatAmount) * 0.035
+                } else {
+                    state.saleCreditCardCharge = state.saleSubtotalAmount * 0.035
                 }
             }
             return state.saleCreditCardCharge
@@ -91,6 +99,14 @@ export default {
     },
 
     mutations: {
+        SET_SALES(state, sales) {
+            state.sales = sales
+        },
+
+        SET_TODAY_SALES(state, sales) {
+            state.todaySales = sales
+        },
+
         SET_LAST_SALE_ID(state, lastSaleId) {
             state.lastSaleId = lastSaleId
         },
@@ -125,6 +141,28 @@ export default {
     },
 
     actions: {
+        fetchSales: async function({ commit }) {
+            await axios
+                .post('fetchSales')
+                .then(response => {
+                    commit('SET_SALES', response.data.sales)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+        },
+
+        fetchTodaySales: async function({ commit }) {
+            await axios
+                .post('fetchTodaySales')
+                .then(response => {
+                    commit('SET_TODAY_SALES', response.data.sales)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+        },
+
         fetchLastSaleId: function({ commit }) {
             axios
                 .post('fetchLastSaleId')
@@ -153,7 +191,7 @@ export default {
             try {
                 await Promise.all(
                     context.state.cart.map(async article => {
-                        if (article.articleType == 0) {
+                        if (article.articleType == 2) {
                             let response = await axios.post('sales_services', {
                                 sale_id: context.getters.getCurrentSaleId,
                                 service_id: article.articleId,
@@ -177,13 +215,15 @@ export default {
             }
         },
 
-        printSale: async function(context) {
+        printSale: async function(context, print_sale) {
             try {
-                await axios.post('print', {
-                    sale_id: context.getters.getCurrentSaleId,
-                    tax: context.state.isInvoicedSale,
-                    credit_card_charge: context.getters.getSaleCreditCardCharge,
-                })
+                if (print_sale == 1) {
+                    await axios.post('print', {
+                        sale_id: context.getters.getCurrentSaleId,
+                        tax: context.state.isInvoicedSale,
+                        credit_card_charge: context.getters.getSaleCreditCardCharge,
+                    })
+                }
                 context.state.cart = []
                 context.state.salePaymentForm = 1
                 context.state.isInvoicedSale = 0
